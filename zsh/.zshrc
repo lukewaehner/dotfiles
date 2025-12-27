@@ -16,6 +16,12 @@ mkdir -p ~/.zcompcache
 # -------------------------------------------------------------
 
 # Completion system (fast, no security re-scan)
+
+# Case-insensitive + smart completion
+zstyle ':completion:*' matcher-list \
+  'm:{a-zA-Z}={A-Za-z}' \
+  'r:|[._-]=* r:|=*'
+
 autoload -Uz compinit
 compinit -C
 
