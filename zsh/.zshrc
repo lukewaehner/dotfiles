@@ -210,7 +210,11 @@ alias cd="z"
 alias lg="lazygit"
 
 # Bat Theme
-export BAT_THEME="catppuccin_mocha"
+if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
+  export BAT_THEME="TokyoNight Night"
+else
+  export BAT_THEME="TokyoNight Day"
+fi
 
 # Use fd for fzf (ignores node_modules/git)
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'

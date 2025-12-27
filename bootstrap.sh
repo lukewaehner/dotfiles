@@ -161,6 +161,9 @@ main() {
   # -------------------------------------------------
   stow_modules
 
+  log "Rebuilding bat themes cache"
+  bat cache --build
+
   log "Bootstrap complete"
 }
 
