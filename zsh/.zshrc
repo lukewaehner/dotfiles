@@ -6,16 +6,13 @@ fi
 # Early exit if non-interactive
 [[ -o interactive ]] || return
 
-# Speeds up by skipping OMZ updates and security checks (run omz update manually)
-# ZSH_DISABLE_COMPFIX="true"
-# DISABLE_AUTO_UPDATE="true"
-
 # Zsh Completion Cache
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.zcompcache
+mkdir -p ~/.zcompcache
 
 # -------------------------------------------------------------
-# Zsh core init (no Oh-My-Zsh)
+# Zsh core init
 # -------------------------------------------------------------
 
 # Completion system (fast, no security re-scan)
@@ -23,38 +20,13 @@ autoload -Uz compinit
 compinit -C
 
 # Autosuggestions
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Syntax highlighting (Keep last in plugins list)
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # -------------------------------------------------------------
 
-# omz
-# export ZSH="$HOME/.oh-my-zsh"
-
 # Prefer nvim for man
 export MANPAGER="nvim +Man!"
-
-# Theme here
-# ZSH_THEME=""
-
-# Zsh Plugins
-# plugins=(
-# 	zsh-autosuggestions
-# 	zsh-syntax-highlighting
-# 	)
-
-# source $ZSH/oh-my-zsh.sh
-
-# alias for zsh, external file
-if [ -f ~/.aliases_zsh ]; then
-  source ~/.aliases_zsh
-fi
-
-# Lazy fuck usage
-alias fuck='eval $(thefuck $(fc -ln -1))'
-alias sort-downloads="~/Code/Python/sort-downloads/main.py"
 
 # -------------------------------------------------------------
 # VM Functions 
@@ -172,6 +144,8 @@ ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 # Dark / Light Mode Settings
 # -------------------------------------------------------------
 
+# NOTE: Dark / Light mode settings are added here
+
 # Single check for darkmode
 _is_dark_mode() {
   [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]
@@ -194,22 +168,33 @@ unset -f _is_dark_mode
 # Modern Unix Tools
 # -------------------------------------------------------------
 
+# NOTE: Add other tools here as needed for quick loading
+
 # Create a cache directory
 [[ -d ~/.cache/zsh ]] || mkdir -p ~/.cache/zsh
+
+# Caching function
 zcache() {
-    local cache_file="$HOME/.cache/zsh/$1.zsh"
-    if [[ ! -f "$cache_file" ]]; then
-        case $1 in
-            zoxide)   zoxide init zsh > "$cache_file" ;;
-            atuin)    atuin init zsh > "$cache_file" ;;
-            starship) starship init zsh > "$cache_file" ;;
-        esac
-    fi
-    source "$cache_file"
+  local cache_file="$HOME/.cache/zsh/$1.zsh"
+
+  if [[ ! -f "$cache_file" ]]; then
+    case $1 in
+      zoxide)   zoxide init zsh > "$cache_file" ;;
+      atuin)    atuin init zsh > "$cache_file" ;;
+      starship) starship init zsh > "$cache_file" ;;
+      *) return ;;
+    esac
+  fi
+
+  [[ -f "$cache_file" ]] && source "$cache_file"
 }
 
 zcache "zoxide"
 zcache "atuin"
+
+# -------------------------------------------------------------
+# Aliases
+# -------------------------------------------------------------
 
 # Re-map cd to z
 alias cd="z"
@@ -217,13 +202,24 @@ alias cd="z"
 # Re-map lg to lazygit
 alias lg="lazygit"
 
-# Use fd for fzf (ignores node_modules/git)
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
+# Eza
 alias ls="eza --icons --group-directories-first"
 alias ll="eza -lgh --icons --git --group-directories-first"
 alias lt="eza --tree --level=2 --icons"
+
+# Lazy fuck usage
+alias fuck='eval $(thefuck $(fc -ln -1))'
+
+# Sort Downloads custom command
+alias sort-downloads="~/Code/Python/sort-downloads/main.py"
+
+# -------------------------------------------------------------
+# Exports
+# -------------------------------------------------------------
+
+# Use fd for fzf (ignores node_modules/git)
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # fzf palette (prompt/header pointers)
 export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:5,pointer:5,marker:2,header:6'
@@ -238,7 +234,7 @@ fp() {
 }
 
 # -------------------------------------------------------------
-# Prompt !IMPORTANT! Always have last
+# Prompt, load at end
 # --------------------------------------------------------------
 
 # Auto-detect system theme for Starship and set palette
@@ -246,3 +242,10 @@ export STARSHIP_PALETTE="catppuccin_mocha"
 zcache "starship"
 
 # -------------------------------------------------------------
+
+# Syntax highlighting - very end to see full state
+[[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# -------------------------------------------------------------
+
