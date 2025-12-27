@@ -1,0 +1,13 @@
+[user]
+	name = Luke Waehner
+	email = luke.waehner@gmail.com
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[pull]
+	rebase = false
+[core]
+	excludesfile = /Users/lukewaehner/.gitignore_global
+[push]
+	autoSetupRemote = true

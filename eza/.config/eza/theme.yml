@@ -1,0 +1,4 @@
+file:       { foreground: "white" }
+directory:  { foreground: "blue",   bold: true }
+symlink:    { foreground: "magenta" }
+executable: { foreground: "green",  bold: true }
