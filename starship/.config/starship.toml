@@ -1,0 +1,225 @@
+command_timeout = 3600
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false 
+
+# lukewaehner in directory on main * >
+format = "$username in $directory$git_branch $git_status$character"
+
+right_format = ""
+
+# Palette is set via STARSHIP_PALETTE environment variable in .zshrc
+# Defaults to catppuccin_mocha (dark) if not set
+# palette = "default"
+
+# Light mode palette (Catppuccin Latte)
+[palettes.catppuccin_latte]
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
+
+# Dark mode palette (Catppuccin Mocha)
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = " "
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[username]
+show_always = true
+style_user = "fg:blue"
+format = "[$user]($style)"
+
+[directory]
+style = "fg:teal"
+format = "[$path]($style)"
+#truncation_length = 4
+#truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[os]
+disabled = true
+#style = "bg:surface0 fg:text"
+
+[custom.giturl]
+# disabled = true
+description = "Display symbol for remote Git server"
+command = """
+GIT_REMOTE=$(command git ls-remote --get-url 2> /dev/null)
+if [[ "$GIT_REMOTE" =~ "github" ]]; then
+    GIT_REMOTE_SYMBOL=" "
+elif [[ "$GIT_REMOTE" =~ "gitlab" ]]; then
+    GIT_REMOTE_SYMBOL=" "
+elif [[ "$GIT_REMOTE" =~ "bitbucket" ]]; then
+    GIT_REMOTE_SYMBOL=" "
+elif [[ "$GIT_REMOTE" =~ "git" ]]; then
+    GIT_REMOTE_SYMBOL=" "
+else
+    GIT_REMOTE_SYMBOL=" "
+fi
+echo "$GIT_REMOTE_SYMBOL "
+"""
+when = 'git rev-parse --is-inside-work-tree 2> /dev/null'
+format = "at $output"
+
+[git_branch]
+symbol = ""
+style = "fg:lavender"
+format = " on [$symbol $branch]($style)"
+
+[git_status]
+disabled = false
+# This says: if there is status, wrap it in a space and yellow color
+format = '([$all_status$ahead_behind]($style) )'
+style = "fg:mauve"
+
+# Using standard but clear symbols
+conflicted = "="
+ahead      = "⇡"
+behind     = "⇣"
+diverged   = "⇕"
+up_to_date = ""
+untracked  = "?"
+stashed    = "$"
+modified   = "!"
+staged     = "+"
+renamed    = "»"
+deleted    = "✘"
+
+[nodejs]
+symbol = ""
+format = '[ $symbol( $version) ]($style)'
+
+[c]
+symbol = " "
+format = '[ $symbol( $version) ]($style)'
+
+[rust]
+symbol = ""
+format = '[ $symbol( $version) ]($style)'
+
+[golang]
+symbol = ""
+format = '[ $symbol( $version) ]($style)'
+detect_files = ["go.mod"]
+
+[php]
+symbol = ""
+format = '[ $symbol( $version) ]($style)'
+
+[java]
+symbol = " "
+format = '[ $symbol( $version) ]($style)'
+
+[kotlin]
+symbol = ""
+
+format = '[ $symbol( $version) ]($style)'
+
+[haskell]
+symbol = ""
+
+format = '[ $symbol( $version) ]($style)'
+
+[python]
+symbol = ""
+
+format = '[ $symbol( $version) ]($style)'
+
+
+[docker_context]
+symbol = ""
+format = '[ $symbol( $context) ]($style)'
+
+
+[time]
+disabled = true
+time_format = "%R"
+style = "bg:peach"
+format = '[[  $time ](fg:mantle bg:foam)]($style)'
+
+[line_break]
+disabled = true 
+
+[character]
+disabled = false
+format = "$symbol "
+success_symbol = '[>](fg:green)'
+error_symbol = '[>](fg:red)'
+vimcmd_symbol = '[>](fg:green)'
+vimcmd_replace_one_symbol = '[>](fg:purple)'
+vimcmd_replace_symbol = '[>](fg:purple)'
+vimcmd_visual_symbol = '[>](fg:lavender)'
