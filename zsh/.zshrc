@@ -1,36 +1,53 @@
-# Speeds up by skipping OMZ updates and security checks (run omz update manually)
-ZSH_DISABLE_COMPFIX="true"
-DISABLE_AUTO_UPDATE="true"
+# Check for zshrdc changes and recompile
+if [[ -s ~/.zshrc && ( ! -s ~/.zshrc.zwc || ~/.zshrc -nt ~/.zshrc.zwc ) ]]; then
+  zcompile ~/.zshrc
+fi
 
+# Early exit if non-interactive
+[[ -o interactive ]] || return
+
+# Speeds up by skipping OMZ updates and security checks (run omz update manually)
+# ZSH_DISABLE_COMPFIX="true"
+# DISABLE_AUTO_UPDATE="true"
+
+# Zsh Completion Cache
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.zcompcache
 
+# -------------------------------------------------------------
+# Zsh core init (no Oh-My-Zsh)
+# -------------------------------------------------------------
+
+# Completion system (fast, no security re-scan)
+autoload -Uz compinit
+compinit -C
+
+# Autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Syntax highlighting (Keep last in plugins list)
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# -------------------------------------------------------------
+
 # omz
-export ZSH="$HOME/.oh-my-zsh"
+# export ZSH="$HOME/.oh-my-zsh"
 
 # Prefer nvim for man
 export MANPAGER="nvim +Man!"
 
 # Theme here
-ZSH_THEME=""
+# ZSH_THEME=""
 
-plugins=(
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	)
+# Zsh Plugins
+# plugins=(
+# 	zsh-autosuggestions
+# 	zsh-syntax-highlighting
+# 	)
 
-# if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
-#   # Dark mode highlight
-#   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#555555'
-# else
-#   # Light mode highlight
-#   #828DB5
-#   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#828DB5'
-# fi
+# source $ZSH/oh-my-zsh.sh
 
-source $ZSH/oh-my-zsh.sh
-
-#alias for zsh, external file that you created
+# alias for zsh, external file
 if [ -f ~/.aliases_zsh ]; then
   source ~/.aliases_zsh
 fi
@@ -39,28 +56,10 @@ fi
 alias fuck='eval $(thefuck $(fc -ln -1))'
 alias sort-downloads="~/Code/Python/sort-downloads/main.py"
 
-# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# Startup fun
-#neofetch
-#termstartup "ljw"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-#         . "/opt/anaconda3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/opt/anaconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# <<< conda initialize <<<
-
-spinvm() {
+# -------------------------------------------------------------
+# VM Functions 
+# -------------------------------------------------------------
+startvm() {
     VM_IP="192.168.64.3"
     VM_NAME="Linux"
     
@@ -160,11 +159,7 @@ vmstatus() {
     fi
 }
 
-# Created by `pipx` on 2025-09-26 20:16:34
-# export PATH="$PATH:/Users/lukewaehner/.local/bin"
-# export PATH="$PATH:/opt/homebrew/Cellar/node/25.2.1/bin"
-
-
+# -------------------------------------------------------------
 
 # Autosuggestion + syntax colors (more visible in light/dark)
 typeset -A ZSH_HIGHLIGHT_STYLES
@@ -172,11 +167,28 @@ ZSH_HIGHLIGHT_STYLES[command]='fg=cyan'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=blue'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
-if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
+
+# -------------------------------------------------------------
+# Dark / Light Mode Settings
+# -------------------------------------------------------------
+
+# Single check for darkmode
+_is_dark_mode() {
+  [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]
+}
+
+if _is_dark_mode; then
+  # ZSH Autosuggest
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777777'
+  # Bat theme
+  export BAT_THEME="TokyoNight Night"
 else
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#333333'
+  export BAT_THEME="TokyoNight Day"
 fi
+
+# Removed function after use
+unset -f _is_dark_mode
 
 # -------------------------------------------------------------
 # Modern Unix Tools
@@ -190,9 +202,7 @@ zcache() {
         case $1 in
             zoxide)   zoxide init zsh > "$cache_file" ;;
             atuin)    atuin init zsh > "$cache_file" ;;
-            pyenv)    pyenv init - zsh > "$cache_file" ;;
             starship) starship init zsh > "$cache_file" ;;
-            rbenv) rbenv init - zsh > "$cache_file" ;;
         esac
     fi
     source "$cache_file"
@@ -200,21 +210,12 @@ zcache() {
 
 zcache "zoxide"
 zcache "atuin"
-zcache "pyenv"
-zcache "rbenv"
 
 # Re-map cd to z
 alias cd="z"
 
 # Re-map lg to lazygit
 alias lg="lazygit"
-
-# Bat Theme
-if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
-  export BAT_THEME="TokyoNight Night"
-else
-  export BAT_THEME="TokyoNight Day"
-fi
 
 # Use fd for fzf (ignores node_modules/git)
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
@@ -236,8 +237,6 @@ fp() {
   fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'
 }
 
-
-
 # -------------------------------------------------------------
 # Prompt !IMPORTANT! Always have last
 # --------------------------------------------------------------
@@ -247,7 +246,3 @@ export STARSHIP_PALETTE="catppuccin_mocha"
 zcache "starship"
 
 # -------------------------------------------------------------
-
-if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
-    zcompile ~/.zshrc
-fi
