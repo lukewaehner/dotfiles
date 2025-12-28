@@ -151,8 +151,9 @@ main() {
   pyenv install -s "$LATEST_PYTHON"
   pyenv global 3.9.6
 
+  # Install latest stable Ruby
   log "Ensuring Ruby via rbenv"
-  RB_VER="${RB_VER:-3.3.6}"
+  RB_VER="$(rbenv install -l | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+$' | tail -1 | tr -d ' ')"
   rbenv install -s "$RB_VER"
   rbenv global "$RB_VER"
 
