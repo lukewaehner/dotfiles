@@ -4,6 +4,7 @@ set -euo pipefail
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/repos/dotfiles}"
 BREWFILE="${BREWFILE:-$DOTFILES_DIR/brew/Brewfile}"
 STOW_TARGET="${STOW_TARGET:-$HOME}"
+NPM_GLOBALS_FILE="${NPM_GLOBALS_FILE:-$DOTFILES_DIR/npmglobal.txt}"
 
 log() { printf "\n==> %s\n" "$*"; }
 warn() { printf "\n[warn] %s\n" "$*" >&2; }
@@ -95,6 +96,22 @@ stow_modules() {
   stow -t "$STOW_TARGET" --restow "${modules[@]}"
 }
 
+install_npm_gloabls() {
+  if ! command_exists npm; then
+    warn "npm not found, skipping npm globals"
+    return 0
+  fi
+
+  if [[ ! -f "$NPM_GLOBALS_FILE" ]]; then
+    warn "No npm globals file found at $NPM_GLOBALS_FILE, skipping"
+    return 0
+  fi
+
+  log "Installing npm global packages from $NPM_GLOBALS_FILE"
+
+  npm i -g $(grep -vE '^\s*#' "$NPM_GLOBALS_FILE" | tr '\n' ' ')
+}
+
 main() {
   require_dir "$DOTFILES_DIR"
 
@@ -161,6 +178,9 @@ main() {
   # Dotfiles
   # -------------------------------------------------
   stow_modules
+
+  # Wait on brew bundle installs
+  install_npm_gloabls
 
   log "Rebuilding bat themes cache"
   bat cache --build
