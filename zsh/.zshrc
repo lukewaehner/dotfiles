@@ -35,6 +35,12 @@ compinit -C
 export MANPAGER="nvim +Man!"
 
 # -------------------------------------------------------------
+# Important Version Managers
+# -------------------------------------------------------------
+
+eval "$(rbenv init - zsh)"
+
+# -------------------------------------------------------------
 # VM Functions 
 # -------------------------------------------------------------
 startvm() {
@@ -180,6 +186,7 @@ unset -f _is_dark_mode
 [[ -d ~/.cache/zsh ]] || mkdir -p ~/.cache/zsh
 
 # Caching function
+# NOTE: Do not cache things with important changes (rbenv, pyenv, etc)
 zcache() {
   local cache_file="$HOME/.cache/zsh/$1.zsh"
 
