@@ -35,10 +35,18 @@ compinit -C
 export MANPAGER="nvim +Man!"
 
 # -------------------------------------------------------------
-# Important Version Managers
+# Lazy-loaded Version Managers
 # -------------------------------------------------------------
 
-eval "$(rbenv init - zsh)"
+# Defer rbenv init until first use of ruby/gem/bundle/rails/rbenv (~83ms saved per shell)
+_lazy_rbenv() {
+  unfunction ruby gem bundle rails rake rbenv 2>/dev/null
+  eval "$(rbenv init - zsh)"
+  "$0" "$@"
+}
+for cmd in ruby gem bundle rails rake rbenv; do
+  function $cmd { _lazy_rbenv "$@" }
+done
 
 # -------------------------------------------------------------
 # VM Functions 
@@ -242,8 +250,23 @@ export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:
 # --------------------------------------------------------------
 
 # Type 'fp' to fuzzy find a file and preview its contents with 'bat'
+
 fp() {
   fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'
+}
+
+# Cd to a directory using fzf
+cdd() {
+  local dir
+  dir=$(fd -t d | fzf) || return
+  cd "$dir"
+}
+
+# Cd to a file using fzf
+cdf() {
+  local file
+  file=$(find . -type f 2>/dev/null | fzf) || return
+  cd "$(dirname "$file")"
 }
 
 # -------------------------------------------------------------
