@@ -13,7 +13,6 @@
 # The agent passes "dark" or "light" as $1.
 
 TMUX_THEMES="$HOME/.config/tmux/themes"
-NVIM_LISTEN_GLOB="/tmp/nvim*.sock"  # LazyVim default socket pattern
 
 # ── Resolve mode ───────────────────────────────────────────────────────────────
 MODE="${1:-auto}"
@@ -47,29 +46,10 @@ apply_tmux() {
   fi
 }
 
-# ── Apply Neovim theme ─────────────────────────────────────────────────────────
-# Signals all running nvim instances via their unix sockets
-apply_nvim() {
-  local bg="$1"          # "dark" or "light"
-  local style="$2"       # "night" or "day"
-  for sock in $NVIM_LISTEN_GLOB; do
-    [[ -S "$sock" ]] || continue
-    nvim --server "$sock" --remote-send \
-      "<Cmd>set background=${bg}<CR><Cmd>colorscheme tokyonight-${style}<CR>" \
-      2>/dev/null
-  done
-}
-
 # ── Dispatch ───────────────────────────────────────────────────────────────────
 case "$MODE" in
-  dark)
-    apply_tmux "night"
-    apply_nvim "dark" "night"
-    ;;
-  light)
-    apply_tmux "day"
-    apply_nvim "light" "day"
-    ;;
+  dark)  apply_tmux "night" ;;
+  light) apply_tmux "day" ;;
   *)
     echo "Usage: theme-switch.sh [dark|light|auto]" >&2
     exit 1
