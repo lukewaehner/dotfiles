@@ -16,3 +16,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.elan/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+
+export PATH="/Users/lukewaehner/.local/share/solana/install/active_release/bin:$PATH"

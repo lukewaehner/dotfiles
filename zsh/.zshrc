@@ -201,7 +201,7 @@ zcache() {
   if [[ ! -f "$cache_file" ]]; then
     case $1 in
       zoxide)   zoxide init zsh > "$cache_file" ;;
-      atuin)    atuin init zsh > "$cache_file" ;;
+      atuin)    atuin init zsh --disable-up-arrow > "$cache_file" ;;
       starship) starship init zsh > "$cache_file" ;;
       *) return ;;
     esac
@@ -285,3 +285,21 @@ zcache "starship"
 
 # -------------------------------------------------------------
 
+
+# bun completions
+[ -s "/Users/lukewaehner/.bun/_bun" ] && source "/Users/lukewaehner/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias t='tmux new-session -A -s main'
+
+# ── Theme init ────────────────────────────────────────────────────────────────
+# Applies correct light/dark tmux+nvim theme to new terminal windows.
+# Live switching is handled by the dark-notify launchd agent (macOS).
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  "$HOME/.local/bin/theme-switch.sh" auto
+else
+  "$HOME/.local/bin/theme-switch.sh" light
+fi
