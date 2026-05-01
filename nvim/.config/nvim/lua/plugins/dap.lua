@@ -1,7 +1,22 @@
 -- lua/plugins/dap.lua
 return {
-  -- Core DAP (no setup() call)
-  { "mfussenegger/nvim-dap" },
+  -- Core DAP with keymaps
+  {
+    "mfussenegger/nvim-dap",
+    keys = {
+      { "<leader>dc", function() require("dap").continue() end,          desc = "DAP Continue" },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "DAP Toggle Breakpoint" },
+      { "<leader>dB", function()
+          require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end, desc = "DAP Conditional Breakpoint" },
+      { "<leader>do", function() require("dap").step_over() end,         desc = "DAP Step Over" },
+      { "<leader>di", function() require("dap").step_into() end,         desc = "DAP Step Into" },
+      { "<leader>dO", function() require("dap").step_out() end,          desc = "DAP Step Out" },
+      { "<leader>dr", function() require("dap").repl.open() end,         desc = "DAP REPL" },
+      { "<leader>dl", function() require("dap").run_last() end,          desc = "DAP Run Last" },
+      { "<leader>du", function() require("dapui").toggle() end,          desc = "DAP Toggle UI" },
+    },
+  },
 
   -- Auto-install adapters (codelldb for C/C++)
   {
@@ -10,7 +25,7 @@ return {
     opts = {
       ensure_installed = { "codelldb" },
       automatic_installation = true,
-      handlers = {}, -- keep default handlers
+      handlers = {},
     },
   },
 
@@ -23,7 +38,7 @@ return {
     },
     config = function()
       local dap, dapui = require("dap"), require("dapui")
-      dapui.setup() -- valid
+      dapui.setup()
       dap.listeners.after.event_initialized["dapui"] = function()
         dapui.open()
       end
@@ -45,7 +60,6 @@ return {
     ft = { "c", "cpp" },
     config = function()
       local dap = require("dap")
-      -- mason-nvim-dap wires the adapter; define configurations:
       dap.configurations.c = {
         {
           name = "Launch",
