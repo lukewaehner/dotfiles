@@ -56,6 +56,67 @@ if [[ "$DEFAULT_THEME" != "night" && "$DEFAULT_THEME" != "day" ]]; then
   exit 1
 fi
 
+# ── 0. Install system packages ─────────────────────────────────────────────────
+# Debian/Ubuntu ships fd as fdfind and bat as batcat — check for either binary.
+pkg_installed() {
+  case "$1" in
+    ripgrep) command -v rg      &>/dev/null ;;
+    fd-find) command -v fdfind  &>/dev/null || command -v fd  &>/dev/null ;;
+    bat)     command -v batcat  &>/dev/null || command -v bat &>/dev/null ;;
+    *)       command -v "$1"    &>/dev/null ;;
+  esac
+}
+
+PACKAGES=(tmux ncdu htop curl git unzip ripgrep fd-find fzf bat tree)
+MISSING=()
+for pkg in "${PACKAGES[@]}"; do
+  pkg_installed "$pkg" || MISSING+=("$pkg")
+done
+
+if [[ ${#MISSING[@]} -gt 0 ]]; then
+  if ! command -v apt-get &>/dev/null; then
+    echo "Error: apt-get not found. Install these packages manually:" >&2
+    printf "  %s\n" "${MISSING[@]}" >&2
+    exit 1
+  fi
+  info "Installing: ${MISSING[*]}"
+  sudo apt-get update -qq
+  sudo apt-get install -y "${MISSING[@]}"
+fi
+ok "System packages ready"
+
+# Add ~/.local/bin shims so fd and bat work by their canonical names.
+mkdir -p "$HOME/.local/bin"
+if command -v fdfind &>/dev/null && ! command -v fd &>/dev/null; then
+  ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
+  ok "fd → fdfind shim added to ~/.local/bin"
+fi
+if command -v batcat &>/dev/null && ! command -v bat &>/dev/null; then
+  ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+  ok "bat → batcat shim added to ~/.local/bin"
+fi
+
+# ── expand_theme <src> <dst> ───────────────────────────────────────────────────
+# Theme files use VAR="value" / ${VAR} syntax added in tmux 3.4.
+# This reads those assignments and inlines the values via sed, so the installed
+# file works on any tmux version without requiring 3.4+.
+expand_theme() {
+  local src="$1" dst="$2"
+  local sed_args=() line key val
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^([A-Z_]+)=\"([^\"]*)\"$ ]]; then
+      key="${BASH_REMATCH[1]}"
+      val="${BASH_REMATCH[2]}"
+      sed_args+=(-e "s/\${${key}}/${val}/g")
+    fi
+  done < "$src"
+  if [[ ${#sed_args[@]} -gt 0 ]]; then
+    sed "${sed_args[@]}" "$src" > "$dst"
+  else
+    cp "$src" "$dst"
+  fi
+}
+
 # ── 1. tmux config files ───────────────────────────────────────────────────────
 # tmux reads its config from ~/.config/tmux/tmux.conf.
 # The themes directory holds the color definitions; current.conf is the symlink
@@ -63,9 +124,14 @@ fi
 info "Installing tmux config..."
 mkdir -p "$HOME/.config/tmux/themes"
 
-cp "$DOTFILES_DIR/tmux/.config/tmux/tmux.conf"         "$HOME/.config/tmux/tmux.conf"
-cp "$DOTFILES_DIR/tmux/.config/tmux/themes/night.conf" "$HOME/.config/tmux/themes/night.conf"
-cp "$DOTFILES_DIR/tmux/.config/tmux/themes/day.conf"   "$HOME/.config/tmux/themes/day.conf"
+if [[ -f "$HOME/.config/tmux/tmux.conf" ]]; then
+  cp "$HOME/.config/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf.bak"
+  warn "Existing tmux.conf backed up → ~/.config/tmux/tmux.conf.bak"
+fi
+
+cp           "$DOTFILES_DIR/tmux/.config/tmux/tmux.conf"         "$HOME/.config/tmux/tmux.conf"
+expand_theme "$DOTFILES_DIR/tmux/.config/tmux/themes/night.conf" "$HOME/.config/tmux/themes/night.conf"
+expand_theme "$DOTFILES_DIR/tmux/.config/tmux/themes/day.conf"   "$HOME/.config/tmux/themes/day.conf"
 ok "tmux config → ~/.config/tmux/"
 
 # ── 2. current.conf symlink ────────────────────────────────────────────────────
@@ -89,8 +155,16 @@ ok "theme-switch → ~/.local/bin/theme-switch"
 
 # ── 4. Reload tmux if running ─────────────────────────────────────────────────
 # Applies the new config to any open tmux sessions immediately.
-if tmux list-sessions &>/dev/null 2>&1; then
+if tmux list-sessions &>/dev/null; then
   tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null && ok "tmux config reloaded" || warn "tmux reload failed (non-fatal)"
+fi
+
+# ── 5. PATH check ──────────────────────────────────────────────────────────────
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  echo ""
+  warn "~/.local/bin is not in your PATH — theme-switch won't be found by name."
+  warn "Add this to your ~/.bashrc or ~/.zshrc:"
+  warn "  export PATH=\"\$HOME/.local/bin:\$PATH\""
 fi
 
 echo ""
