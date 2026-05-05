@@ -249,6 +249,13 @@ export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:
 # Functions
 # --------------------------------------------------------------
 
+# Nuke all zsh caches (zcache tools + completion + compiled rc)
+kzshcache() {
+  rm -f ~/.cache/zsh/*.zsh ~/.zshrc.zwc
+  rm -rf ~/.zcompcache
+  echo "zsh caches cleared — re-source to rebuild"
+}
+
 # Type 'fp' to fuzzy find a file and preview its contents with 'bat'
 
 fp() {
