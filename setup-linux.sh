@@ -191,6 +191,30 @@ else
   ok "lazygit already installed"
 fi
 
+# ── 3b. Node.js & Claude Code ─────────────────────────────────────────────────
+# Node via NodeSource; npm globals go to ~/.npm-global to avoid sudo.
+if ! command -v node &>/dev/null; then
+  info "Installing Node.js 22 via NodeSource..."
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+  ok "Node.js installed"
+else
+  ok "Node.js already installed ($(node --version))"
+fi
+
+if [[ ! -d "$HOME/.npm-global" ]]; then
+  mkdir -p "$HOME/.npm-global"
+  npm config set prefix "$HOME/.npm-global"
+fi
+
+if ! command -v claude &>/dev/null && [[ ! -x "$HOME/.npm-global/bin/claude" ]]; then
+  info "Installing Claude Code..."
+  npm install -g @anthropic-ai/claude-code
+  ok "Claude Code installed"
+else
+  ok "Claude Code already installed"
+fi
+
 # ── 4. Stow dotfile modules ────────────────────────────────────────────────────
 # tmux is handled manually below (needs expand_theme). ghostty/macos are macOS-only.
 info "Stowing dotfile modules..."
@@ -214,7 +238,7 @@ if ! grep -qF "# ── dotfiles ──" "$BASHRC" 2>/dev/null; then
 
 # ── dotfiles ──────────────────────────────────────────────────────────────────
 # PATH
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.npm-global/bin:$PATH"
 [[ -d "$HOME/.pyenv" ]] && export PATH="$HOME/.pyenv/shims:$HOME/.pyenv/bin:$PATH"
 [[ -d "$HOME/.rbenv" ]] && export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
 
