@@ -31,8 +31,10 @@ compinit -C
 
 # -------------------------------------------------------------
 
-# Prefer nvim for man
+# Prefer nvim for tools
 export MANPAGER="nvim +Man!"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 # -------------------------------------------------------------
 # Lazy-loaded Version Managers
@@ -51,6 +53,8 @@ done
 # -------------------------------------------------------------
 # VM Functions 
 # -------------------------------------------------------------
+
+# Start linux dev vm
 startvm() {
     VM_IP="192.168.64.3"
     VM_NAME="Linux"
@@ -71,15 +75,15 @@ startvm() {
     if ! ping -c 1 -W 1 $VM_IP > /dev/null 2>&1; then
         echo "VM is not running. Starting VM..."
         
-        # Use AppleScript to start the VM in UTM
-        osascript <<EOF
-tell application "UTM"
-    activate
-    delay 1
-    tell virtual machine "$VM_NAME"
-        start
-    end tell
-end tell
+    # Use AppleScript to start the VM in UTM
+    osascript <<EOF
+          tell application "UTM"
+              activate
+              delay 1
+              tell virtual machine "$VM_NAME"
+                  start
+              end tell
+          end tell
 EOF
         
         echo "Waiting for VM to boot (this may take 30-60 seconds)..."
@@ -195,7 +199,7 @@ unset -f _is_dark_mode
 
 # Caching function
 # NOTE: Do not cache things with important changes (rbenv, pyenv, etc)
-zcache() {
+_zcache() {
   local cache_file="$HOME/.cache/zsh/$1.zsh"
 
   if [[ ! -f "$cache_file" ]]; then
@@ -210,46 +214,53 @@ zcache() {
   [[ -f "$cache_file" ]] && source "$cache_file"
 }
 
-zcache "zoxide"
-zcache "atuin"
+_zcache "zoxide"
+_zcache "atuin"
 
 # -------------------------------------------------------------
 # Aliases
 # -------------------------------------------------------------
 
 # Re-map cd to z
-alias cd="z"
+alias cd="z" # Remap cd to zoxide
 
 # Re-map lg to lazygit
-alias lg="lazygit"
+alias lg="lazygit" # LazyGit
 
 # Eza
-alias ls="eza --icons --group-directories-first"
-alias ll="eza -lagh --icons --git --group-directories-first"
-alias la="eza -a --icons --group-directories-first"
-alias lt="eza --tree --level=2 --icons"
-alias l1="eza -1 --icons"
+alias ls="eza --icons --group-directories-first" # Default ls with icons
+alias ll="eza -lagh --icons --git --group-directories-first" # Long listing with git status
+alias la="eza -a --icons --group-directories-first" # All files, including hidden
+alias lt="eza --tree --level=2 --icons" # Tree view (2 levels)
+alias l1="eza -1 --icons" # Single column
 
 # git
-alias g="git"
-alias gs="git status"
-alias ga="git add"
-alias gc="git commit"
-alias gcm="git commit -m"
-alias gp="git push"
-alias gpl="git pull"
-alias gl="git log --oneline --graph --decorate"
-alias gd="git diff"
-alias gco="git checkout"
-alias gb="git branch"
-alias gsw="git switch"
-alias gst="git stash"
+alias g="git" # Git
+alias gs="git status" # Git status
+alias ga="git add" # Git add
+alias gc="git commit" # Git commit
+alias gcm="git commit -m" # Git commit with message
+alias gp="git push" # Git push
+alias gpl="git pull" # Git pull
+alias gl="git log --oneline --graph --decorate" # Git log oneline
+alias gd="git diff" # Git diff
+alias gco="git checkout" # Git checkout
+alias gb="git branch" # Git brnach
+alias gsw="git switch" # Git switch
+alias gst="git stash" # Git stash
 
-# Lazy fuck usage
-alias fuck='eval $(thefuck $(fc -ln -1))'
+# tmux
+alias t='tmux new-session -A -s main' # Attch to main session, or create if it doesn't exist
+alias tls="tmux ls" # List active sessions
+alias tm="tmux new-session -s" # Create a new session with a specific name (e.g., tm dotfiles)
+alias ta="tmux attach-session -t" # Attach to an existing session by name (e.g., ta dotfiles)
+alias tk="tmux kill-session -t" # Kill a specific session (e.g., tk main)
+alias tka="tmux kill-server" # Nuke all tmux sessions entirely
 
-# Sort Downloads custom command
-alias sort-downloads="~/Code/Python/sort-downloads/main.py"
+
+alias fuck='eval "$(thefuck --alias)" && fuck' # Lazy thefuck init
+
+alias sort-downloads="~/Code/Python/sort-downloads/main.py" # Sort Downloads
 
 # -------------------------------------------------------------
 # Exports
@@ -266,23 +277,22 @@ export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:
 # Functions
 # --------------------------------------------------------------
 
-# Nuke all zsh caches (zcache tools + completion + compiled rc)
+# Nuke all zsh caches 
 kzshcache() {
   rm -f ~/.cache/zsh/*.zsh ~/.zshrc.zwc
   rm -rf ~/.zcompcache
   echo "zsh caches cleared — re-source to rebuild"
 }
 
-# Type 'fp' to fuzzy find a file and preview its contents with 'bat'
-
+# Fuzzy find a file and preview its contents
 fp() {
   fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'
 }
 
-# Cd to a directory using fzf
+# Cd to a directory while previewing its contents
 cdd() {
   local dir
-  dir=$(fd -t d | fzf) || return
+  dir=$(fd -t d | fzf --preview 'eza --tree --level=1 --icons --color=always {}') || return
   cd "$dir"
 }
 
@@ -293,13 +303,97 @@ cdf() {
   cd "$(dirname "$file")"
 }
 
+tools() {
+  printf "\n\033[1;35mCustom Zsh Tools & Aliases\033[0m\n\n"
+  
+  awk '
+    # 1. Match standalone comments
+    /^[ \t]*#[^-]/ {
+      comment = $0
+      sub(/^[ \t]*#[ \t]*/, "", comment)
+      if (comment == "") next
+      last_comment = comment
+      next
+    }
+
+    # 2. Ignore dashed divider lines
+    /^[ \t]*#[-]+/ { next }
+
+    # 3. Match aliases
+    /^[ \t]*alias[ \t]+[^=]+=/ {
+      raw_line = $0
+      
+      # Extract inline comment (if it exists) and remove it from raw_line
+      inline_comment = ""
+      if (match(raw_line, /#[ \t]*.*/)) {
+        inline_comment = substr(raw_line, RSTART+1)
+        sub(/^[ \t]*/, "", inline_comment)
+        raw_line = substr(raw_line, 1, RSTART-1)
+      }
+
+      # Extract alias name
+      match(raw_line, /alias[ \t]+[^=]+/)
+      name = substr(raw_line, RSTART+6, RLENGTH-6)
+
+      # Extract the actual command (everything after =)
+      cmd = substr(raw_line, RSTART+RLENGTH+1)
+      
+      # Strip leading/trailing spaces and quotes from the command
+      # \047 is the octal code for a single quote, preventing bash parsing errors
+      sub(/^[ \t]*[\047"]?/, "", cmd)
+      sub(/[\047"]?[ \t]*$/, "", cmd)
+
+      # Determine description: Inline > Block Comment > Raw Command
+      if (inline_comment != "") {
+        desc = inline_comment
+      } else if (last_comment != "") {
+        desc = last_comment
+      } else {
+        # Use the raw command with a subtle arrow prefix
+        desc = "\033[90m→ " cmd "\033[0m"
+      }
+
+      printf "  \033[36m%-15s\033[0m %s\n", name, desc
+      
+      last_comment = ""
+      next
+    }
+
+    # 4. Match functions
+    /^[ \t]*[A-Za-z0-9_-]+[ \t]*\(\)[ \t]*\{?/ {
+      match($0, /^[ \t]*[A-Za-z0-9_-]+/)
+      name = substr($0, RSTART, RLENGTH)
+      sub(/^[ \t]*/, "", name)
+
+      # IGNORE local functions starting with an underscore
+      if (name ~ /^_/) {
+        last_comment = ""
+        next
+      }
+
+      if (last_comment != "") {
+        printf "  \033[32m%-15s\033[0m %s\n", name, last_comment
+      }
+      last_comment = ""
+      next
+    }
+
+    # 5. Ignore blank lines
+    /^[ \t]*$/ { next }
+
+    # 6. Any other code clears the comment
+    { last_comment = "" }
+  ' ~/.zshrc
+  
+  echo ""
+}
 # -------------------------------------------------------------
 # Prompt, load at end
 # --------------------------------------------------------------
 
 # Auto-detect system theme for Starship and set palette
 export STARSHIP_PALETTE="catppuccin_mocha"
-zcache "starship"
+_zcache "starship"
 
 # -------------------------------------------------------------
 
@@ -313,11 +407,7 @@ zcache "starship"
 # bun completions
 [ -s "/Users/lukewaehner/.bun/_bun" ] && source "/Users/lukewaehner/.bun/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
-alias t='tmux new-session -A -s main'
 
 # ── Theme init ────────────────────────────────────────────────────────────────
 # Applies correct light/dark tmux+nvim theme to new terminal windows.

@@ -17,4 +17,7 @@ export PATH="$HOME/.elan/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
-export PATH="/Users/lukewaehner/.local/share/solana/install/active_release/bin:$PATH"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
