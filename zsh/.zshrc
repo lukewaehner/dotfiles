@@ -225,8 +225,25 @@ alias lg="lazygit"
 
 # Eza
 alias ls="eza --icons --group-directories-first"
-alias ll="eza -lgh --icons --git --group-directories-first"
+alias ll="eza -lagh --icons --git --group-directories-first"
+alias la="eza -a --icons --group-directories-first"
 alias lt="eza --tree --level=2 --icons"
+alias l1="eza -1 --icons"
+
+# git
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gp="git push"
+alias gpl="git pull"
+alias gl="git log --oneline --graph --decorate"
+alias gd="git diff"
+alias gco="git checkout"
+alias gb="git branch"
+alias gsw="git switch"
+alias gst="git stash"
 
 # Lazy fuck usage
 alias fuck='eval $(thefuck $(fc -ln -1))'
