@@ -2,7 +2,7 @@ command_timeout = 3600
 
 "$schema" = 'https://starship.rs/config-schema.json'
 
-add_newline = false 
+add_newline = false
 
 # lukewaehner in directory on main * >
 format = "$username in $directory$git_branch $git_status$character"
@@ -148,16 +148,16 @@ style = "fg:mauve"
 
 # Using standard but clear symbols
 conflicted = "="
-ahead      = "⇡"
-behind     = "⇣"
-diverged   = "⇕"
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
 up_to_date = ""
-untracked  = "?"
-stashed    = "$"
-modified   = "!"
-staged     = "+"
-renamed    = "»"
-deleted    = "✘"
+untracked = "?"
+stashed = "\\$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
 
 [nodejs]
 symbol = ""
@@ -212,7 +212,7 @@ style = "bg:peach"
 format = '[[  $time ](fg:mantle bg:foam)]($style)'
 
 [line_break]
-disabled = true 
+disabled = true
 
 [character]
 disabled = false
