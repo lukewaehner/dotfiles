@@ -96,6 +96,24 @@ stow_modules() {
   stow -t "$STOW_TARGET" --restow "${modules[@]}"
 }
 
+# lazygit on macOS reads from ~/Library/Application Support/lazygit/, not XDG.
+# Bridge it to the stowed config so the same dotfile works on both platforms.
+link_lazygit_macos_config() {
+  local mac_dir="$HOME/Library/Application Support/lazygit"
+  local mac_cfg="$mac_dir/config.yml"
+  local src_cfg="$HOME/.config/lazygit/config.yml"
+
+  [[ -f "$src_cfg" ]] || return 0
+  mkdir -p "$mac_dir"
+
+  # Replace any existing file/symlink with a fresh symlink to the stowed config.
+  if [[ -L "$mac_cfg" || -e "$mac_cfg" ]]; then
+    rm -f "$mac_cfg"
+  fi
+  ln -s "$src_cfg" "$mac_cfg"
+  log "Linked lazygit config: $mac_cfg → $src_cfg"
+}
+
 install_npm_gloabls() {
   if ! command_exists npm; then
     warn "npm not found, skipping npm globals"
@@ -178,6 +196,7 @@ main() {
   # Dotfiles
   # -------------------------------------------------
   stow_modules
+  link_lazygit_macos_config
 
   # Wait on brew bundle installs
   install_npm_gloabls

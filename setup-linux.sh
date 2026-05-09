@@ -50,7 +50,7 @@ if [[ "${1:-}" == "--uninstall" ]]; then
 
   if command -v stow &>/dev/null; then
     info "Removing stowed dotfile symlinks..."
-    stow --dir="$DOTFILES_DIR" -t "$HOME" --delete atuin bat eza git nvim starship 2>/dev/null || true
+    stow --dir="$DOTFILES_DIR" -t "$HOME" --delete atuin bat eza git lazygit nvim starship 2>/dev/null || true
     ok "Stow symlinks removed"
   fi
 
@@ -219,7 +219,7 @@ fi
 # tmux is handled manually below (needs expand_theme). ghostty/macos are macOS-only.
 info "Stowing dotfile modules..."
 mkdir -p "$HOME/.config"
-stow --dir="$DOTFILES_DIR" -t "$HOME" --restow atuin bat eza git nvim starship \
+stow --dir="$DOTFILES_DIR" -t "$HOME" --restow atuin bat eza git lazygit nvim starship \
   || warn "Some stow modules had conflicts — run 'stow --adopt' manually to resolve"
 ok "Dotfiles stowed → $HOME"
 

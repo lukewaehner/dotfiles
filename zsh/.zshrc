@@ -257,6 +257,7 @@ alias ta="tmux attach-session -t" # Attach to an existing session by name (e.g.,
 alias tk="tmux kill-session -t" # Kill a specific session (e.g., tk main)
 alias tka="tmux kill-server" # Nuke all tmux sessions entirely
 
+alias claude-school="CLAUDE_CONFIG_DIR=~/.claude-school claude" # Claude code with school account
 
 alias fuck='eval "$(thefuck --alias)" && fuck' # Lazy thefuck init
 
