@@ -29,6 +29,9 @@ compinit -C
 [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+# Ctrl-O clears the screen (Ctrl-L is taken by vim-tmux-navigator)
+bindkey '^O' clear-screen
+
 # -------------------------------------------------------------
 
 # Prefer nvim for tools
