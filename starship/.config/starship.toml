@@ -9,9 +9,10 @@ format = "$username in $directory$git_branch $git_status$character"
 
 right_format = ""
 
-# Palette is set via STARSHIP_PALETTE environment variable in .zshrc
-# Defaults to catppuccin_mocha (dark) if not set
-# palette = "default"
+# Palette is set via STARSHIP_PALETTE environment variable in .zshrc.
+# Explicit default below so palette colors (peach, lavender, mauve, etc.) resolve
+# even when STARSHIP_PALETTE is unset. The env var still overrides this.
+palette = "catppuccin_mocha"
 
 # Light mode palette (Catppuccin Latte)
 [palettes.catppuccin_latte]
@@ -41,6 +42,8 @@ surface0 = "#ccd0da"
 base = "#eff1f5"
 mantle = "#e6e9ef"
 crust = "#dce0e8"
+# Custom slots
+branch = "#40a02b"   # latte's forest green is fine for light mode
 
 # Dark mode palette (Catppuccin Mocha)
 [palettes.catppuccin_mocha]
@@ -70,6 +73,8 @@ surface0 = "#313244"
 base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
+# Custom slots
+branch = "#82c067"   # softer green for [git_branch], less neon than `green`
 
 [os.symbols]
 Windows = "󰍲"
@@ -94,11 +99,11 @@ RedHatEnterprise = "󱄛"
 
 [username]
 show_always = true
-style_user = "fg:blue"
+style_user = "fg:peach bold"
 format = "[$user]($style)"
 
 [directory]
-style = "fg:teal"
+style = "fg:lavender"
 format = "[$path]($style)"
 #truncation_length = 4
 #truncation_symbol = "…/"
@@ -137,7 +142,7 @@ format = "at $output"
 
 [git_branch]
 symbol = ""
-style = "fg:lavender"
+style = "fg:branch"
 format = " on [$symbol $branch]($style)"
 
 [git_status]

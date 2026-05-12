@@ -187,6 +187,8 @@ else
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#333333'
   export BAT_THEME="TokyoNight Day"
 fi
+# Starship palette is swapped by theme-switch.sh (which sed-edits starship.toml)
+# since starship 1.25 ignores the STARSHIP_PALETTE env var.
 
 # Removed function after use
 unset -f _is_dark_mode
@@ -395,8 +397,6 @@ tools() {
 # Prompt, load at end
 # --------------------------------------------------------------
 
-# Auto-detect system theme for Starship and set palette
-export STARSHIP_PALETTE="catppuccin_mocha"
 _zcache "starship"
 
 # -------------------------------------------------------------

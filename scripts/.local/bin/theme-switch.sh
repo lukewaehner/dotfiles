@@ -13,6 +13,8 @@
 # The agent passes "dark" or "light" as $1.
 
 TMUX_THEMES="$HOME/.config/tmux/themes"
+LAZYGIT_THEMES="$HOME/.config/lazygit/themes"
+STARSHIP_CONFIG="$HOME/.config/starship.toml"
 NVIM_LISTEN_GLOB="/tmp/nvim*.sock"  # LazyVim default socket pattern
 
 # ── Resolve mode ───────────────────────────────────────────────────────────────
@@ -47,6 +49,34 @@ apply_tmux() {
   fi
 }
 
+# ── Apply lazygit theme ────────────────────────────────────────────────────────
+# Swaps themes/current.yml symlink (config.yml itself is a symlink to it).
+# lazygit picks the new theme on next launch — no live reload mechanism.
+apply_lazygit() {
+  local theme_file="$LAZYGIT_THEMES/$1.yml"
+  if [[ ! -f "$theme_file" ]]; then
+    echo "theme-switch: missing $theme_file" >&2
+    return 1
+  fi
+  ln -sf "$1.yml" "$LAZYGIT_THEMES/current.yml"
+}
+
+# ── Apply starship palette ─────────────────────────────────────────────────────
+# starship 1.25 ignores STARSHIP_PALETTE env var; only the `palette = "..."` line
+# in the config controls the active palette. So we edit it in place.
+# Next prompt picks it up automatically — no reload needed.
+apply_starship() {
+  local palette="catppuccin_$1"  # mocha or latte
+  [[ -f "$STARSHIP_CONFIG" ]] || return
+  # Edit through the stow symlink: `sed -i` refuses symlinks on macOS, so
+  # render to a temp file and pipe back through the symlink.
+  local tmp
+  tmp=$(mktemp) || return
+  sed "s/^palette = .*/palette = \"$palette\"/" "$STARSHIP_CONFIG" > "$tmp" \
+    && cat "$tmp" > "$STARSHIP_CONFIG"
+  rm -f "$tmp"
+}
+
 # ── Apply Neovim theme ─────────────────────────────────────────────────────────
 # Signals all running nvim instances via their unix sockets
 apply_nvim() {
@@ -64,10 +94,14 @@ apply_nvim() {
 case "$MODE" in
   dark)
     apply_tmux "night"
+    apply_lazygit "night"
+    apply_starship "mocha"
     apply_nvim "dark" "night"
     ;;
   light)
     apply_tmux "day"
+    apply_lazygit "day"
+    apply_starship "latte"
     apply_nvim "light" "day"
     ;;
   *)
