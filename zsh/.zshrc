@@ -1,37 +1,105 @@
-# Check for zshrdc changes and recompile
+# =============================================================
+# .zshrc - zsh config file
+# =============================================================
+#
+# TABLE OF CONTENTS
+#   1.  Bootstrap        - bytecode compile + non-interactive guard
+#   2.  Completion       - compinit, cache, matcher rules
+#   3.  Plugins          - zsh-autosuggestions (syntax-highlighting)
+#   4.  Keybindings      - emacs keymap, custom binds
+#   5.  Environment      - EDITOR / VISUAL / MANPAGER
+#   6.  Lazy loaders     - defer rbenv until first use
+#   7.  VM functions     - startvm / stopvm / vmstatus
+#   8.  Theme            - dark/light detection, highlight styles
+#   9.  Cached tool init - _zcache helper, zoxide, atuin
+#   10. Aliases          - ls, git, tmux, misc.
+#   11. Exports          - FZF defaults
+#   12. Functions        - kzshcache, fp, cdd, cdf, tools
+#   13. Prompt           - starship (loaded late)
+#   14. Late hooks       - syntax-highlighting, bun, theme init
+#
+# HOW TO UPDATE
+#
+#   Add an alias        Put it under Section 10. An inline `# comment` becomes
+#                       the description shown by `tools`.
+#                         alias gco="git checkout"  # Git checkout
+#
+#   Add a function      Put it under Section 12 (or 7 for VM helpers). The
+#                       comment ON THE LINE ABOVE the function name
+#                       becomes the `tools` description. Functions whose
+#                       names start with `_` are treated as private and
+#                       hidden from `tools`.
+#                         # Fuzzy-find a file and cd to its directory
+#                         cdf() { ... }
+#
+#   Add an env var      Put it under Section 5 (or 11 if FZF-related).
+#                         export FOO="bar"
+#
+#   Add a keybind       Put it under Section 4.
+#                         bindkey '^G' some-widget
+#
+#   After editing       Run `kzshcache && exec zsh` to clear the bytecode
+#                       + completion cache and restart the shell.
+#
+#   See what's here     Run `tools` - prints every alias/function in this
+#                       file with the description parsed from comments.
+# =============================================================
+
+
+# -------------------------------------------------------------
+# 1. Bootstrap
+# -------------------------------------------------------------
+
+# Recompile .zshrc -> .zshrc.zwc whenever the source is newer (faster startup)
 if [[ -s ~/.zshrc && ( ! -s ~/.zshrc.zwc || ~/.zshrc -nt ~/.zshrc.zwc ) ]]; then
   zcompile ~/.zshrc
 fi
 
-# Early exit if non-interactive
+# Skip the rest for non-interactive shells (scripts, scp, etc.)
 [[ -o interactive ]] || return
 
-# Zsh Completion Cache
+
+# -------------------------------------------------------------
+# 2. Completion
+# -------------------------------------------------------------
+
+# Persist completion data to disk so re-init is cheap
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.zcompcache
 mkdir -p ~/.zcompcache
 
-# -------------------------------------------------------------
-# Zsh core init
-# -------------------------------------------------------------
-
-# Completion system (fast, no security re-scan)
-
-# Case-insensitive + smart completion
+# Case-insensitive + smart hyphen/underscore expansion
 zstyle ':completion:*' matcher-list \
   'm:{a-zA-Z}={A-Za-z}' \
   'r:|[._-]=* r:|=*'
 
+# `-C` skips the security re-scan of $fpath (saves boot time)
 autoload -Uz compinit
 compinit -C
 
-# Autosuggestions
+
+# -------------------------------------------------------------
+# 3. Plugins (early - syntax-highlighting loads in Section 14 on purpose)
+# -------------------------------------------------------------
+
 [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
+# -------------------------------------------------------------
+# 4. Keybindings
+# -------------------------------------------------------------
+
+# Force emacs keymap - without this, EDITOR=nvim makes zsh default to vi
+# mode (because "nvim" contains "vi") and breaks Ctrl-A / Ctrl-E / etc
+bindkey -e
 
 # Ctrl-O clears the screen (Ctrl-L is taken by vim-tmux-navigator)
 bindkey '^O' clear-screen
 
+
+# -------------------------------------------------------------
+# 5. Environment
 # -------------------------------------------------------------
 
 # Prefer nvim for tools
@@ -39,11 +107,13 @@ export MANPAGER="nvim +Man!"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+
 # -------------------------------------------------------------
-# Lazy-loaded Version Managers
+# 6. Lazy-loaded version managers
 # -------------------------------------------------------------
 
-# Defer rbenv init until first use of ruby/gem/bundle/rails/rbenv (~83ms saved per shell)
+# Defer rbenv init until the first use of ruby/gem/bundle/rails/rake/rbenv
+# The stub replaces itself with the real comman after running `rbenv init`.
 _lazy_rbenv() {
   unfunction ruby gem bundle rails rake rbenv 2>/dev/null
   eval "$(rbenv init - zsh)"
@@ -53,17 +123,18 @@ for cmd in ruby gem bundle rails rake rbenv; do
   function $cmd { _lazy_rbenv "$@" }
 done
 
+
 # -------------------------------------------------------------
-# VM Functions 
+# 7. VM functions
 # -------------------------------------------------------------
 
 # Start linux dev vm
 startvm() {
     VM_IP="192.168.64.3"
     VM_NAME="Linux"
-    
+
     echo "Checking VM status..."
-    
+
     # Check if UTM is running
     if ! pgrep -x "UTM" > /dev/null; then
         echo "UTM is not running. Starting UTM..."
@@ -73,11 +144,11 @@ startvm() {
     else
         echo "UTM is already running"
     fi
-    
+
     # Check if VM is responding
     if ! ping -c 1 -W 1 $VM_IP > /dev/null 2>&1; then
         echo "VM is not running. Starting VM..."
-        
+
     # Use AppleScript to start the VM in UTM
     osascript <<EOF
           tell application "UTM"
@@ -88,9 +159,9 @@ startvm() {
               end tell
           end tell
 EOF
-        
+
         echo "Waiting for VM to boot (this may take 30-60 seconds)..."
-        
+
         # Wait for VM to be accessible
         counter=0
         while ! ping -c 1 -W 1 $VM_IP > /dev/null 2>&1; do
@@ -104,27 +175,27 @@ EOF
             echo -n "."
         done
         echo ""
-        
+
         # Extra wait for SSH to be ready
         echo "Waiting for SSH service..."
         while ! nc -zv $VM_IP 22 > /dev/null 2>&1; do
             sleep 2
         done
-        
+
         echo "VM is now running."
     else
         echo "VM is already running"
     fi
-    
+
     # Connect via SSH
     echo "Connecting to Ubuntu VM..."
     ssh waehner@$VM_IP
 }
 
-# Companion function to stop VM
+# Shut down the Ubuntu VM over SSH
 stopvm() {
     VM_IP="192.168.64.3"
-    
+
     if ping -c 1 -W 1 $VM_IP > /dev/null 2>&1; then
         echo "Shutting down Ubuntu VM..."
         ssh waehner@$VM_IP "sudo shutdown -h now"
@@ -137,15 +208,15 @@ stopvm() {
 # Check VM status without connecting
 vmstatus() {
     VM_IP="192.168.64.3"
-    
+
     echo "Checking status..."
-    
+
     if pgrep -x "UTM" > /dev/null; then
         echo "UTM: Running"
     else
         echo "UTM: Not running"
     fi
-    
+
     if ping -c 1 -W 1 $VM_IP > /dev/null 2>&1; then
         echo "VM: Running at $VM_IP"
         if nc -zv $VM_IP 22 > /dev/null 2>&1; then
@@ -158,52 +229,47 @@ vmstatus() {
     fi
 }
 
+
+# -------------------------------------------------------------
+# 8. Theme (dark / light mode)
 # -------------------------------------------------------------
 
-# Autosuggestion + syntax colors (more visible in light/dark)
+# Syntax-highlight colors (consumed by zsh-syntax-highlighting in 14)
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[command]='fg=cyan'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=blue'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 
-# -------------------------------------------------------------
-# Dark / Light Mode Settings
-# -------------------------------------------------------------
-
-# NOTE: Dark / Light mode settings are added here
-
-# Single check for darkmode
+# macOS-only dark mode detection
+# non-macOS falls through to the light branch
 _is_dark_mode() {
   [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]
 }
 
 if _is_dark_mode; then
-  # ZSH Autosuggest
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777777'
-  # Bat theme
   export BAT_THEME="TokyoNight Night"
 else
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#333333'
   export BAT_THEME="TokyoNight Day"
 fi
-# Starship palette is swapped by theme-switch.sh (which sed-edits starship.toml)
+
+# Starship palette is swapped by theme-switch.sh (sed-edits starship.toml),
 # since starship 1.25 ignores the STARSHIP_PALETTE env var.
 
-# Removed function after use
 unset -f _is_dark_mode
 
+
 # -------------------------------------------------------------
-# Modern Unix Tools
+# 9. Cached tool init
 # -------------------------------------------------------------
 
-# NOTE: Add other tools here as needed for quick loading
-
-# Create a cache directory
 [[ -d ~/.cache/zsh ]] || mkdir -p ~/.cache/zsh
 
-# Caching function
-# NOTE: Do not cache things with important changes (rbenv, pyenv, etc)
+# Cache `<tool> init zsh` output once and source it on every startup. Don't
+# cache tools whose init output depends on the current shell state (rbenv,
+# pyenv, etc.).
 _zcache() {
   local cache_file="$HOME/.cache/zsh/$1.zsh"
 
@@ -222,8 +288,9 @@ _zcache() {
 _zcache "zoxide"
 _zcache "atuin"
 
+
 # -------------------------------------------------------------
-# Aliases
+# 10. Aliases
 # -------------------------------------------------------------
 
 # Re-map cd to z
@@ -250,44 +317,45 @@ alias gpl="git pull" # Git pull
 alias gl="git log --oneline --graph --decorate" # Git log oneline
 alias gd="git diff" # Git diff
 alias gco="git checkout" # Git checkout
-alias gb="git branch" # Git brnach
+alias gb="git branch" # Git branch
 alias gsw="git switch" # Git switch
 alias gst="git stash" # Git stash
 
 # tmux
-alias t='tmux new-session -A -s main' # Attch to main session, or create if it doesn't exist
+alias t='tmux new-session -A -s main' # Attach to main session, or create if it doesn't exist
 alias tls="tmux ls" # List active sessions
 alias tm="tmux new-session -s" # Create a new session with a specific name (e.g., tm dotfiles)
 alias ta="tmux attach-session -t" # Attach to an existing session by name (e.g., ta dotfiles)
 alias tk="tmux kill-session -t" # Kill a specific session (e.g., tk main)
 alias tka="tmux kill-server" # Nuke all tmux sessions entirely
 
+# misc
 alias claude-school="CLAUDE_CONFIG_DIR=~/.claude-school claude" # Claude code with school account
-
 alias fuck='eval "$(thefuck --alias)" && fuck' # Lazy thefuck init
-
 alias sort-downloads="~/Code/Python/sort-downloads/main.py" # Sort Downloads
 
+
 # -------------------------------------------------------------
-# Exports
+# 11. Exports
 # -------------------------------------------------------------
 
-# Use fd for fzf (ignores node_modules/git)
+# Use fd for fzf (ignores node_modules / .git)
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# fzf palette (prompt/header pointers)
+# fzf palette (prompt / header / pointer colors)
 export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:5,pointer:5,marker:2,header:6'
 
-# -------------------------------------------------------------
-# Functions
-# --------------------------------------------------------------
 
-# Nuke all zsh caches 
+# -------------------------------------------------------------
+# 12. Functions
+# -------------------------------------------------------------
+
+# Nuke all zsh caches (bytecode + completion + tool-init cache)
 kzshcache() {
   rm -f ~/.cache/zsh/*.zsh ~/.zshrc.zwc
   rm -rf ~/.zcompcache
-  echo "zsh caches cleared — re-source to rebuild"
+  echo "zsh caches cleared - re-source to rebuild"
 }
 
 # Fuzzy find a file and preview its contents
@@ -302,16 +370,17 @@ cdd() {
   cd "$dir"
 }
 
-# Cd to a file using fzf
+# Cd to a file's parent directory using fzf
 cdf() {
   local file
   file=$(find . -type f 2>/dev/null | fzf) || return
   cd "$(dirname "$file")"
 }
 
+# List every alias / function in this file with its description
 tools() {
   printf "\n\033[1;35mCustom Zsh Tools & Aliases\033[0m\n\n"
-  
+
   awk '
     # 1. Match standalone comments
     /^[ \t]*#[^-]/ {
@@ -328,7 +397,7 @@ tools() {
     # 3. Match aliases
     /^[ \t]*alias[ \t]+[^=]+=/ {
       raw_line = $0
-      
+
       # Extract inline comment (if it exists) and remove it from raw_line
       inline_comment = ""
       if (match(raw_line, /#[ \t]*.*/)) {
@@ -343,7 +412,7 @@ tools() {
 
       # Extract the actual command (everything after =)
       cmd = substr(raw_line, RSTART+RLENGTH+1)
-      
+
       # Strip leading/trailing spaces and quotes from the command
       # \047 is the octal code for a single quote, preventing bash parsing errors
       sub(/^[ \t]*[\047"]?/, "", cmd)
@@ -360,7 +429,7 @@ tools() {
       }
 
       printf "  \033[36m%-15s\033[0m %s\n", name, desc
-      
+
       last_comment = ""
       next
     }
@@ -390,32 +459,32 @@ tools() {
     # 6. Any other code clears the comment
     { last_comment = "" }
   ' ~/.zshrc
-  
+
   echo ""
 }
+
+
 # -------------------------------------------------------------
-# Prompt, load at end
-# --------------------------------------------------------------
+# 13. Prompt (loaded late)
+# -------------------------------------------------------------
 
 _zcache "starship"
 
+
+# -------------------------------------------------------------
+# 14. Late hooks (must come after everything else)
 # -------------------------------------------------------------
 
-# Syntax highlighting - very end to see full state
+# Syntax highlighting - load last so it sees the final keybindings / aliases
 [[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# -------------------------------------------------------------
-
 
 # bun completions
 [ -s "/Users/lukewaehner/.bun/_bun" ] && source "/Users/lukewaehner/.bun/_bun"
 
-
-
-# ── Theme init ────────────────────────────────────────────────────────────────
-# Applies correct light/dark tmux+nvim theme to new terminal windows.
-# Live switching is handled by the dark-notify launchd agent (macOS).
+# Theme init - applies the correct light/dark tmux+nvim theme to new
+# terminal windows. Live theme switching is handled by the dark-notify
+# launchd agent on macOS.
 if [[ "$OSTYPE" == "darwin"* ]]; then
   "$HOME/.local/bin/theme-switch.sh" auto
 else
