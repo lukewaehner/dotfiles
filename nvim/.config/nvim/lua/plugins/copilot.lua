@@ -5,8 +5,12 @@ return {
       suggestion = {
         enabled = true,
         auto_trigger = true,
+        -- Show copilot ghost text alongside the cmp dropdown so you can
+        -- compare both before deciding.
+        hide_during_completion = false,
         keymap = {
-          accept = "<C-l>",
+          -- Accept is handled by <C-y> in the cmp mapping.
+          accept = false,
           accept_word = "<M-l>",
           next = "<M-]>",
           prev = "<M-[>",
