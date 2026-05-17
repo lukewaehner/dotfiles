@@ -50,7 +50,7 @@ if [[ "${1:-}" == "--uninstall" ]]; then
 
   if command -v stow &>/dev/null; then
     info "Removing stowed dotfile symlinks..."
-    stow --dir="$DOTFILES_DIR" -t "$HOME" --delete atuin bat eza git lazygit nvim starship 2>/dev/null || true
+    stow --dir="$DOTFILES_DIR" -t "$HOME" --delete atuin bat eza git lazygit nvim starship zsh 2>/dev/null || true
     ok "Stow symlinks removed"
   fi
 
@@ -216,10 +216,11 @@ else
 fi
 
 # ── 4. Stow dotfile modules ────────────────────────────────────────────────────
-# tmux is handled manually below (needs expand_theme). ghostty/macos are macOS-only.
+# tmux is handled manually below (needs expand_theme).
+# ghostty/macos/scripts are macOS-only. brew has no dotfile structure.
 info "Stowing dotfile modules..."
 mkdir -p "$HOME/.config"
-stow --dir="$DOTFILES_DIR" -t "$HOME" --restow atuin bat eza git lazygit nvim starship \
+stow --dir="$DOTFILES_DIR" -t "$HOME" --restow atuin bat eza git lazygit nvim starship zsh \
   || warn "Some stow modules had conflicts — run 'stow --adopt' manually to resolve"
 ok "Dotfiles stowed → $HOME"
 

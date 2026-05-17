@@ -75,8 +75,9 @@ stow_modules() {
 
   mkdir -p "$HOME/.config" "$HOME/.local/bin"
 
-  # Stow all top-level directories except known non-modules
-  local excludes_regex='^(brew|\.git|\.github)$'
+  # Stow all top-level directories except known non-modules.
+  # macos: plist file installed separately by install_macos_appearance_watcher().
+  local excludes_regex='^(brew|macos|\.git|\.github|\.claude)$'
   local modules=()
   local d
   for d in */; do
@@ -112,6 +113,25 @@ link_lazygit_macos_config() {
   fi
   ln -s "$src_cfg" "$mac_cfg"
   log "Linked lazygit config: $mac_cfg → $src_cfg"
+}
+
+install_macos_appearance_watcher() {
+  local plist_src="$DOTFILES_DIR/macos/com.user.appearance-watcher.plist"
+  local launch_dir="$HOME/Library/LaunchAgents"
+  local plist_dst="$launch_dir/com.user.appearance-watcher.plist"
+
+  [[ -f "$plist_src" ]] || { warn "appearance-watcher plist not found at $plist_src (skipping)"; return 0; }
+
+  mkdir -p "$launch_dir"
+
+  if [[ -L "$plist_dst" || -e "$plist_dst" ]]; then
+    launchctl unload "$plist_dst" 2>/dev/null || true
+    rm -f "$plist_dst"
+  fi
+
+  ln -s "$plist_src" "$plist_dst"
+  launchctl load "$plist_dst"
+  log "macOS appearance watcher installed: $plist_dst"
 }
 
 install_npm_gloabls() {
@@ -197,6 +217,7 @@ main() {
   # -------------------------------------------------
   stow_modules
   link_lazygit_macos_config
+  install_macos_appearance_watcher
 
   # Wait on brew bundle installs
   install_npm_gloabls
