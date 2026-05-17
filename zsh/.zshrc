@@ -316,6 +316,7 @@ alias gp="git push" # Git push
 alias gpl="git pull" # Git pull
 alias gl="git log --oneline --graph --decorate" # Git log oneline
 alias gd="git diff" # Git diff
+alias gdm="git diff main..HEAD" # Git diff against main
 alias gco="git checkout" # Git checkout
 alias gb="git branch" # Git branch
 alias gsw="git switch" # Git switch
