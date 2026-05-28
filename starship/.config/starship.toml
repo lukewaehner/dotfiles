@@ -12,7 +12,7 @@ right_format = ""
 # Palette is set via STARSHIP_PALETTE environment variable in .zshrc.
 # Explicit default below so palette colors (peach, lavender, mauve, etc.) resolve
 # even when STARSHIP_PALETTE is unset. The env var still overrides this.
-palette = "catppuccin_latte"
+palette = "catppuccin_mocha"
 
 # Light mode palette (Catppuccin Latte)
 [palettes.catppuccin_latte]

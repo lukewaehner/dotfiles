@@ -150,6 +150,20 @@ install_npm_gloabls() {
   npm i -g $(grep -vE '^\s*#' "$NPM_GLOBALS_FILE" | tr '\n' ' ')
 }
 
+install_vim_plugins() {
+  local plug_path="$HOME/.vim/autoload/plug.vim"
+  if [[ ! -f "$plug_path" ]]; then
+    log "Installing vim-plug"
+    curl -fLo "$plug_path" --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+
+  if command_exists vim && [[ -f "$HOME/.vimrc" ]]; then
+    log "Installing vim plugins"
+    vim +PlugInstall +qall </dev/null
+  fi
+}
+
 main() {
   require_dir "$DOTFILES_DIR"
 
@@ -218,6 +232,7 @@ main() {
   stow_modules
   link_lazygit_macos_config
   install_macos_appearance_watcher
+  install_vim_plugins
 
   # Wait on brew bundle installs
   install_npm_gloabls

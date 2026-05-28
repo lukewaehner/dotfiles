@@ -1,0 +1,42 @@
+# Re-map cd to z
+alias cd="z" # Remap cd to zoxide
+
+# Re-map lg to lazygit
+alias lg="lazygit" # LazyGit
+
+# Eza
+alias ls="eza --icons --group-directories-first" # Default ls with icons
+alias ll="eza -lagh --icons --git --group-directories-first" # Long listing with git status
+alias la="eza -a --icons --group-directories-first" # All files, including hidden
+alias lt="eza --tree --level=2 --icons" # Tree view (2 levels)
+alias l1="eza -1 --icons" # Single column
+
+# git
+alias g="git" # Git
+alias gs="git status" # Git status
+alias ga="git add" # Git add
+alias gc="git commit" # Git commit
+alias gcm="git commit -m" # Git commit with message
+alias gp="git push" # Git push
+alias gpl="git pull" # Git pull
+alias gl="git log --oneline --graph --decorate" # Git log oneline
+alias gd="git diff" # Git diff
+alias gdm="git diff origin/main..HEAD" # Git diff unpushed commits vs origin/main
+alias gdml="git diff main..HEAD" # Git diff unpushed commits vs local main
+alias gco="git checkout" # Git checkout
+alias gb="git branch" # Git branch
+alias gsw="git switch" # Git switch
+alias gst="git stash" # Git stash
+
+# tmux
+alias t='tmux new-session -A -s main' # Attach to main session, or create if it doesn't exist
+alias tls="tmux ls" # List active sessions
+alias tm="tmux new-session -s" # Create a new session with a specific name (e.g., tm dotfiles)
+alias ta="tmux attach-session -t" # Attach to an existing session by name (e.g., ta dotfiles)
+alias tk="tmux kill-session -t" # Kill a specific session (e.g., tk main)
+alias tka="tmux kill-server" # Nuke all tmux sessions entirely
+
+# misc
+alias claude-school="CLAUDE_CONFIG_DIR=~/.claude-school claude" # Claude code with school account
+alias fuck='eval "$(thefuck --alias)" && fuck' # Lazy thefuck init
+alias sort-downloads="~/Code/Python/sort-downloads/main.py" # Sort Downloads

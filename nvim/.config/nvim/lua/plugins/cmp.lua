@@ -25,18 +25,13 @@ return {
       ["<Tab>"] = cmp.mapping(noop_fallback, { "i", "s" }),
       ["<S-Tab>"] = cmp.mapping(noop_fallback, { "i", "s" }),
 
-      -- Unified accept key: cmp item if menu is open, else copilot ghost text.
+      -- Accept cmp item when menu is open; copilot owns <C-y> when it is not.
       ["<C-y>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.confirm({ select = true })
-          return
+        else
+          fallback()
         end
-        local ok, suggestion = pcall(require, "copilot.suggestion")
-        if ok and suggestion.is_visible() then
-          suggestion.accept()
-          return
-        end
-        fallback()
       end, { "i", "s" }),
     })
     return opts

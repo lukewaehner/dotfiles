@@ -46,7 +46,9 @@ brew "bfg"
 # Editors / formatters / dev UX
 # ----------------------------
 brew "neovim"
+brew "vim"
 brew "prettierd"
+brew "ruff"
 brew "swiftformat"
 brew "luarocks"
 brew "pipx"
