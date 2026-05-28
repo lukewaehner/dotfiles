@@ -16,6 +16,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'justinmk/vim-sneak'
 Plug 'liuchengxu/vim-which-key'
+Plug 'mhinz/vim-startify'
 
 call plug#end()
 
@@ -101,10 +102,17 @@ let g:ale_echo_msg_format       = '[%linter%] %s'
 let g:sneak#label = 1
 let g:sneak#s_next = 1
 
+" --- startify ---
+let g:startify_custom_header = ['', '   WAEHNER', '']
+let g:startify_lists = [{ 'type': 'files', 'header': ['   recent'] }]
+let g:startify_files_number = 8
+let g:startify_change_to_vcs_root = 1
+let g:startify_enable_special = 0
+
 " --- vim-which-key ---
 let g:which_key_map = {}
-call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<C-u>WhichKey '<Space>'<CR>
+autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
 
 " --- tmux navigator ---
 let g:tmux_navigator_no_mappings = 1
