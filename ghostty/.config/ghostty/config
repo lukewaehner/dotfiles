@@ -1,8 +1,8 @@
 # By default Reload config with shft + cmd + , 
 # config-file = themes/rosepine 
 # background = #000000
-background-opacity = 0.30
-background-blur-radius = 25
+background-opacity = 0.60
+background-blur-radius = 50
 
 font-family = JetBrainsMono NFM Regular
 font-feature = -calt

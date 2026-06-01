@@ -5,7 +5,7 @@ command_timeout = 3600
 add_newline = false
 
 # lukewaehner in directory on main * >
-format = "$username in $directory$git_branch $git_status$character"
+format = "$username [in](fg:subtext1) $directory$git_branch $git_status$character"
 
 right_format = ""
 
@@ -103,7 +103,7 @@ style_user = "fg:peach bold"
 format = "[$user]($style)"
 
 [directory]
-style = "fg:lavender"
+style = "fg:blue"
 format = "[$path]($style)"
 #truncation_length = 4
 #truncation_symbol = "…/"
@@ -143,7 +143,7 @@ format = "at $output"
 [git_branch]
 symbol = ""
 style = "fg:branch"
-format = " on [$symbol $branch]($style)"
+format = " [on](fg:subtext1) [$symbol $branch]($style)"
 
 [git_status]
 disabled = false
