@@ -5,6 +5,7 @@ tap "homebrew/services"
 tap "mongodb/brew"
 tap "supabase/tap"
 tap "hudochenkov/sshpass"
+tap "nikitabobko/tap"
 tap "mczachurski/wallpapper"
 
 # ----------------------------
@@ -76,6 +77,7 @@ brew "pnpm"
 brew "pyenv"
 brew "rbenv"
 brew "rustup-init"
+brew "cargo-nextest"
 brew "go"
 brew "openjdk@17"
 brew "nvm"
@@ -116,6 +118,7 @@ brew "winetricks"
 # ----------------------------
 # Casks (GUI apps)
 # ----------------------------
+cask "nikitabobko/tap/aerospace"
 cask "ghostty"
 cask "wine-stable"
 cask "font-caskaydia-cove-nerd-font"

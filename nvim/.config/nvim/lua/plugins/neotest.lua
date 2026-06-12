@@ -8,6 +8,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-neotest/neotest-python",
       "olimorris/neotest-rspec",
+      "rouge8/neotest-rust",
     },
     config = function()
       require("neotest").setup({
@@ -17,29 +18,30 @@ return {
             runner = "pytest",
           }),
           require("neotest-rspec"),
+          require("neotest-rust"),
         },
       })
     end,
     keys = {
       {
-        "<leader>nt",
+        "<leader>Tt",
         function() require("neotest").run.run() end,
-        desc = "Neotest: Run nearest test",
+        desc = "Run nearest test",
       },
       {
-        "<leader>nf",
+        "<leader>Tf",
         function() require("neotest").run.run(vim.fn.expand("%")) end,
-        desc = "Neotest: Run file",
+        desc = "Run file",
       },
       {
-        "<leader>ns",
+        "<leader>Ts",
         function() require("neotest").summary.toggle() end,
-        desc = "Neotest: Toggle summary",
+        desc = "Toggle summary",
       },
       {
-        "<leader>no",
+        "<leader>To",
         function() require("neotest").output.open({ enter = true }) end,
-        desc = "Neotest: Show output",
+        desc = "Show output",
       },
     },
   },

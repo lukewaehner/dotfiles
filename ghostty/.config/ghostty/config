@@ -1,8 +1,8 @@
 # By default Reload config with shft + cmd + , 
 # config-file = themes/rosepine 
 # background = #000000
-background-opacity = 0.60
-background-blur-radius = 50
+background-opacity = 0.10
+background-blur-radius = 60
 
 font-family = JetBrainsMono NFM Regular
 font-feature = -calt
@@ -10,10 +10,6 @@ font-size = 18
 cursor-style = block
 cursor-style-blink = false
 cursor-invert-fg-bg = true
-
-#  window on launch
-window-width = 229
-window-height = 55
 
 # Titlebar & Window edits
 macos-titlebar-style = tabs 
