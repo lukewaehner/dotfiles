@@ -1,7 +1,9 @@
 return {
   {
     "nvim-pack/nvim-spectre",
-    opts = {},
+    opts = {
+      open_cmd = "50vnew",
+    },
     keys = {
       {
         "<leader>sf",

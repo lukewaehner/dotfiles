@@ -107,6 +107,10 @@ export MANPAGER="nvim +Man!"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Tuxedo config
+export TODO_DIR="$HOME/Documents/todo"
+export TODO_FILE="$TODO_DIR/todo.txt"
+export DONE_FILE="$TODO_DIR/done.txt"
 
 # -------------------------------------------------------------
 # 6. Lazy-loaded version managers
