@@ -2,6 +2,9 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- Spell checking: <leader>z autocorrect, <leader>zw interactive walk, :SpellWalk
+require("config.spell")
+
 -- NOTE: Custom WQ to save all, close explorer, and quit
 vim.api.nvim_create_user_command("WQ", function()
   vim.cmd("wa") -- write all modified buffers
