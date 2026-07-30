@@ -342,6 +342,19 @@ cdf() {
   cd "$(dirname "$file")"
 }
 
+# Open files/apps, auto-prefixing bare domains with https://
+open() {
+  local a args=()
+  for a in "$@"; do
+    if [[ ! -e $a && $a == (www.*|*.(com|org|net|io|dev|gg|co|ai|sh)(|/*)) ]]; then
+      args+=("https://$a")
+    else
+      args+=("$a")
+    fi
+  done
+  command open "${args[@]}"
+}
+
 # List every alias / function in this file with its description
 tools() {
   printf "\n\033[1;35mCustom Zsh Tools & Aliases\033[0m\n\n"
