@@ -21,3 +21,7 @@ export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/lukewaehner/.local/bin:$PATH"

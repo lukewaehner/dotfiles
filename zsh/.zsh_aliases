@@ -38,5 +38,10 @@ alias tka="tmux kill-server" # Nuke all tmux sessions entirely
 
 # misc
 alias claude-school="CLAUDE_CONFIG_DIR=~/.claude-school claude" # Claude code with school account
+alias claude-work="CLAUDE_CONFIG_DIR=~/.claude-work claude" # Claude code with work account
 alias fuck='eval "$(thefuck --alias)" && fuck' # Lazy thefuck init
 alias sort-downloads="~/Code/Python/sort-downloads/main.py" # Sort Downloads
+alias txd="tuxedo" # Tuxedo CLI
+
+# python
+alias py="python3" # Python 3

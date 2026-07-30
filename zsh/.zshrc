@@ -468,3 +468,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 else
   "$HOME/.local/bin/theme-switch.sh" light
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/lukewaehner/.local/bin:$PATH"
