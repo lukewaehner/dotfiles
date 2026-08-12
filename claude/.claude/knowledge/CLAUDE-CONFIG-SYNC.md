@@ -15,7 +15,16 @@ Three Claude Code instances run from separate config directories, invoked by ali
 | school | `~/.claude-school` | Northeastern |
 | work | `~/.claude-work` | Meteora |
 
-**`~/.claude` is the source of truth.** School and work pull from it.
+**`~/Repos/dotfiles` is the source of truth**, via stow. `~/.claude` is no
+longer a real directory tree — its shared entries are symlinks into
+`dotfiles/claude/.claude/`, and school and work symlink to `~/.claude`. Edits
+land in the repo and are versioned.
+
+Restow after adding anything new to the package:
+
+```bash
+cd ~/Repos/dotfiles && stow --restow claude
+```
 
 **Logins are fully isolated.** This is deliberate and load-bearing — never sync
 anything in the "never touch" list below or you will cross-wire accounts.
@@ -24,7 +33,7 @@ anything in the "never touch" list below or you will cross-wire accounts.
 
 ## What's Shared vs. What Isn't
 
-### Symlinked → auto-syncs, edit once in `~/.claude`
+### Stowed from the repo → auto-syncs, versioned
 
 ```
 hooks/
@@ -41,10 +50,16 @@ gsd-migration-journal
 .gsd-profile
 ```
 
-Edit these in `~/.claude` and all three instances see the change immediately.
+Plus `~/.agents/` — a sibling of `~/.claude`, stowed from
+`dotfiles/claude/.agents/`. It holds the 27 installed agent skills that
+`~/.claude/skills/` symlinks into. It has to stay a sibling: those inner links
+are relative (`../../.agents/skills/X`), so the two directories must keep the
+same parent or every skill breaks. See Troubleshooting.
+
+Edit any of these in the repo and all three instances see it immediately.
 No propagation step needed.
 
-### Copied → requires manual propagation
+### Merged from a template → run the sync script
 
 ```
 settings.json
@@ -52,10 +67,27 @@ settings.local.json
 ```
 
 These are **app-mutable** — Claude Code rewrites them on `/model`, theme
-changes, permission prompts, etc. A symlink would let one instance's runtime
-writes clobber the others. So they're copies, and adding a hook or statusline
-to `~/.claude/settings.json` does **not** reach school or work until you
-propagate. See the procedure below.
+changes, and permission prompts. A symlink would let one instance's runtime
+writes clobber the others, so stow can't manage them.
+
+Instead, the shared keys live in a tracked template,
+`dotfiles/claude/.claude/settings.template.json`, and a script merges them into
+each instance while leaving per-instance keys alone:
+
+```bash
+sync-claude-settings.sh           # report drift, change nothing
+sync-claude-settings.sh --apply   # back up, then merge
+```
+
+Shared (in the template, propagated): `hooks`, `statusLine`, `enabledPlugins`,
+`tui`, `skipDangerousModePermissionPrompt`.
+
+Per-instance (never overwritten): `model`, `theme`, `effortLevel`,
+`permissions`.
+
+That split is the whole point. The old procedure was a blind `cp`, which is
+what destroyed per-instance state during the 2026-07-23 unification — see
+Known Side Effects below. A merge can't.
 
 ### Never touch — isolation depends on it
 
@@ -74,39 +106,39 @@ logins and session state across instances.
 
 ## Propagating a New Setting
 
-When you add a `statusLine`, hook registration, permission rule, or any other
-key to `~/.claude/settings.json`:
+When you add a `statusLine`, hook registration, or any other shared key:
+
+1. Edit `dotfiles/claude/.claude/settings.template.json`.
+2. `sync-claude-settings.sh` — review the reported drift.
+3. `sync-claude-settings.sh --apply` — backs up each instance to
+   `~/claude-config-backups/<timestamp>/` before writing.
+4. **Restart the affected sessions.** Claude Code reads `statusLine` and hook
+   config once at startup; a running session will not pick up the change.
+
+The script is safe to run any time — with no flag it only reports, exits 1 on
+drift, and touches nothing. It refuses to write to an instance whose
+`settings.json` is unparseable rather than overwriting it, and exits non-zero
+if it finishes with any instance left unrepaired.
+
+If you add a fourth instance, no edit is needed:
 
 ```bash
-for d in ~/.claude-school ~/.claude-work; do
-  cp ~/.claude/settings.json      "$d/settings.json"
-  cp ~/.claude/settings.local.json "$d/settings.local.json"
-done
-
-# verify all three are identical
-md5 ~/.claude/settings.json ~/.claude-school/settings.json ~/.claude-work/settings.json
+CLAUDE_INSTANCES="$HOME/.claude $HOME/.claude-new" sync-claude-settings.sh
 ```
 
-Then **restart the affected sessions.** Claude Code reads `statusLine` and
-hook config once at startup — a running session will not pick up the change.
+### Adding a key that should NOT propagate
 
-### Before overwriting, back up
-
-`settings.json` accumulates per-instance runtime state. A blind copy discards it:
-
-```bash
-ts=$(date +%Y%m%d-%H%M%S)
-mkdir -p ~/claude-config-backups/$ts
-cp ~/.claude-school/settings.json ~/claude-config-backups/$ts/school-settings.json
-cp ~/.claude-work/settings.json   ~/claude-config-backups/$ts/work-settings.json
-```
-
-Use a persistent path, not a session scratchpad — scratchpads are session-scoped
-and vanish.
+Keep it out of the template. Anything absent from the template is invisible to
+the sync and survives untouched — that's how `model`, `theme`, `effortLevel`,
+and `permissions` stay per-instance.
 
 ---
 
 ## Known Side Effects of Unification
+
+Historical — the `cp`-based procedure that caused this was replaced by the
+merge-based sync script on 2026-08-12. Kept because it documents what
+per-instance keys exist and why they're excluded from the template.
 
 A full copy from `~/.claude` overwrites per-instance runtime preferences. Observed
 losses from the 2026-07-23 unification:
@@ -136,10 +168,9 @@ and theme writes that mutate the base file. Put instance-specific keys there:
 > confirm the exact shape against Claude Code's current settings schema before
 > relying on it.
 
-Note this is only half a solution: `settings.local.json` is *also* on the copy
-list, so a propagation run overwrites it too. If you want a per-instance
-override to be truly durable, either exclude that file from the loop above or
-re-apply the override after each propagation.
+This is no longer only half a solution. The sync script merges rather than
+copies, so any key absent from the template survives a propagation run — a
+per-instance override is durable wherever you put it.
 
 ---
 
@@ -149,19 +180,22 @@ re-apply the override after each propagation.
 NEW=~/.claude-newinstance
 mkdir -p "$NEW"
 
-# symlink the shared surface
+# symlink the shared surface (point at ~/.claude, which stow owns)
 for f in hooks agents commands skills plugins rules knowledge get-shit-done \
          gsd-file-manifest.json gsd-install-state.json \
          gsd-migration-journal .gsd-profile; do
   ln -s ~/.claude/"$f" "$NEW/$f"
 done
 
-# copy the mutable settings
-cp ~/.claude/settings.json ~/.claude/settings.local.json "$NEW/"
+# seed settings.json from the template, then set per-instance keys in-session
+cp ~/Repos/dotfiles/claude/.claude/settings.template.json "$NEW/settings.json"
+CLAUDE_INSTANCES="$NEW" sync-claude-settings.sh
 ```
 
 Then add the alias with `CLAUDE_CONFIG_DIR` pointed at `$NEW`, and log in
 separately. Do **not** copy any credential or session file into it.
+
+Add `$NEW` to `INSTANCES` in the sync script so it's covered by future runs.
 
 ---
 
@@ -171,7 +205,21 @@ separately. Do **not** copy any credential or session file into it.
 
 **Hook not firing in school/work** — either the hook file isn't under a
 symlinked dir, or its registration lives in `settings.json` and hasn't been
-propagated. Check both.
+propagated. Run `sync-claude-settings.sh` to check the second case.
+
+**Personal skills missing from the skill list** — the installer writes
+`~/.agents/skills/X` and links `~/.claude/skills/X` at it *relatively*
+(`../../.agents/skills/X`), so the link only resolves while `.agents` and
+`.claude` share a parent. Moving either one breaks all of them silently — the
+skills just stop appearing, with no error. This is what the 2026-08-12 stow
+migration did, and why `.agents` is stowed alongside `.claude` rather than left
+in `$HOME`. To check:
+
+```bash
+find ~/.claude/skills -maxdepth 1 -type l ! -exec test -e {} \; -print
+```
+
+Empty output is healthy. Anything listed is a dead skill.
 
 **Wrong account in an instance** — something touched `.claude.json`,
 `.credentials.json`, or the Keychain. Re-authenticate that instance only.
