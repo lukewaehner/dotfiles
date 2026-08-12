@@ -17,6 +17,28 @@
 - Keep functions short and single-purpose. If you need a comment to explain a block, extract it into a named function.
 - Minimize public surface area. Default to private; widen visibility only when required.
 
+### Reuse vs. New Infrastructure
+
+Reuse and extensibility are the default and usually correct. Default is not
+automatic. Reach for a new unit when the existing one doesn't fit.
+
+The existing unit is the wrong unit when making it fit requires:
+
+- a boolean or mode flag so it can do a second job
+- a parameter only one caller ever passes
+- a branch on who is calling
+- widening a type to admit a case that shares no behavior with the others
+- a name that no longer describes what it does
+
+**Cost asymmetry:** a wrong new unit is deleted in one commit. A wrong
+extension to a shared unit is inherited by every caller and costs a migration
+to unwind. Extending is not the conservative choice — it only looks like one
+because the diff is smaller.
+
+This is not license for speculative abstraction — YAGNI and the rule of three
+still hold. Build the new unit for the case in front of you, sized to that
+case, and no larger.
+
 ## Naming
 
 - Names describe intent, not implementation: `pendingOrders`, not `list2`.
