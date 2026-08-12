@@ -40,6 +40,9 @@
 - Use feature flags to decouple deploy from cutover.
 - Keep the branch mergeable at every step — long-lived refactor branches rot and get abandoned.
 - Write down the end state and the migration steps before starting. Share it before writing code.
+- **Lean on the compiler.** In a typed language, change the type signature
+  first and let the errors enumerate the call sites. The compiler produces a
+  complete work list; grep produces a guess.
 
 ## Deleting Code
 
