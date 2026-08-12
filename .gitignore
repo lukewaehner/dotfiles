@@ -1,2 +1,6 @@
 themes/backups/
 .DS_Store
+
+# Deliberately tracked: shared Claude Code config, stowed into ~/.claude
+!/claude/.claude/
+!/claude/.claude/**
