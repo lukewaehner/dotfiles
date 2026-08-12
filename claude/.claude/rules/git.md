@@ -63,7 +63,7 @@ on that basis, not on which word reads best.
 
 - Branch names: `<type>/<short-kebab-description>` — e.g. `feat/order-book-cache`, `fix/null-deref-on-retry`.
 - Branch from the current default branch; keep branches short-lived.
-- Rebase onto the base branch to stay current; merge commits only when integrating a completed branch.
+- Rebase onto the base branch to stay current. Don't merge the base back into your branch — it creates the merge commits the rebase-merge policy exists to avoid.
 - Never force-push a shared branch. `--force-with-lease` on your own branch only.
 
 ## Stacked PRs
@@ -94,12 +94,21 @@ For a feature that naturally splits into dependent layers (e.g. backend wiring �
 
 ## Pull Requests
 
-- Title follows the same Conventional Commit format as the squash commit.
+- Title follows the same Conventional Commit format as the commits it carries.
 - Description covers: what changed, why, how it was verified, and any risk/rollback plan.
 - Keep PRs small — under ~400 lines of diff where possible. Large PRs get shallow reviews.
 - Rebase and re-run tests before merging.
-- **Squash and merge into the default branch.** One PR becomes one commit, so
-  history stays linear and any change is revertible as a unit. The squash
-  commit message is the PR title, in Conventional Commit format.
-- Exception: a stacked PR chain merges bottom-up, each layer squashed on its
-  own, so each layer stays independently revertible.
+- **Rebase and merge into the default branch.** Each commit replays onto the
+  base individually: linear history, no merge commits, and the atomic commits
+  you wrote survive into the default branch. Squashing would collapse them into
+  one — discarding exactly the granularity that makes `git bisect` land on a
+  cause instead of a whole feature.
+- That raises the bar on the branch, because every commit lands on the default
+  branch rather than being absorbed into a squash. Before merging, each commit
+  must build, pass tests on its own, and carry a real Conventional Commit
+  message. No `WIP`, no "address review comments", no commit that only compiles
+  once the next one is applied — rewrite the branch locally first.
+- Reverting a whole PR means reverting its range (`git revert <first>^..<last>`),
+  not a single commit. That's the cost of the granularity; it's worth it.
+- Stacked PRs merge bottom-up, each layer rebased onto the updated base as the
+  layer below it lands.
