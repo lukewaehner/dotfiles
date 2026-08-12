@@ -17,6 +17,9 @@ Keep it current. A README that lies is worse than no README.
 - Public APIs get doc comments: purpose, parameters, return value, error conditions, and an example for anything non-obvious.
 - Document invariants and preconditions the type system can't express.
 - Link to the issue, RFC, or spec that motivated a non-obvious decision.
+- Write architecture diagrams as code (Mermaid) committed next to what they
+  describe, not as exported images. A diagram that can't be diffed in review
+  is a diagram that goes stale silently.
 
 ## Architecture Decision Records
 
