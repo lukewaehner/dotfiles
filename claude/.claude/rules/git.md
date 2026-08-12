@@ -28,6 +28,20 @@ Use Conventional Commits:
 | `style` | Formatting only (whitespace, semicolons) — never logic |
 | `revert` | Reverts a previous commit |
 
+### Versioning
+
+Commit types drive the semantic version bump at release:
+
+| Commit | Bump |
+|---|---|
+| `fix` | patch |
+| `feat` | minor |
+| any type with `!` / `BREAKING CHANGE:` footer | major |
+
+Everything else (`docs`, `chore`, `style`, `test`, `refactor`, `ci`, `build`)
+bumps nothing on its own. Choosing the type is choosing the release — pick it
+on that basis, not on which word reads best.
+
 ### Rules
 
 - Subject line: imperative mood, lowercase after the colon, no trailing period, ≤ 72 chars.
@@ -71,9 +85,21 @@ For a feature that naturally splits into dependent layers (e.g. backend wiring �
 - Never commit secrets, credentials, `.env` files, or large binaries. Check `git diff --staged` before every commit.
 - Stage deliberately (`git add -p`), not `git add .`.
 
+## Pushing
+
+- Commit freely. Atomic commits are cheap and locally revertible.
+- **Never push without explicit go-ahead.** Ask every time — including on your
+  own branch, including when the work is obviously finished. A push is
+  outward-facing and not cleanly undoable; a commit is neither.
+
 ## Pull Requests
 
 - Title follows the same Conventional Commit format as the squash commit.
 - Description covers: what changed, why, how it was verified, and any risk/rollback plan.
 - Keep PRs small — under ~400 lines of diff where possible. Large PRs get shallow reviews.
 - Rebase and re-run tests before merging.
+- **Squash and merge into the default branch.** One PR becomes one commit, so
+  history stays linear and any change is revertible as a unit. The squash
+  commit message is the PR title, in Conventional Commit format.
+- Exception: a stacked PR chain merges bottom-up, each layer squashed on its
+  own, so each layer stays independently revertible.
