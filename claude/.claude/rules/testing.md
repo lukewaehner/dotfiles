@@ -7,6 +7,12 @@
 - Prioritize: business logic and invariants > boundary conditions > integration seams > glue code.
 - Don't test the language, the framework, or third-party libraries.
 - Don't test private methods directly. If a private method needs its own test, it probably wants to be its own unit.
+- Snapshot tests are for complex UI trees and structured output, never for
+  business logic. A failing snapshot tells you something changed, not what
+  broke — and the cheapest fix is always to re-record it, which is why they
+  rot into rubber stamps.
+- For algorithmic code with clear invariants, consider property-based tests
+  (assert the invariant over generated inputs) alongside worked examples.
 
 ## Test Structure
 
