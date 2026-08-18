@@ -42,6 +42,22 @@ focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 
+# ── Splits ────────────────────────────────────────────────────────────────────
+# tmux: bind \ split-window -h  →  side-by-side
+# tmux: bind - split-window -v  →  top/bottom
+split_vertical = "prefix+backslash"
+split_horizontal = "prefix+minus"
+
+# ── Other ─────────────────────────────────────────────────────────────────────
+zoom = "prefix+z"
+toggle_sidebar = "prefix+b"
+close_pane = "prefix+x"
+edit_scrollback = "prefix+enter" # tmux: bind Enter copy-mode
+reload_config = "prefix+r"       # tmux: bind r source-file ...
+resize_mode = "prefix+shift+r"   # moved here to free prefix+r for reload
+
+# ── Custom commands ───────────────────────────────────────────────────────────
+
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
@@ -65,22 +81,6 @@ key = "ctrl+l"
 type = "plugin_action"
 command = "vim-herdr-navigation.right"
 description = "navigate right (vim/herdr)"
-
-# ── Splits ────────────────────────────────────────────────────────────────────
-# tmux: bind \ split-window -h  →  side-by-side
-# tmux: bind - split-window -v  →  top/bottom (herdr default already)
-split_vertical = "prefix+backslash"
-split_horizontal = "prefix+minus"
-
-# ── Other ─────────────────────────────────────────────────────────────────────
-zoom = "prefix+z"
-toggle_sidebar = "prefix+b"
-close_pane = "prefix+x"
-edit_scrollback = "prefix+enter" # tmux: bind Enter copy-mode
-reload_config = "prefix+r"       # tmux: bind r source-file ...
-resize_mode = "prefix+shift+r"   # moved here to free prefix+r for reload
-
-# ── Custom commands ───────────────────────────────────────────────────────────
 
 # Sesh workspace picker (tmux: bind T display-popup ... sesh list | fzf)
 [[keys.command]]
