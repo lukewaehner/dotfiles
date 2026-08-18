@@ -36,6 +36,10 @@ next_tab = "prefix+n"        # tmux: bind n next-window
 close_tab = "prefix+shift+x" # tmux: bind X kill-window
 rename_tab = "prefix+comma"  # freed prefix+shift+t for sesh picker below
 
+# ── Agent navigation ─────────────────────────────────────────────────────────
+next_agent = "prefix+a"
+previous_agent = "prefix+shift+a"
+
 # ── Pane navigation (hjkl — same as tmux) ────────────────────────────────────
 focus_pane_left = "prefix+h"
 focus_pane_down = "prefix+j"
