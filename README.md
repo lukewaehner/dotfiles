@@ -21,7 +21,10 @@ cd ~/repos/dotfiles
 brew bundle --file=brew/Brewfile
 
 # Stow all configuration modules into $HOME
-stow --restow zsh git nvim starship atuin ghostty bat eza
+# (every top-level directory except brew/ and macos/, which aren't stow packages)
+stow --restow zsh bash git nvim vim zed ghostty wezterm tmux herdr \
+  starship atuin bat eza lazygit mactop aerospace scripts \
+  claude antigravity raycast
 
 # Install npm globals
 npm i -g $(cat npmglobal.txt | tr '\n' ' ')
@@ -35,34 +38,82 @@ bat cache --build
 ```
 dotfiles/
 ├── bootstrap.sh          # One-shot macOS setup script
+├── setup-linux.sh        # Equivalent setup for Linux hosts
 ├── npmglobal.txt         # npm global packages list
-├── brew/
-│   └── Brewfile          # Homebrew formulae, casks, and VS Code extensions
+├── .stowrc               # Stow defaults (--target=~)
+│
+│   # Shell
 ├── zsh/
 │   ├── .zshrc            # Interactive shell configuration
+│   ├── .zsh_aliases      # Aliases and functions
 │   ├── .zprofile         # Login environment (PATH, exports)
 │   └── .zshenv           # Minimal env for all shells
-├── git/
-│   ├── .gitconfig        # Git user, defaults, and aliases
-│   └── .gitignore_global # Global gitignore (.DS_Store, etc.)
+├── bash/
+│   ├── .bashrc           # Linux/fallback shell, bridged to the zsh config
+│   ├── .bash_aliases
+│   └── .bash_profile
+├── starship/
+│   └── .config/starship.toml  # Starship prompt (Catppuccin Mocha)
+├── atuin/
+│   └── .config/atuin/    # Atuin shell history config
+│
+│   # Terminals and multiplexers
+├── ghostty/
+│   └── .config/ghostty/  # Ghostty terminal config and themes
+├── wezterm/
+│   └── .config/wezterm/  # WezTerm config
+├── tmux/
+│   └── .config/tmux/     # tmux config, themes, and theme-switch hook
+├── herdr/
+│   └── .config/herdr/    # herdr multiplexer config and plugins
+│
+│   # Editors
 ├── nvim/
 │   └── .config/nvim/     # Neovim config (LazyVim framework)
 │       ├── init.lua
 │       ├── lua/config/   # Options, keymaps, autocmds, completion
 │       └── lua/plugins/  # Plugin specs (themes, LSP, git, DAP, etc.)
-├── ghostty/
-│   └── .config/ghostty/  # Ghostty terminal config
-├── starship/
-│   └── .config/starship.toml  # Starship prompt (Catppuccin Mocha)
-├── atuin/
-│   └── .config/atuin/    # Atuin shell history config
+├── vim/
+│   └── .vimrc            # Plain vim fallback
+├── zed/
+│   └── .config/zed/      # Zed settings and keymap
+│
+│   # AI assistants
+├── claude/
+│   ├── .claude/          # Claude Code rules, skills, commands, agents, hooks
+│   └── .agents/          # Shared skill set
+├── antigravity/
+│   └── .gemini/config/   # Antigravity rules and skills (mirrors claude/)
+│
+│   # CLI tools
+├── git/
+│   ├── .gitconfig        # Git user, defaults, and aliases
+│   └── .gitignore_global # Global gitignore (.DS_Store, etc.)
 ├── bat/
 │   └── .config/bat/      # Bat themes (TokyoNight Day/Night)
-└── eza/
-    └── .config/eza/      # Eza color theme
+├── eza/
+│   └── .config/eza/      # Eza color theme
+├── lazygit/
+│   └── .config/lazygit/  # Lazygit config and themes
+├── mactop/
+│   └── .mactop/          # mactop system monitor config
+│
+│   # macOS desktop
+├── aerospace/
+│   └── .config/aerospace/  # AeroSpace tiling window manager
+├── scripts/
+│   └── .local/bin/       # theme-switch, appearance-watcher, sync-claude-settings
+├── raycast/              # Raycast script commands
+│
+│   # Consumed directly, not stowed
+├── brew/
+│   └── Brewfile          # Homebrew formulae, casks, and VS Code extensions
+└── macos/
+    └── com.user.appearance-watcher.plist  # launchd agent, installed to
+                                           # ~/Library/LaunchAgents by bootstrap.sh
 ```
 
-Each top-level directory is a Stow package. Running `stow <package>` symlinks its contents into `$HOME`, mirroring the internal directory structure.
+Every top-level directory except `brew/` and `macos/` is a Stow package. Running `stow <package>` symlinks its contents into `$HOME`, mirroring the internal directory structure; `bootstrap.sh` stows them all, skipping those two.
 
 ## What's Configured
 
@@ -83,8 +134,8 @@ No framework -- plain zsh with a few Homebrew plugins:
 ### Terminal (Ghostty)
 
 - **Font:** JetBrainsMono Nerd Font, size 18
-- **Opacity:** 30% with background blur
-- **Theme:** System-aware (Zenbones Dark / Seoulbones Light)
+- **Opacity:** 85% with background blur (a 45% preset is commented in the config)
+- **Theme:** System-aware (TokyoNight Night / TokyoNight Day)
 - macOS native tab style, block cursor
 
 ### Editor (Neovim)
@@ -183,8 +234,8 @@ Managed via version managers, installed by `bootstrap.sh`:
 # Update Homebrew packages
 brew update && brew upgrade
 
-# Re-stow after adding/changing modules
-stow --restow */
+# Re-stow after adding/changing a module
+stow --restow <package>
 
 # Rebuild bat themes after changes
 bat cache --build
