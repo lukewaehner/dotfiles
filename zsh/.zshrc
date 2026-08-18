@@ -112,6 +112,9 @@ export TODO_DIR="$HOME/Documents/todo"
 export TODO_FILE="$TODO_DIR/todo.txt"
 export DONE_FILE="$TODO_DIR/done.txt"
 
+# Assume AdminRole via MFA rather than using the account root
+export AWS_PROFILE="luke-admin"
+
 # -------------------------------------------------------------
 # 6. Lazy-loaded version managers
 # -------------------------------------------------------------
