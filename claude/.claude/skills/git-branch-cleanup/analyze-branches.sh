@@ -60,18 +60,26 @@ analyze_repo() {
       upstream=$(git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{upstream}" 2>/dev/null || true)
 
       if [[ -z "$upstream" ]]; then
-        active+=("$branch — no remote tracking branch, review manually")
-        continue
-      fi
+        # No upstream normally means "presumed in-progress, hands off". But that
+        # guard exists to protect unpushed commits, and a branch with nothing
+        # ahead of main has none — so let the merge checks below speak for it
+        # rather than parking a fully merged branch in "active" forever.
+        local ahead_main
+        ahead_main=$(git rev-list --count "${main}..${branch}" 2>/dev/null || echo 0)
+        if [[ "$ahead_main" != "0" ]]; then
+          active+=("$branch — no remote tracking branch, $ahead_main unpushed commit(s), review manually")
+          continue
+        fi
+      else
+        local counts ahead_remote behind_remote
+        counts=$(git rev-list --left-right --count "${branch}...${upstream}" 2>/dev/null || echo "0 0")
+        ahead_remote=$(echo "$counts" | awk '{print $1}')
+        behind_remote=$(echo "$counts" | awk '{print $2}')
 
-      local counts ahead_remote behind_remote
-      counts=$(git rev-list --left-right --count "${branch}...${upstream}" 2>/dev/null || echo "0 0")
-      ahead_remote=$(echo "$counts" | awk '{print $1}')
-      behind_remote=$(echo "$counts" | awk '{print $2}')
-
-      if [[ "$ahead_remote" != "0" || "$behind_remote" != "0" ]]; then
-        active+=("$branch — not in sync with $upstream (ahead $ahead_remote / behind $behind_remote), likely in progress, skipped")
-        continue
+        if [[ "$ahead_remote" != "0" || "$behind_remote" != "0" ]]; then
+          active+=("$branch — not in sync with $upstream (ahead $ahead_remote / behind $behind_remote), likely in progress, skipped")
+          continue
+        fi
       fi
 
       if git merge-base --is-ancestor "$branch" "$main" 2>/dev/null; then

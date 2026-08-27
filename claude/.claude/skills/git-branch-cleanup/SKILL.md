@@ -25,9 +25,14 @@ and never deletes anything itself; it only produces a report for you to act on.
 
 For each local branch (excluding main), in order:
 
-1. **Not in sync with its remote tracking branch** (ahead, behind, or no
-   upstream at all) → **active**, skip further checks. An out-of-sync branch
-   is presumed to be in-progress work, not a cleanup candidate.
+1. **Not in sync with its remote tracking branch** (ahead or behind) →
+   **active**, skip further checks. An out-of-sync branch is presumed to be
+   in-progress work, not a cleanup candidate. A branch with **no upstream at
+   all** is treated the same way *only if it has commits main doesn't*
+   (`git rev-list --count main..branch` > 0) — that's the unpushed work the
+   guard exists to protect. With nothing ahead of main there's nothing to
+   protect, so it falls through to the merge checks below instead of being
+   parked in "active" forever.
 2. **Direct ancestor of main** (`git merge-base --is-ancestor`) → **safe**
    (merged via fast-forward or merge commit).
 3. **Patch-equivalent to commits in main** (`git cherry main branch` — this
