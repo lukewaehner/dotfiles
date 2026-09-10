@@ -5,6 +5,7 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/repos/dotfiles}"
 BREWFILE="${BREWFILE:-$DOTFILES_DIR/brew/Brewfile}"
 STOW_TARGET="${STOW_TARGET:-$HOME}"
 NPM_GLOBALS_FILE="${NPM_GLOBALS_FILE:-$DOTFILES_DIR/npmglobal.txt}"
+NODE_VERSION="${NODE_VERSION:-24}"
 
 log() { printf "\n==> %s\n" "$*"; }
 warn() { printf "\n[warn] %s\n" "$*" >&2; }
@@ -225,6 +226,27 @@ main() {
   RB_VER="$(rbenv install -l | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+$' | tail -1 | tr -d ' ')"
   rbenv install -s "$RB_VER"
   rbenv global "$RB_VER"
+
+  log "Ensuring Node $NODE_VERSION via nvm"
+  # nvm refuses to activate while npm has a fixed `prefix` set, so globals are
+  # installed per Node version rather than into a shared directory.
+  if [[ -f "$HOME/.npmrc" ]] && grep -qE '^\s*(prefix|globalconfig)=' "$HOME/.npmrc"; then
+    warn "~/.npmrc sets prefix/globalconfig, which nvm cannot work with."
+    warn "Remove that line and re-run, or Node setup will be skipped."
+  else
+    export NVM_DIR="$HOME/.nvm"
+    mkdir -p "$NVM_DIR"
+    NVM_SH="$(brew --prefix nvm 2>/dev/null)/nvm.sh"
+    if [[ -s "$NVM_SH" ]]; then
+      # shellcheck source=/dev/null
+      source "$NVM_SH"
+      nvm install "$NODE_VERSION"
+      nvm alias default "$NODE_VERSION"
+      nvm use "$NODE_VERSION"
+    else
+      warn "nvm.sh not found at $NVM_SH (skipping Node setup)"
+    fi
+  fi
 
   # -------------------------------------------------
   # Dotfiles
