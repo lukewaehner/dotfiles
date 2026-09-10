@@ -14,7 +14,9 @@ export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$RBENV_ROOT/shims:$RBENV_ROOT/bin
 export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.elan/bin:$PATH"
-export PATH="$HOME/.npm-global/bin:$PATH"
+# npm globals live under the active nvm version (~/.nvm/versions/node/<v>/bin),
+# which nvm prepends on load. The old fixed ~/.npm-global prefix was removed
+# because npm's `prefix` setting and nvm are mutually incompatible.
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 

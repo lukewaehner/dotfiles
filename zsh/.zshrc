@@ -130,6 +130,22 @@ for cmd in ruby gem bundle rails rake rbenv; do
   function $cmd { _lazy_rbenv "$@" }
 done
 
+# Defer nvm init until the first use of node/npm/npx/nvm.
+# nvm.sh is a large shell script, so sourcing it on every startup is costly.
+# Sourcing it also prepends the active version's bin to PATH, which is what
+# puts nvm's node ahead of Homebrew's (kept only as a dependency of mongosh
+# and friends).
+export NVM_DIR="$HOME/.nvm"
+_lazy_nvm() {
+  unfunction node npm npx nvm 2>/dev/null
+  local nvm_sh="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
+  [[ -s "$nvm_sh" ]] && source "$nvm_sh"
+  "$0" "$@"
+}
+for cmd in node npm npx nvm; do
+  function $cmd { _lazy_nvm "$@" }
+done
+
 
 # -------------------------------------------------------------
 # 7. VM functions
