@@ -9,6 +9,7 @@ return {
       "nvim-neotest/neotest-python",
       "olimorris/neotest-rspec",
       "rouge8/neotest-rust",
+      "marilari88/neotest-vitest",
     },
     config = function()
       require("neotest").setup({
@@ -19,6 +20,9 @@ return {
           }),
           require("neotest-rspec"),
           require("neotest-rust"),
+          -- Resolves the vitest binary from the project's node_modules, so the
+          -- runner matches the version CI pins rather than anything global.
+          require("neotest-vitest"),
         },
       })
     end,
