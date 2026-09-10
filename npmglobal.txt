@@ -1,8 +1,11 @@
 @google/clasp
+@google/generative-ai
 eslint
+fast-cli
 npm-check-updates
 pnpm
 prettier
 tsx
 typescript
+vercel
 yarn
