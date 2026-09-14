@@ -121,13 +121,17 @@ export AWS_PROFILE="luke-admin"
 
 # Defer rbenv init until the first use of ruby/gem/bundle/rails/rake/rbenv
 # The stub replaces itself with the real comman after running `rbenv init`.
+# The real command name is passed in: inside _lazy_rbenv, $0 is the helper
+# itself, not the stub that called it, so dispatching on $0 re-enters the
+# helper forever instead of reaching the command.
 _lazy_rbenv() {
+  local cmd="$1"; shift
   unfunction ruby gem bundle rails rake rbenv 2>/dev/null
   eval "$(rbenv init - zsh)"
-  "$0" "$@"
+  "$cmd" "$@"
 }
 for cmd in ruby gem bundle rails rake rbenv; do
-  function $cmd { _lazy_rbenv "$@" }
+  eval "function $cmd { _lazy_rbenv $cmd \"\$@\" }"
 done
 
 # Defer nvm init until the first use of node/npm/npx/nvm.
@@ -137,13 +141,14 @@ done
 # and friends).
 export NVM_DIR="$HOME/.nvm"
 _lazy_nvm() {
+  local cmd="$1"; shift
   unfunction node npm npx nvm 2>/dev/null
   local nvm_sh="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
   [[ -s "$nvm_sh" ]] && source "$nvm_sh"
-  "$0" "$@"
+  "$cmd" "$@"
 }
 for cmd in node npm npx nvm; do
-  function $cmd { _lazy_nvm "$@" }
+  eval "function $cmd { _lazy_nvm $cmd \"\$@\" }"
 done
 
 
