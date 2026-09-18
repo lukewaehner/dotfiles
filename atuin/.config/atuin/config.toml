@@ -297,3 +297,6 @@ autostart = true
 filters = [ "directory", "host", "global" ]
 recency_score_multiplier = 2.0
 authors = ["$all-user"]
+
+[ai]
+enabled = false
