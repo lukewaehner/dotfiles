@@ -496,3 +496,19 @@ fi
 
 # Added by Antigravity CLI installer
 export PATH="/Users/lukewaehner/.local/bin:$PATH"
+
+# -------------------------------------------------------------
+# pyenv shell integration
+# -------------------------------------------------------------
+# .zprofile already puts $PYENV_ROOT/shims on PATH statically, which is enough
+# to *run* pinned Pythons. These two evals add what the static PATH can't:
+#   pyenv init -            defines the `pyenv` shell function, without which
+#                           `pyenv activate` / `pyenv shell` cannot alter the
+#                           current shell.
+#   pyenv virtualenv-init - installs the precmd hook that auto-activates the
+#                           env named in a directory's .python-version file.
+# Not cached via _zcache: both depend on live shell state.
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
