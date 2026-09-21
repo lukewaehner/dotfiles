@@ -93,8 +93,12 @@
 
 /* ============================================================
  * 5. Tabs
- *    Pill-shaped backgrounds matching the urlbar, plus a special
- *    case for single-tab mode (override onebar's hide rule).
+ *    Pill-shaped backgrounds matching the urlbar, plus sizing for the
+ *    single-tab case.
+ *
+ *    Depends on onebar.disable-single-tab (user.js). onebar otherwise
+ *    collapses a lone tab and hides its close button; the rules below
+ *    only size the card and assume that mode is off.
  * ============================================================ */
 
 .tab-background {
@@ -111,9 +115,9 @@
   background-color: color-mix(in srgb, currentColor 14%, transparent) !important;
 }
 
-/* ---- Single-tab case: keep the card visible and let the + hug it ---- */
+/* ---- Single-tab case: cap the card width and let the + hug it ---- */
 
-/* Restore card sizing (onebar collapses lone tabs by default) */
+/* A lone tab would otherwise stretch to fill the whole strip */
 #tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type {
   width: auto !important;
   max-width: 240px !important;
@@ -125,17 +129,6 @@
 #tabbrowser-arrowscrollbox:has(> .tabbrowser-tab:only-of-type) {
   flex: 0 0 auto !important;
   width: auto !important;
-}
-
-/* Restore visual bits that onebar strips on single tabs */
-#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-text {
-  font-weight: normal !important;
-}
-#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-close-button {
-  display: -moz-box !important;
-}
-#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-background {
-  opacity: 1 !important;
 }
 
 
