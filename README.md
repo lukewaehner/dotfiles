@@ -23,11 +23,18 @@ brew bundle --file=brew/Brewfile
 # Stow all configuration modules into $HOME
 # (every top-level directory except brew/ and macos/, which aren't stow packages)
 stow --restow zsh bash git nvim vim zed ghostty wezterm tmux herdr \
-  starship atuin bat eza lazygit mactop aerospace scripts \
+  starship atuin bat eza lazygit mactop aerospace scripts ptpython \
   claude antigravity raycast
 
 # Install npm globals
 npm i -g $(cat npmglobal.txt | tr '\n' ' ')
+
+# Install Python globals into every pyenv version
+for v in $(pyenv versions --bare | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'); do
+  "$PYENV_ROOT/versions/$v/bin/python" -m pip install --upgrade \
+    $(grep -vE '^\s*(#|$)' pyglobal.txt | tr '\n' ' ')
+done
+pyenv rehash
 
 # Build bat theme cache
 bat cache --build
@@ -40,6 +47,7 @@ dotfiles/
 ├── bootstrap.sh          # One-shot macOS setup script
 ├── setup-linux.sh        # Equivalent setup for Linux hosts
 ├── npmglobal.txt         # npm global packages list
+├── pyglobal.txt          # Python CLI tools, installed per pyenv version
 ├── .stowrc               # Stow defaults (--target=~)
 │
 │   # Shell
@@ -97,6 +105,8 @@ dotfiles/
 │   └── .config/lazygit/  # Lazygit config and themes
 ├── mactop/
 │   └── .mactop/          # mactop system monitor config
+├── ptpython/
+│   └── .config/ptpython/ # ptpython REPL config (vi mode)
 │
 │   # macOS desktop
 ├── aerospace/
@@ -178,10 +188,28 @@ auto-setup remote: true
 | [lazygit](https://github.com/jesseduffield/lazygit) | -- | Terminal git UI |
 | [atuin](https://github.com/atuinsh/atuin) | `history` | Fuzzy shell history with sync |
 | [thefuck](https://github.com/nvbn/thefuck) | -- | Command correction |
+| [ptpython](https://github.com/prompt-toolkit/ptpython) | `python` REPL | Vi mode, completion, signatures |
 
 ### Shell History (Atuin)
 
 Fuzzy search mode, secrets filtering enabled (blocks AWS keys, tokens, etc.), sync v2.
+
+### Python REPL (ptpython)
+
+Vi editing with a modal cursor, multi-column fuzzy completion, dict-key
+completion, jedi signatures and docstrings, auto-suggest from history, and a
+pager for tall output. Picks its Pygments theme from the current macOS
+appearance at startup, since ptpython can't be re-themed live.
+
+Not in the Brewfile. It's listed in `pyglobal.txt` and installed into every
+pyenv-managed Python by `bootstrap.sh`, so the `ptpython` shim resolves no
+matter which version is active -- and the REPL sees that version's packages.
+A project virtualenv gets its own copy (`pip install ptpython`) or runs the
+base interpreter's with `python -m ptpython`.
+
+On macOS ptpython looks for its config in `~/Library/Application Support/`
+rather than XDG, so the shell rc files export
+`PTPYTHON_CONFIG_HOME=$HOME/.config/ptpython` to point it at the stowed file.
 
 ### Brewfile
 
@@ -192,6 +220,14 @@ Fuzzy search mode, secrets filtering enabled (blocks AWS keys, tokens, etc.), sy
 ```
 @google/clasp  eslint  npm-check-updates  pnpm
 prettier       tsx     typescript          yarn
+```
+
+### Python Globals
+
+`pyglobal.txt`, installed into each pyenv version rather than once globally:
+
+```
+ptpython
 ```
 
 ## Aliases & Functions
