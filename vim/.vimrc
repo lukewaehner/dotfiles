@@ -22,7 +22,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dense-analysis/ale'
 Plug 'sheerun/vim-polyglot'
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'ghifarit53/tokyonight-vim'
 Plug 'justinmk/vim-sneak'
 Plug 'liuchengxu/vim-which-key'
 Plug 'mhinz/vim-startify'
@@ -60,7 +60,11 @@ set mouse=a
 " ============================================================
 let g:tokyonight_style = 'night'
 let g:tokyonight_transparent_background = 1
-silent! colorscheme tokyonight
+let g:tokyonight_enable_italic = 1
+" Not `silent!`: a missing colorscheme should be loud. The previous plugin here
+" was folke/tokyonight.nvim, which ships only colors/*.lua -- Vim cannot load a
+" Lua colorscheme, so `silent!` hid the failure and this ran on `default`.
+colorscheme tokyonight
 
 " ============================================================
 " STATUSLINE
