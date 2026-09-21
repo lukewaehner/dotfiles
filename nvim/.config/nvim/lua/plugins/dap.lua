@@ -1,8 +1,26 @@
 -- lua/plugins/dap.lua
+--
+-- Everything hangs off nvim-dap's `keys` trigger. `defaults.lazy = false` in
+-- config/lazy.lua means any top-level spec without a trigger loads at startup,
+-- so the UI/adapter plugins live in `dependencies` instead of as siblings.
 return {
-  -- Core DAP with keymaps
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" }, opts = {} },
+      { "theHamsta/nvim-dap-virtual-text", opts = { commented = true } },
+      -- Auto-install adapters (codelldb for C/C++)
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        lazy = true,
+        dependencies = { "mason-org/mason.nvim" },
+        opts = {
+          ensure_installed = { "codelldb" },
+          automatic_installation = true,
+          handlers = {},
+        },
+      },
+    },
     keys = {
       { "<leader>dc", function() require("dap").continue() end,          desc = "DAP Continue" },
       { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "DAP Toggle Breakpoint" },
@@ -16,29 +34,9 @@ return {
       { "<leader>dl", function() require("dap").run_last() end,          desc = "DAP Run Last" },
       { "<leader>du", function() require("dapui").toggle() end,          desc = "DAP Toggle UI" },
     },
-  },
-
-  -- Auto-install adapters (codelldb for C/C++)
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    dependencies = { "mason-org/mason.nvim", "mfussenegger/nvim-dap" },
-    opts = {
-      ensure_installed = { "codelldb" },
-      automatic_installation = true,
-      handlers = {},
-    },
-  },
-
-  -- UI + required dependency
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "nvim-neotest/nvim-nio",
-    },
     config = function()
       local dap, dapui = require("dap"), require("dapui")
-      dapui.setup()
+
       dap.listeners.after.event_initialized["dapui"] = function()
         dapui.open()
       end
@@ -48,18 +46,8 @@ return {
       dap.listeners.before.event_exited["dapui"] = function()
         dapui.close()
       end
-    end,
-  },
 
-  -- Optional inline variable text
-  { "theHamsta/nvim-dap-virtual-text", opts = { commented = true } },
-
-  -- C/C++ configurations for codelldb
-  {
-    "mfussenegger/nvim-dap",
-    ft = { "c", "cpp" },
-    config = function()
-      local dap = require("dap")
+      -- C/C++ configurations for codelldb
       dap.configurations.c = {
         {
           name = "Launch",
