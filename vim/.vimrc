@@ -240,10 +240,23 @@ command! WQ :wa | qa
 " ============================================================
 " AUTOCMDS
 " ============================================================
+" A bare `:%s/\s\+$//e` sets @/ to '\s\+$', so with 'hlsearch' every save lit
+" up all trailing whitespace and left n/N walking it instead of the real search.
+" It also left the cursor on the last substituted line. `keeppatterns` fixes the
+" first, winsaveview() the second.
+function! s:StripTrailingWhitespace() abort
+  if &filetype ==# 'diff' || &binary
+    return
+  endif
+  let l:view = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
 augroup vim_config
   autocmd!
   " Strip trailing whitespace on save (non-binary files)
-  autocmd BufWritePre * if &ft !=# 'diff' | :%s/\s\+$//e | endif
+  autocmd BufWritePre * call s:StripTrailingWhitespace()
   " Return to last cursor position when reopening a file
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   " Filetype-specific indent overrides

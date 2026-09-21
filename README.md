@@ -41,6 +41,18 @@ pyenv rehash
 bat cache --build
 ```
 
+## Tests
+
+Behavioural regression tests for the Vim config (trailing-whitespace strip,
+search-register and cursor preservation on save):
+
+```bash
+vim -es -u vim/.vimrc -S vim/test/vimrc.test.vim </dev/null; echo $?
+```
+
+Exits `0` on success; prints `FAIL <assertion>` to stderr and exits `1`
+otherwise.
+
 ## Repository Structure
 
 ```
