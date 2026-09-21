@@ -1,7 +1,7 @@
 return {
   "f-person/auto-dark-mode.nvim",
   opts = {
-    update_interval = 1000,
+    update_interval = 3000,
     set_dark_mode = function()
       vim.opt.background = "dark"
       vim.cmd("colorscheme tokyonight-night")
