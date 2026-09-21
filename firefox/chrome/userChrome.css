@@ -6,12 +6,17 @@
  *   2. Global toolbar layout (ordering, vertical-padding reset)
  *   3. macOS-specific (traffic lights, nav offset)
  *   4. URL bar
- *   5. Tabs (multi + single-tab special case)
+ *   5. Tabs (multi + single-tab sizing)
  *   6. Extension (browser action) icons
  *   7. Extensions manager + hamburger menu (pinned right)
  *
- * Foundations (sec 1–3) must come before topical sections so the
- * cascade resolves correctly; sec 4–7 follow the requested order.
+ * Ordered by the cascade, broad to narrow: tokens, then global layout,
+ * then platform, then topical. Foundations (sec 1–3) must precede the
+ * topical sections for later overrides to land.
+ *
+ * macOS only. Sec 3 pins the traffic lights and sec 7's right-edge
+ * offsets are measured against them; neither means anything on
+ * Windows or Linux. Depends on the prefs in ../user.js.
  * ============================================================ */
 
 @import "onebar/onebar.css";
@@ -23,7 +28,28 @@
 :root {
   --uc-pill-radius: 7px;
   --uc-pill-bg: color-mix(in srgb, currentColor 8%, transparent);
+
+  /* Also consumed by onebar for #urlbar-container's width */
   --urlbar-collapsed-width: 350px;
+
+  /* macOS traffic lights: 3 buttons plus Firefox's 12px leading margin */
+  --uc-traffic-lights-width: 78px;
+
+  /* Right-edge pinned buttons (hamburger + extensions manager, sec 7).
+     --uc-pinned-reserve is the tab strip's right padding: both buttons,
+     the gap outside and between them, and clearance before the tabs.
+     Decomposition of the original flat 84px; the total is unchanged, but
+     the per-button width is an estimate (16px icon + 2 * 6px compact
+     padding) and worth confirming in the Browser Toolbox. */
+  --uc-pinned-button-width: 28px;
+  --uc-pinned-gap: 8px;
+  --uc-pinned-clearance: 12px;
+  --uc-pinned-reserve: calc(2 * var(--uc-pinned-button-width) +
+                            2 * var(--uc-pinned-gap) +
+                            var(--uc-pinned-clearance));
+
+  --uc-z-traffic-lights: 101;
+  --uc-z-pinned-buttons: 102;
 }
 
 
@@ -33,13 +59,17 @@
  *    padding so everything reads as one flush band.
  * ============================================================ */
 
-/* Nav cluster (back/fwd/urlbar) left of tabs; traffic lights leftmost */
+/* Nav cluster (back/fwd/urlbar) left of tabs.
+   The traffic lights' own order: -100 comes from onebar. */
 #nav-bar  { order:  -1 !important; }
 #titlebar { order:   1 !important; }
-.titlebar-buttonbox-container { order: -100 !important; }
 
 /* Zero vertical padding/margin across the toolbar row.
-   Horizontal padding is intentionally preserved. */
+   Horizontal padding is intentionally preserved.
+
+   This is broader than it looks: #urlbar and #urlbar-container are also
+   where Firefox puts the urlbar's own breathing room. If the urlbar ever
+   looks cramped after an update, suspect this block first. */
 #nav-bar,
 #nav-bar-customization-target,
 #nav-bar toolbarbutton,
@@ -56,7 +86,7 @@
 /* Reserve space at the right for the pinned hamburger + extensions
    manager (see sec 7) so tabs don't slide underneath them. */
 #TabsToolbar {
-  padding-right: 84px !important;
+  padding-right: var(--uc-pinned-reserve) !important;
 }
 
 
@@ -68,10 +98,10 @@
   .titlebar-buttonbox-container {
     position: absolute !important;
     left: 0 !important;
-    z-index: 101 !important;
+    z-index: var(--uc-z-traffic-lights) !important;
   }
   #nav-bar {
-    padding-left: 78px !important;   /* ≈ width of the 3 traffic lights */
+    padding-left: var(--uc-traffic-lights-width) !important;
   }
 }
 
@@ -87,7 +117,7 @@
 
 #urlbar-container {
   justify-content: flex-start !important;   /* anchor urlbar to the left */
-  min-width: 350px !important;              /* wider search area */
+  min-width: var(--urlbar-collapsed-width) !important;   /* wider search area */
 }
 
 
@@ -99,6 +129,12 @@
  *    Depends on onebar.disable-single-tab (user.js). onebar otherwise
  *    collapses a lone tab and hides its close button; the rules below
  *    only size the card and assume that mode is off.
+ *
+ *    The pill sizing here also assumes onebar's tab margins are dead:
+ *    onebar.css:41,57 read --tab-block-margin, which Firefox renamed to
+ *    --tab-margin-block, so both declarations are dropped on 156. That
+ *    is load-bearing and deliberate. Shimming the old name would give
+ *    the pills ~6px of block margin and these rules would need retuning.
  * ============================================================ */
 
 .tab-background {
@@ -172,8 +208,16 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  z-index: 102 !important;
+  z-index: var(--uc-z-pinned-buttons) !important;
 }
 
-#PanelUI-menu-button       { right: calc(100% - 100vw +  8px) !important; }
-#unified-extensions-button { right: calc(100% - 100vw + 44px) !important; }
+/* Offsets in from the window's right edge: the hamburger one gap in, the
+   extensions manager a further button-width and gap. Both are components
+   of --uc-pinned-reserve, so the tab strip's padding cannot drift. */
+#PanelUI-menu-button {
+  right: calc(100% - 100vw + var(--uc-pinned-gap)) !important;
+}
+#unified-extensions-button {
+  right: calc(100% - 100vw + 2 * var(--uc-pinned-gap) +
+              var(--uc-pinned-button-width)) !important;
+}
