@@ -45,7 +45,7 @@ No subdirectory split. Everything lives in `.vimrc` organized into sections:
 | `christoomey/vim-tmux-navigator` | `<C-h/j/k/l>` across vim + tmux |
 | `dense-analysis/ale` | Async lint/fix on save (ruff for Python) |
 | `sheerun/vim-polyglot` | Lazy-loaded syntax for Rust, TS, and others |
-| `folke/tokyonight.nvim` | Colorscheme — vim-compatible port |
+| `ghifarit53/tokyonight-vim` | Colorscheme — the Vimscript port |
 
 vim-plug itself is installed by a bootstrap curl command (see install notes).
 
@@ -69,7 +69,9 @@ Ported from LazyVim defaults:
 
 ## Colorscheme
 
-`folke/tokyonight.nvim` — has a vim-compatible port. Style: `night`, transparent background. Same visual as neovim config. Falls back gracefully if `termguicolors` is unavailable.
+`ghifarit53/tokyonight-vim` — the Vimscript port. Style: `night`, transparent background. Same visual as neovim config.
+
+Not `folke/tokyonight.nvim`: that one ships only `colors/*.lua`, which Vim cannot load. It is the port that is a separate repo, not a branch of folke's.
 
 ## Keymaps
 
