@@ -1,0 +1,4 @@
+# CLI tools installed into every pyenv-managed Python (see install_python_globals
+# in bootstrap.sh). Installed per version, not once, because pyenv shims resolve
+# against whichever version is active.
+ptpython

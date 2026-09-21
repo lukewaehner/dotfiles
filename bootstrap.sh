@@ -5,6 +5,7 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/repos/dotfiles}"
 BREWFILE="${BREWFILE:-$DOTFILES_DIR/brew/Brewfile}"
 STOW_TARGET="${STOW_TARGET:-$HOME}"
 NPM_GLOBALS_FILE="${NPM_GLOBALS_FILE:-$DOTFILES_DIR/npmglobal.txt}"
+PY_GLOBALS_FILE="${PY_GLOBALS_FILE:-$DOTFILES_DIR/pyglobal.txt}"
 NODE_VERSION="${NODE_VERSION:-24}"
 
 log() { printf "\n==> %s\n" "$*"; }
@@ -151,6 +152,47 @@ install_npm_gloabls() {
   npm i -g $(grep -vE '^\s*#' "$NPM_GLOBALS_FILE" | tr '\n' ' ')
 }
 
+# Python CLI tools (ptpython, ...) go into *every* pyenv version rather than a
+# single global one. A pyenv shim resolves against whichever version is active,
+# so a tool installed only in the global version dies with "command not found"
+# the moment you cd into a project pinned to another version.
+install_python_globals() {
+  if ! command_exists pyenv; then
+    warn "pyenv not found, skipping Python globals"
+    return 0
+  fi
+
+  if [[ ! -f "$PY_GLOBALS_FILE" ]]; then
+    warn "No Python globals file found at $PY_GLOBALS_FILE, skipping"
+    return 0
+  fi
+
+  local packages=()
+  local line
+  while IFS= read -r line; do
+    [[ "$line" =~ ^[[:space:]]*(#.*)?$ ]] && continue
+    packages+=("$line")
+  done < "$PY_GLOBALS_FILE"
+
+  [[ "${#packages[@]}" -eq 0 ]] && return 0
+
+  log "Installing Python globals into every pyenv version: ${packages[*]}"
+
+  local version python
+  # `pyenv versions --bare` lists virtualenvs too; those belong to a project and
+  # get their own dependencies, so restrict this to plain X.Y.Z interpreters.
+  while IFS= read -r version; do
+    [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || continue
+    python="$PYENV_ROOT/versions/$version/bin/python"
+    [[ -x "$python" ]] || continue
+    log "  $version"
+    "$python" -m pip install --quiet --upgrade "${packages[@]}" ||
+      warn "pip install failed for Python $version"
+  done < <(pyenv versions --bare)
+
+  pyenv rehash
+}
+
 install_vim_plugins() {
   local plug_path="$HOME/.vim/autoload/plug.vim"
   if [[ ! -f "$plug_path" ]]; then
@@ -220,6 +262,8 @@ main() {
 
   pyenv install -s "$LATEST_PYTHON"
   pyenv global 3.9.6
+
+  install_python_globals
 
   # Install latest stable Ruby
   log "Ensuring Ruby via rbenv"
