@@ -107,8 +107,11 @@
   box-shadow: none !important;
 }
 
+/* Tabs as tall as the urlbar, so the merged row reads as one band.
+   Firefox renamed --urlbar-min-height to --urlbar-height; the fallback
+   keeps the next rename from silently zeroing min-height again. */
 .tabbrowser-tab {
-  min-height: var(--urlbar-min-height) !important;
+  min-height: var(--urlbar-height, var(--tab-min-height)) !important;
 }
 
 .tabbrowser-tab[selected] .tab-background {
