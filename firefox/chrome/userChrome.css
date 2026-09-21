@@ -1,0 +1,183 @@
+/* ============================================================
+ * userChrome.css — Firefox chrome customizations
+ *
+ * Sections (top → bottom):
+ *   1. Imports + design tokens
+ *   2. Global toolbar layout (ordering, vertical-padding reset)
+ *   3. macOS-specific (traffic lights, nav offset)
+ *   4. URL bar
+ *   5. Tabs (multi + single-tab special case)
+ *   6. Extension (browser action) icons
+ *   7. Extensions manager + hamburger menu (pinned right)
+ *
+ * Foundations (sec 1–3) must come before topical sections so the
+ * cascade resolves correctly; sec 4–7 follow the requested order.
+ * ============================================================ */
+
+@import "onebar/onebar.css";
+
+
+/* ============================================================
+ * 1. Design tokens
+ * ============================================================ */
+:root {
+  --uc-pill-radius: 7px;
+  --uc-pill-bg: color-mix(in srgb, currentColor 8%, transparent);
+  --urlbar-collapsed-width: 350px;
+}
+
+
+/* ============================================================
+ * 2. Global toolbar layout
+ *    Flex ordering for the merged onebar row + zero vertical
+ *    padding so everything reads as one flush band.
+ * ============================================================ */
+
+/* Nav cluster (back/fwd/urlbar) left of tabs; traffic lights leftmost */
+#nav-bar  { order:  -1 !important; }
+#titlebar { order:   1 !important; }
+.titlebar-buttonbox-container { order: -100 !important; }
+
+/* Zero vertical padding/margin across the toolbar row.
+   Horizontal padding is intentionally preserved. */
+#nav-bar,
+#nav-bar-customization-target,
+#nav-bar toolbarbutton,
+#nav-bar toolbaritem,
+#urlbar-container,
+#urlbar,
+#TabsToolbar,
+#TabsToolbar toolbarbutton,
+#TabsToolbar-customization-target {
+  padding-block: 0 !important;
+  margin-block:  0 !important;
+}
+
+/* Reserve space at the right for the pinned hamburger + extensions
+   manager (see sec 7) so tabs don't slide underneath them. */
+#TabsToolbar {
+  padding-right: 84px !important;
+}
+
+
+/* ============================================================
+ * 3. macOS-specific
+ *    Pin traffic lights to the left edge and reserve room for them.
+ * ============================================================ */
+@media (-moz-platform: macos) {
+  .titlebar-buttonbox-container {
+    position: absolute !important;
+    left: 0 !important;
+    z-index: 101 !important;
+  }
+  #nav-bar {
+    padding-left: 78px !important;   /* ≈ width of the 3 traffic lights */
+  }
+}
+
+
+/* ============================================================
+ * 4. URL bar
+ * ============================================================ */
+#urlbar,
+#urlbar-background {
+  border-radius: var(--uc-pill-radius) !important;
+  border: none !important;
+}
+
+#urlbar-container {
+  justify-content: flex-start !important;   /* anchor urlbar to the left */
+  min-width: 350px !important;              /* wider search area */
+}
+
+
+/* ============================================================
+ * 5. Tabs
+ *    Pill-shaped backgrounds matching the urlbar, plus a special
+ *    case for single-tab mode (override onebar's hide rule).
+ * ============================================================ */
+
+.tab-background {
+  border-radius: var(--uc-pill-radius) !important;
+  background-color: var(--uc-pill-bg) !important;
+  box-shadow: none !important;
+}
+
+.tabbrowser-tab {
+  min-height: var(--urlbar-min-height) !important;
+}
+
+.tabbrowser-tab[selected] .tab-background {
+  background-color: color-mix(in srgb, currentColor 14%, transparent) !important;
+}
+
+/* ---- Single-tab case: keep the card visible and let the + hug it ---- */
+
+/* Restore card sizing (onebar collapses lone tabs by default) */
+#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type {
+  width: auto !important;
+  max-width: 240px !important;
+  flex: 0 1 240px !important;
+  margin-inline-end: 0 !important;       /* no trailing auto-gap */
+}
+
+/* Shrink the arrowscrollbox so the + glyph sits flush against the card */
+#tabbrowser-arrowscrollbox:has(> .tabbrowser-tab:only-of-type) {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+/* Restore visual bits that onebar strips on single tabs */
+#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-text {
+  font-weight: normal !important;
+}
+#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-close-button {
+  display: -moz-box !important;
+}
+#tabbrowser-arrowscrollbox > .tabbrowser-tab:only-of-type .tab-background {
+  opacity: 1 !important;
+}
+
+
+/* ============================================================
+ * 6. Extension (browser action) icons
+ *    Rounded hover pill matching the urlbar + smaller icon size.
+ * ============================================================ */
+#nav-bar toolbarbutton .toolbarbutton-icon {
+  border-radius: calc(var(--uc-pill-radius) - 2px) !important;
+}
+
+#nav-bar toolbarbutton[id$="-browser-action"] .toolbarbutton-icon {
+  width:  12px !important;
+  height: 12px !important;
+}
+
+
+/* ============================================================
+ * 7. Extensions manager + hamburger menu
+ *    Both pinned to the far right, outside the normal toolbar flow.
+ *
+ *    Positioned absolutely against #nav-bar (Firefox already makes it
+ *    position: relative) and stretched with inset-block: 0 so the
+ *    buttons are exactly as tall as the toolbar row itself. The row's
+ *    height is set by the urlbar container (--urlbar-height), not by
+ *    --tab-min-height, so hardcoding the latter centred the icons in a
+ *    band shorter than the row and pushed them toward the top edge.
+ *
+ *    #nav-bar's left edge sits at viewport x=0 and its right edge is
+ *    wherever the tab strip begins, so the window's right edge is
+ *    (100vw - 100%) beyond it -- hence the right: calc(...) offsets.
+ * ============================================================ */
+#unified-extensions-button,
+#PanelUI-menu-button {
+  position: absolute !important;
+  inset-block: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 102 !important;
+}
+
+#PanelUI-menu-button       { right: calc(100% - 100vw +  8px) !important; }
+#unified-extensions-button { right: calc(100% - 100vw + 44px) !important; }

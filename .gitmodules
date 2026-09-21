@@ -1,0 +1,4 @@
+[submodule "firefox/chrome/onebar"]
+	path = firefox/chrome/onebar
+	url = https://git.gay/Freeplay/firefox-onebar.git
+	branch = waf

@@ -79,7 +79,8 @@ stow_modules() {
 
   # Stow all top-level directories except known non-modules.
   # macos: plist file installed separately by install_macos_appearance_watcher().
-  local excludes_regex='^(brew|macos|\.git|\.github|\.claude)$'
+  # firefox: target profile dir has a random name, so link-firefox.sh does it.
+  local excludes_regex='^(brew|macos|firefox|\.git|\.github|\.claude)$'
   local modules=()
   local d
   for d in */; do
