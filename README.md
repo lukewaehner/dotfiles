@@ -21,7 +21,8 @@ cd ~/repos/dotfiles
 brew bundle --file=brew/Brewfile
 
 # Stow all configuration modules into $HOME
-# (every top-level directory except brew/ and macos/, which aren't stow packages)
+# (every top-level directory except brew/, macos/, and firefox/, which
+#  aren't stow packages)
 stow --restow zsh bash git nvim vim zed ghostty wezterm tmux herdr \
   starship atuin bat eza lazygit mactop aerospace scripts ptpython \
   claude antigravity raycast
@@ -112,18 +113,25 @@ dotfiles/
 ├── aerospace/
 │   └── .config/aerospace/  # AeroSpace tiling window manager
 ├── scripts/
-│   └── .local/bin/       # theme-switch, appearance-watcher, sync-claude-settings
+│   └── .local/bin/       # theme-switch, appearance-watcher, sync-claude-settings,
+│                         # link-firefox, check-userchrome-vars
 ├── raycast/              # Raycast script commands
 │
 │   # Consumed directly, not stowed
 ├── brew/
 │   └── Brewfile          # Homebrew formulae, casks, and VS Code extensions
+├── firefox/
+│   ├── chrome/           # userChrome.css + onebar submodule; installed by
+│   │                     # link-firefox.sh, not stow
+│   └── user.js           # prefs the CSS depends on
 └── macos/
     └── com.user.appearance-watcher.plist  # launchd agent, installed to
                                            # ~/Library/LaunchAgents by bootstrap.sh
 ```
 
-Every top-level directory except `brew/` and `macos/` is a Stow package. Running `stow <package>` symlinks its contents into `$HOME`, mirroring the internal directory structure; `bootstrap.sh` stows them all, skipping those two.
+Every top-level directory except `brew/`, `macos/`, and `firefox/` is a Stow package. Running `stow <package>` symlinks its contents into `$HOME`, mirroring the internal directory structure; `bootstrap.sh` stows them all, skipping those three.
+
+`firefox/` is excluded because stow mirrors a package tree into `$HOME`, and the directory this one has to land in is the Firefox profile, whose name is random. `link-firefox.sh` resolves it from `profiles.ini` and symlinks instead. See [firefox/README.md](firefox/README.md).
 
 ## What's Configured
 
@@ -174,6 +182,21 @@ default branch: main
 pull strategy: merge
 auto-setup remote: true
 ```
+
+### Firefox
+
+`userChrome.css` layered on [onebar](https://git.gay/Freeplay/firefox-onebar)
+(vendored as a submodule), which merges the tab strip into the URL bar row.
+macOS only — it pins the traffic lights and measures offsets against them.
+
+```sh
+link-firefox.sh              # symlink chrome/ and user.js into the profile
+check-userchrome-vars.sh     # after a Firefox update: find stale CSS tokens
+```
+
+Firefox renames its CSS custom properties without notice and a stale `var()`
+fails silently, so run the check after an update. Details in
+[firefox/README.md](firefox/README.md).
 
 ### CLI Tools
 
