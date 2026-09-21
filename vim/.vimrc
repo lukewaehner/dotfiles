@@ -1,4 +1,13 @@
 " ============================================================
+" LEADER
+" ============================================================
+" Must come before any <leader> mapping and before plugins load: <leader> is
+" expanded to the current mapleader when the mapping is *parsed*, not when the
+" key is pressed. Defining it further down left the which-key trigger bound to
+" the default leader, backslash.
+let mapleader = ' '
+
+" ============================================================
 " PLUGINS
 " ============================================================
 " Bootstrap: curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -179,8 +188,6 @@ endfunction
 " ============================================================
 " KEYMAPS
 " ============================================================
-let mapleader = ' '
-
 " --- fzf ---
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>sg :Rg<CR>
