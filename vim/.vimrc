@@ -227,7 +227,7 @@ nnoremap <M-4>      'd
 
 " --- search ---
 nnoremap <leader>sr :vimgrep /\<<C-r><C-w>\>/ **<CR>:copen<CR>
-nnoremap <Esc>      :nohlsearch<CR>
+nnoremap <silent> <Esc> :nohlsearch<CR>
 
 " --- quickfix ---
 nnoremap <leader>co :copen<CR>
