@@ -107,6 +107,11 @@ export MANPAGER="nvim +Man!"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# ptpython resolves its config dir through appdirs, which on macOS means
+# ~/Library/Application Support/ptpython -- not XDG. Point it back at the
+# stowed config so the same file works here and on Linux.
+export PTPYTHON_CONFIG_HOME="$HOME/.config/ptpython"
+
 # Tuxedo config
 export TODO_DIR="$HOME/Documents/todo"
 export TODO_FILE="$TODO_DIR/todo.txt"
