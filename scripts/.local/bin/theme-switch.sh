@@ -72,8 +72,14 @@ apply_starship() {
   # render to a temp file and pipe back through the symlink.
   local tmp
   tmp=$(mktemp) || return
-  sed "s/^palette = .*/palette = \"$palette\"/" "$STARSHIP_CONFIG" > "$tmp" \
-    && cat "$tmp" > "$STARSHIP_CONFIG"
+  sed "s/^palette = .*/palette = \"$palette\"/" "$STARSHIP_CONFIG" > "$tmp"
+  # Guard against a short/empty read (e.g. a boot-time race on $STARSHIP_CONFIG)
+  # silently truncating the real config through the symlink.
+  if [[ -s "$tmp" ]] && grep -q '^palette = ' "$tmp"; then
+    cat "$tmp" > "$STARSHIP_CONFIG"
+  else
+    echo "theme-switch: refusing to write $STARSHIP_CONFIG (empty or malformed read)" >&2
+  fi
   rm -f "$tmp"
 }
 
