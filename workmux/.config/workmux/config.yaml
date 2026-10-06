@@ -25,3 +25,9 @@ status_icons:
   working: "W"
   waiting: "Q"
   done: "D"
+
+# Auto-detection picks dark on the light, translucent ghostty background, so
+# the mode is pinned here and rewritten by theme-switch.sh on appearance change.
+theme:
+  scheme: default
+  mode: light

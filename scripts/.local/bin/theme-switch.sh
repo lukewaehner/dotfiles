@@ -15,6 +15,7 @@
 TMUX_THEMES="$HOME/.config/tmux/themes"
 LAZYGIT_THEMES="$HOME/.config/lazygit/themes"
 STARSHIP_CONFIG="$HOME/.config/starship.toml"
+WORKMUX_CONFIG="$HOME/.config/workmux/config.yaml"
 NVIM_LISTEN_GLOB="/tmp/nvim*.sock"  # LazyVim default socket pattern
 
 # ── Resolve mode ───────────────────────────────────────────────────────────────
@@ -83,6 +84,28 @@ apply_starship() {
   rm -f "$tmp"
 }
 
+# ── Apply workmux theme mode ───────────────────────────────────────────────────
+# workmux's terminal auto-detection reports dark under tmux + translucent ghostty,
+# so `mode:` is pinned in its config and rewritten here. The sidebar reads the
+# config only at startup, so restart it if it's running.
+apply_workmux() {
+  [[ -f "$WORKMUX_CONFIG" ]] || return
+  local tmp
+  tmp=$(mktemp) || return
+  sed "s/^\(  mode: \).*/\1$1/" "$WORKMUX_CONFIG" > "$tmp"
+  if [[ -s "$tmp" ]] && grep -q "^  mode: $1\$" "$tmp"; then
+    cat "$tmp" > "$WORKMUX_CONFIG"
+  else
+    echo "theme-switch: refusing to write $WORKMUX_CONFIG (empty or malformed read)" >&2
+    rm -f "$tmp"
+    return 1
+  fi
+  rm -f "$tmp"
+  if pgrep -qf "workmux _sidebar-daemon"; then
+    workmux sidebar off && workmux sidebar on
+  fi
+}
+
 # ── Apply Neovim theme ─────────────────────────────────────────────────────────
 # Signals all running nvim instances via their unix sockets
 apply_nvim() {
@@ -102,12 +125,14 @@ case "$MODE" in
     apply_tmux "night"
     apply_lazygit "night"
     apply_starship "mocha"
+    apply_workmux "dark"
     apply_nvim "dark" "night"
     ;;
   light)
     apply_tmux "day"
     apply_lazygit "day"
     apply_starship "latte"
+    apply_workmux "light"
     apply_nvim "light" "day"
     ;;
   *)
