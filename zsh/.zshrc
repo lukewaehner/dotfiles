@@ -77,6 +77,12 @@ zstyle ':completion:*' matcher-list \
 autoload -Uz compinit
 compinit -C
 
+# Keep the dump bytecode-compiled: `.` prefers .zcompdump.zwc when it is newer
+# than the dump, which skips re-parsing ~50KB of completion tables (~10ms).
+if [[ -s ~/.zcompdump && ( ! -s ~/.zcompdump.zwc || ~/.zcompdump -nt ~/.zcompdump.zwc ) ]]; then
+  zcompile ~/.zcompdump
+fi
+
 
 # -------------------------------------------------------------
 # 3. Plugins (early - syntax-highlighting loads in Section 14 on purpose)
@@ -347,7 +353,7 @@ export FZF_DEFAULT_OPTS='--color=fg+:7,bg:-1,hl:4,hl+:4,info:6,prompt:5,spinner:
 
 # Nuke all zsh caches (bytecode + completion + tool-init cache)
 kzshcache() {
-  rm -f ~/.cache/zsh/*.zsh ~/.zshrc.zwc
+  rm -f ~/.cache/zsh/*.zsh ~/.zshrc.zwc ~/.zcompdump.zwc
   rm -rf ~/.zcompcache
   echo "zsh caches cleared - re-source to rebuild"
 }
