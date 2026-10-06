@@ -2,7 +2,13 @@
 # Reference: `workmux config reference`. Per-repo overrides go in .workmux.yaml.
 
 nerdfont: true
-agent: claude
+# claude-auto picks the account (personal/work/school) from the nearest
+# .claude-instance file above the repo and skips permission prompts.
+agents:
+  cc:
+    type: claude
+    command: claude-auto
+agent: cc
 
 # Branch new worktrees off main, not whatever happens to be checked out.
 base_branch: auto
