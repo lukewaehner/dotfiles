@@ -316,7 +316,11 @@ _zcache() {
     case $1 in
       zoxide)   zoxide init zsh > "$cache_file" ;;
       atuin)    atuin init zsh --disable-up-arrow > "$cache_file" ;;
-      starship) starship init zsh > "$cache_file" ;;
+      # starship's init evaluates PROMPT2 eagerly, which execs starship once
+      # per startup (~20ms) for a continuation prompt most shells never show.
+      # Single-quote it so promptsubst expands it only when it is displayed.
+      starship) starship init zsh --print-full-init \
+                  | sed 's/^PROMPT2="\$(\(.*\))"$/PROMPT2='"'"'$(\1)'"'"'/' > "$cache_file" ;;
       *) return ;;
     esac
   fi
