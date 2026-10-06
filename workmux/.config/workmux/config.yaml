@@ -18,3 +18,10 @@ panes:
 # ~/.config/tmux/themes/*.conf via #{@workmux_status}, so don't let workmux
 # rewrite window-status-format.
 status_format: false
+
+# Single-letter tab markers: Working, Question (permission prompt or a
+# question for me), Done.
+status_icons:
+  working: "W"
+  waiting: "Q"
+  done: "D"
