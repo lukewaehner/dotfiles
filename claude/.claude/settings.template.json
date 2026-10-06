@@ -6,106 +6,154 @@
     "vercel@claude-plugins-official": true
   },
   "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt|elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status waiting"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
+        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
         "hooks": [
           {
+            "type": "command",
             "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-context-monitor.js\"",
-            "timeout": 10,
-            "type": "command"
+            "timeout": 10
           }
-        ],
-        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task"
+        ]
       },
       {
+        "matcher": "Read",
         "hooks": [
           {
+            "type": "command",
             "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-read-injection-scanner.js\"",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
-        ],
-        "matcher": "Read"
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-phase-boundary.sh\"",
+            "timeout": 5
+          }
+        ]
       },
       {
         "hooks": [
           {
-            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-phase-boundary.sh\"",
-            "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "command": "workmux set-window-status working"
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       }
     ],
     "PreToolUse": [
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
+            "type": "command",
             "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-prompt-guard.js\"",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       },
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
+            "type": "command",
             "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-read-guard.js\"",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       },
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
+            "type": "command",
             "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-workflow-guard.js\"",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       },
       {
+        "matcher": "Bash",
         "hooks": [
           {
+            "type": "command",
             "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-validate-commit.sh\"",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
-        ],
-        "matcher": "Bash"
+        ]
       }
     ],
     "SessionStart": [
       {
         "hooks": [
           {
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-check-update.js\"",
-            "type": "command"
+            "type": "command",
+            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-check-update.js\""
           }
         ]
       },
       {
         "hooks": [
           {
-            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-session-state.sh\"",
-            "type": "command"
+            "type": "command",
+            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-session-state.sh\""
           }
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
+            "type": "command",
             "command": "bash '/Users/lukewaehner/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
+            "timeout": 10
           }
-        ],
-        "matcher": "*"
+        ]
+      },
+      {
+        "matcher": "startup|resume|clear|fork",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux register-agent"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status done"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status working"
+          }
+        ]
       }
     ]
   },
