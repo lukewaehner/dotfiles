@@ -280,24 +280,32 @@ ZSH_HIGHLIGHT_STYLES[builtin]='fg=blue'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 
-# macOS-only dark mode detection
-# non-macOS falls through to the light branch
-_is_dark_mode() {
-  [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]
-}
+# macOS appearance picks the autosuggestion color and BAT_THEME. Start with
+# the light values (also the non-macOS default) and flip to dark
+# asynchronously: `defaults read` costs ~12ms, and the fd callback fires as
+# soon as zle waits for input, before anything can read these variables.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#333333'
+export BAT_THEME="TokyoNight Day"
 
-if _is_dark_mode; then
-  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777777'
-  export BAT_THEME="TokyoNight Night"
-else
-  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#333333'
-  export BAT_THEME="TokyoNight Day"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  _apply_appearance() {
+    local fd=$1 style
+    read -r style <&$fd
+    zle -F $fd
+    exec {fd}<&-
+    if [[ $style == Dark ]]; then
+      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#777777'
+      export BAT_THEME="TokyoNight Night"
+    fi
+    unfunction _apply_appearance
+  }
+  exec {_appearance_fd}< <(defaults read -g AppleInterfaceStyle 2>/dev/null)
+  zle -F $_appearance_fd _apply_appearance
+  unset _appearance_fd
 fi
 
 # Starship palette is swapped by theme-switch.sh (sed-edits starship.toml),
 # since starship 1.25 ignores the STARSHIP_PALETTE env var.
-
-unset -f _is_dark_mode
 
 
 # -------------------------------------------------------------
