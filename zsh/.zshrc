@@ -527,4 +527,34 @@ if (( $+commands[pyenv] )); then
   fi
   [[ -f "$_pyenv_cache" ]] && source "$_pyenv_cache"
   unset _pyenv_venv _pyenv_key _pyenv_cache
+
+  # virtualenv-init's precmd hook shells out to `pyenv sh-activate` (a ~370ms
+  # chain of bash scripts) on the first prompt and after every cd, even when
+  # nothing above $PWD names a Python version and there is nothing to
+  # activate. That was ~75% of the time to first prompt. Wrap it: walk up the
+  # tree in pure zsh and only call the real hook when a .python-version
+  # exists, the global version is itself a virtualenv, or a venv is already
+  # active and may need deactivating.
+  if (( $+functions[_pyenv_virtualenv_hook] )); then
+    functions[_pyenv_virtualenv_hook_slow]=$functions[_pyenv_virtualenv_hook]
+    _pyenv_virtualenv_hook() {
+      local ret=$?
+      if [[ -z $VIRTUAL_ENV && -z $PYENV_VERSION ]]; then
+        local d=$PWD
+        while [[ ! -e $d/.python-version ]]; do
+          [[ $d == / ]] && break
+          d=${d:h}
+        done
+        if [[ ! -e $d/.python-version ]]; then
+          # Only the global version applies. A plain CPython install has no
+          # bin/activate, so this distinguishes a venv without forking.
+          local gver
+          [[ -f $PYENV_ROOT/version ]] && gver=${${(f)"$(<$PYENV_ROOT/version)"}[1]}
+          [[ -n $gver && -f $PYENV_ROOT/versions/$gver/bin/activate ]] || return $ret
+        fi
+      fi
+      _pyenv_virtualenv_hook_slow
+      return $ret
+    }
+  fi
 fi
