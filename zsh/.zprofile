@@ -1,8 +1,16 @@
 # ---- login environment (runs once) ----
 
-# Homebrew
+# Homebrew. `brew shellenv` is a ~50ms bash script whose output is static for
+# a given install, so cache it and source the cache; it is regenerated when
+# the brew binary changes, and `kzshcache` clears it.
 if [ -x /opt/homebrew/bin/brew ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  _brew_env="$HOME/.cache/zsh/brew-shellenv.zsh"
+  if [[ ! -s "$_brew_env" || /opt/homebrew/bin/brew -nt "$_brew_env" ]]; then
+    mkdir -p "${_brew_env:h}"
+    /opt/homebrew/bin/brew shellenv > "$_brew_env"
+  fi
+  source "$_brew_env"
+  unset _brew_env
 fi
 
 # Version manager roots
