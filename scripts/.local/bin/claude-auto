@@ -1,0 +1,59 @@
+#!/bin/sh
+# Launch Claude Code under the account that owns the current directory, with
+# permission checks skipped.
+#
+# The account comes from the nearest `.claude-instance` file found walking up
+# from the repo's main checkout (so worktrees resolve like their parent repo).
+# The search stops at $HOME. The file holds one word: `personal`, `work`, or
+# `school`, mapping to ~/.claude, ~/.claude-work, ~/.claude-school. No file
+# found → personal.
+#
+# workmux's own .workmux.yaml lookup stops at the git root, which can't cover a
+# folder of many repos (e.g. ~/Repos/meteora); this walk doesn't stop there.
+
+set -eu
+
+# Main checkout of the current repo, or $PWD outside git. --git-common-dir
+# points at the main repo's .git even from inside a linked worktree.
+start_dir() {
+  common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || {
+    pwd
+    return
+  }
+  dirname "$common"
+}
+
+find_instance() {
+  dir=$1
+  while :; do
+    if [ -f "$dir/.claude-instance" ]; then
+      tr -d '[:space:]' <"$dir/.claude-instance"
+      return
+    fi
+    # Stop at home (or / for paths outside it): nothing above ~ is mine.
+    [ "$dir" = "$HOME" ] || [ "$dir" = / ] && break
+    dir=$(dirname "$dir")
+  done
+  echo personal
+}
+
+instance=$(find_instance "$(start_dir)")
+
+case $instance in
+  personal) unset CLAUDE_CONFIG_DIR ;;
+  work | school)
+    CLAUDE_CONFIG_DIR="$HOME/.claude-$instance"
+    export CLAUDE_CONFIG_DIR
+    ;;
+  *)
+    echo "claude-auto: unknown instance '$instance' in .claude-instance (want personal, work, or school)" >&2
+    exit 1
+    ;;
+esac
+
+if [ -n "${CLAUDE_CONFIG_DIR:-}" ] && [ ! -d "$CLAUDE_CONFIG_DIR" ]; then
+  echo "claude-auto: config dir $CLAUDE_CONFIG_DIR for instance '$instance' does not exist" >&2
+  exit 1
+fi
+
+exec claude --dangerously-skip-permissions "$@"

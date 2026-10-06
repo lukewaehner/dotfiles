@@ -1,2 +1,5 @@
 .DS_Store
 .claude
+
+# claude-auto account marker (see scripts/.local/bin/claude-auto)
+.claude-instance
