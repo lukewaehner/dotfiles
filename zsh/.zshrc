@@ -302,7 +302,7 @@ unset -f _is_dark_mode
 
 # Cache `<tool> init zsh` output once and source it on every startup. Don't
 # cache tools whose init output depends on the current shell state (rbenv,
-# pyenv, etc.).
+# etc.). pyenv is cached separately at the bottom, keyed by version.
 _zcache() {
   local cache_file="$HOME/.cache/zsh/$1.zsh"
 
@@ -512,8 +512,19 @@ export PATH="/Users/lukewaehner/.local/bin:$PATH"
 #                           current shell.
 #   pyenv virtualenv-init - installs the precmd hook that auto-activates the
 #                           env named in a directory's .python-version file.
-# Not cached via _zcache: both depend on live shell state.
-if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+# Both outputs are static apart from embedded Homebrew Cellar paths, so they are
+# cached under a key of the installed versions (a brew upgrade regenerates it).
+# Spawning them on every shell cost ~0.5s. --no-rehash skips the per-shell shim
+# rebuild; `pyenv install` and pip already rehash, run `pyenv rehash` otherwise.
+if (( $+commands[pyenv] )); then
+  _pyenv_venv=( ${HOMEBREW_PREFIX:-/opt/homebrew}/opt/pyenv-virtualenv(N:A:t) )
+  _pyenv_key="${${commands[pyenv]:A}:h:h:t}-${_pyenv_venv[1]:-none}"
+  _pyenv_cache="$HOME/.cache/zsh/pyenv-$_pyenv_key.zsh"
+  if [[ ! -f "$_pyenv_cache" ]]; then
+    rm -f "$HOME"/.cache/zsh/pyenv-*.zsh(N)
+    { pyenv init - --no-rehash zsh && pyenv virtualenv-init -; } > "$_pyenv_cache" \
+      || { rm -f "$_pyenv_cache"; echo "zshrc: pyenv init failed, not cached" >&2; }
+  fi
+  [[ -f "$_pyenv_cache" ]] && source "$_pyenv_cache"
+  unset _pyenv_venv _pyenv_key _pyenv_cache
 fi
