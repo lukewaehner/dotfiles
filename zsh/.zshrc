@@ -490,12 +490,12 @@ _zcache "starship"
 [ -s "/Users/lukewaehner/.bun/_bun" ] && source "/Users/lukewaehner/.bun/_bun"
 
 # Theme init - applies the correct light/dark tmux+nvim theme to new
-# terminal windows. Live theme switching is handled by the dark-notify
-# launchd agent on macOS.
+# terminal windows. Backgrounded: it costs ~100ms and every new tmux pane
+# would otherwise wait on it.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  "$HOME/.local/bin/theme-switch.sh" auto
+  "$HOME/.local/bin/theme-switch.sh" auto &>/dev/null &!
 else
-  "$HOME/.local/bin/theme-switch.sh" light
+  "$HOME/.local/bin/theme-switch.sh" light &>/dev/null &!
 fi
 
 
