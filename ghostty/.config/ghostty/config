@@ -3,12 +3,12 @@
 # background = #000000
 
 # More transparent
-# background-opacity = 0.45
-# background-blur-radius = 50
+background-opacity = 0.45
+background-blur-radius = 50
 
 # More solid
-background-opacity = 0.85
-background-blur-radius = 50
+# background-opacity = 0.85
+# background-blur-radius = 50
 
 font-family = JetBrainsMono NFM Regular
 font-feature = -calt
