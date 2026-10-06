@@ -4,6 +4,9 @@ alias cd="z" # Remap cd to zoxide
 # Re-map lg to lazygit
 alias lg="lazygit" # LazyGit
 
+# workmux: git worktree + tmux window per agent
+alias wm="workmux"
+
 # Eza
 alias ls="eza --icons --group-directories-first" # Default ls with icons
 alias ll="eza -lagh --icons --git --group-directories-first" # Long listing with git status
