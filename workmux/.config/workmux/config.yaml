@@ -1,0 +1,20 @@
+# workmux global config — one git worktree + tmux window per task/agent.
+# Reference: `workmux config reference`. Per-repo overrides go in .workmux.yaml.
+
+nerdfont: true
+agent: claude
+
+# Branch new worktrees off main, not whatever happens to be checked out.
+base_branch: auto
+# Matches my rebase-and-merge policy.
+merge_strategy: rebase
+
+panes:
+  - command: <agent>
+    focus: true
+  - split: horizontal
+
+# Status icons are wired into the tokyonight window tabs in
+# ~/.config/tmux/themes/*.conf via #{@workmux_status}, so don't let workmux
+# rewrite window-status-format.
+status_format: false
