@@ -145,6 +145,16 @@ export const register: Register = on => {
     return next(e)
   }).catch(($, e, next) => next(e))
 
+  // The band already shows what these calls did, so their transcript rows are
+  // noise. An errored call still draws, so a failure is never hidden.
+  on('ui.render', { component: ['ToolUse', 'ToolResult'] }, ($, e, next) => {
+    const isOwnTool = e.props.tool === PLAN_TOOL || e.props.tool === STEP_TOOL
+    if (!isOwnTool || e.props.isErrored) return next(e)
+
+    const { Box } = $.ui.resolve(e)
+    return <Box display="none" />
+  })
+
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const current = await read($, plan)
     const at = await read($, now)
