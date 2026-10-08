@@ -5,6 +5,9 @@
     "superpowers@claude-plugins-official": true,
     "vercel@claude-plugins-official": true
   },
+  "env": {
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/.claude/mods/plan-band"
+  },
   "hooks": {
     "Notification": [
       {
