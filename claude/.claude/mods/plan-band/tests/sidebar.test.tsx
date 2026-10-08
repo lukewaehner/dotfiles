@@ -10,8 +10,9 @@ const PLAN = {
   ],
 }
 
-test('band_shows_the_join_step_waiting_on_its_open_parallel_steps', async ($, on) => {
+test('sidebar_shows_the_join_step_waiting_on_its_open_parallel_steps', async ($, on) => {
   const clock = mock.clock(on, { now: 1_000_000 })
+  on('ui.open', () => ({ value: { isPlaced: true as const } }))
   for (const surface of ['terminal', 'desktop'] as const) {
     // arrange
     await $.tool.call({ tool: 'mcp__plan-band__plan', ...PLAN })
@@ -23,8 +24,16 @@ test('band_shows_the_join_step_waiting_on_its_open_parallel_steps', async ($, on
     const ui = await $.ui.mount({
       plugin: 'plan-band',
       surface,
-      component: 'AbovePrompt',
-      props: { hasSurvey: false, isWorking: true, maxRows: 12, bodyColumns: 80, scroll: { offset: 0, bodyRows: 12 }, view: {} },
+      component: 'Pane',
+      requestId: 'plan',
+      props: {
+        title: 'Ship it',
+        isFocused: false,
+        bodyColumns: 40,
+        placement: 'dock',
+        scroll: { offset: 0, bodyRows: 30 },
+        view: {},
+      },
     })
 
     // assert
@@ -39,6 +48,7 @@ test('band_shows_the_join_step_waiting_on_its_open_parallel_steps', async ($, on
 test('plan_and_step_tools_answer_with_text', async ($, on) => {
   // arrange
   mock.clock(on, { now: 1_000_000 })
+  on('ui.open', () => ({ value: { isPlaced: true as const } }))
 
   // act
   const planned = await $.tool.call({ tool: 'mcp__plan-band__plan', ...PLAN })

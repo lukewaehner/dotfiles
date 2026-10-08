@@ -25,11 +25,12 @@ const isHidden = atom({ plugin: 'plan-band', key: 'isHidden' } as const, false)
 const PLAN_TOOL = 'mcp__plan-band__plan'
 const STEP_TOOL = 'mcp__plan-band__step'
 const TICK_MS = 5000
+const PANE = 'plan'
 
 const GUIDANCE = [
-  '# Progress band',
+  '# Progress sidebar',
   'When work has 3 or more distinct steps (an issue, a multi-file change, a plan you are executing), call the `plan` tool once before starting, with every step and its `after` dependencies, then call `step` to mark each one in_progress and completed as you go. Re-call `plan` if the plan changes.',
-  'When a step is handed to a subagent, start the Agent call\'s description with that step\'s id, e.g. `#3 write API tests`: the band marks the step running and checks it off when the agent finishes, so do not call `step` for it. Steps that depend on several parallel subagent steps list all of them in `after`.',
+  'When a step is handed to a subagent, start the Agent call\'s description with that step\'s id, e.g. `#3 write API tests`: the sidebar marks the step running and checks it off when the agent finishes, so do not call `step` for it. Steps that depend on several parallel subagent steps list all of them in `after`.',
   'Skip both tools for single-step or conversational requests.',
 ].join('\n\n')
 
@@ -39,7 +40,7 @@ export const register: Register = on => {
     await $.tool.register({
       name: 'plan',
       description:
-        'Lay out a multi-step plan in the progress band above the prompt. Replaces any current plan. Each step has a short id ("1", "2", ...), a title, and optional `after`: ids of steps that must finish first.',
+        'Lay out a multi-step plan in the progress sidebar. Replaces any current plan. Each step has a short id ("1", "2", ...), a title, and optional `after`: ids of steps that must finish first.',
       isDeferred: false,
       inputSchema: {
         type: 'object',
@@ -75,10 +76,34 @@ export const register: Register = on => {
       },
     })
 
+    await $.command.register({ name: 'plan', description: 'Show the current plan in the sidebar' })
     $.clock.every(TICK_MS, () => void tick($))
+
+    // A reload closes the pane; bring it back for a plan still under way.
+    const current = await read($, plan)
+    if (current !== null && !isPlanFinished(current) && !(await read($, isHidden))) {
+      void $.ui.open({ id: PANE, title: current.title })
+    }
 
     return next(e)
   })
+
+  on('command.run', { command: 'plan' }, async $ => {
+    const current = await read($, plan)
+    if (current === null) return { text: 'No plan yet: Claude lays one out for multi-step work.' }
+
+    await update($, isHidden, () => false)
+    await $.ui.open({ id: PANE, title: current.title })
+
+    return { text: 'Plan sidebar opened.' }
+  })
+
+  // Closing the sidebar keeps it closed until the next plan or /plan.
+  on('ui.close', { id: PANE }, async ($, e, next) => {
+    if (e.origin.kind === 'person') await update($, isHidden, () => true)
+
+    return next(e)
+  }).catch(($, e, next) => next(e))
 
   on('prompt.compose', async ($, e, next) => {
     const composed = await next(e)
@@ -95,8 +120,9 @@ export const register: Register = on => {
     await update($, plan, () => createPlan(String(e.title ?? 'Plan'), inputs, at))
     await update($, now, () => at)
     await update($, isHidden, () => false)
+    await openSidebar($, String(e.title ?? 'Plan'))
 
-    return { result: `Plan laid out in the band: ${inputs.length} steps.` }
+    return { result: `Plan laid out in the sidebar: ${inputs.length} steps.` }
   })
 
   on('tool.call', { tool: STEP_TOOL }, async ($, e) => {
@@ -140,12 +166,15 @@ export const register: Register = on => {
   // A finished plan stays up until the next prompt, then clears.
   on('prompt.submit', async ($, e, next) => {
     const current = await read($, plan)
-    if (current !== null && isPlanFinished(current)) await update($, plan, () => null)
+    if (current !== null && isPlanFinished(current)) {
+      await update($, plan, () => null)
+      await $.ui.close({ id: PANE })
+    }
 
     return next(e)
   }).catch(($, e, next) => next(e))
 
-  // The band already shows what these calls did, so their transcript rows are
+  // The sidebar already shows what these calls did, so their transcript rows are
   // noise. An errored call still draws, so a failure is never hidden.
   on('ui.render', { component: ['ToolUse', 'ToolResult'] }, ($, e, next) => {
     const isOwnTool = e.props.tool === PLAN_TOOL || e.props.tool === STEP_TOOL
@@ -155,63 +184,78 @@ export const register: Register = on => {
     return <Box display="none" />
   })
 
-  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
+    const { Box, Text } = $.ui.resolve(e)
     const current = await read($, plan)
     const at = await read($, now)
-    if (e.props.hasSurvey || current === null || (await read($, isHidden))) return next(e)
+    if (current === null) return <Text dimColor>No plan.</Text>
 
-    const { Box, Button, Text } = $.ui.resolve(e)
     const done = current.steps.filter(step => step.status === 'completed' || step.status === 'skipped').length
     const total = current.steps.length
     const elapsed = formatDuration(at - current.createdAt)
     const eta = etaMs(current, at)
-    const barWidth = Math.max(8, Math.min(24, Math.floor(e.props.bodyColumns / 5)))
     const isDone = done === total
-    const isCompact = total + 2 > e.props.maxRows
+    const timing = isDone
+      ? `done in ${elapsed}`
+      : `${eta === undefined ? 'ETA after first step' : `~${formatDuration(eta)} left`} · ${elapsed}`
 
     return (
-      <Box flexDirection="column">
-        <Box flexDirection="row" columnGap={1}>
-          <Text bold wrap="truncate">{current.title}</Text>
-          <Text color={isDone ? 'success' : 'claude'}>{progressBar(done, total, barWidth)}</Text>
-          <Text>{done}/{total}</Text>
-          <Text dimColor>
-            · {isDone ? `done in ${elapsed}` : `${eta === undefined ? 'ETA after first step' : `~${formatDuration(eta)} left`} · ${elapsed}`}
-          </Text>
-          <Button key="hide" label="hide" plain onPress={() => update($, isHidden, () => true)} />
+      <Box flexDirection="column" rowGap={1}>
+        <Box flexDirection="column">
+          <Box flexDirection="row" columnGap={1}>
+            <Text color={isDone ? 'success' : 'claude'}>
+              {progressBar(done, total, Math.max(6, e.props.bodyColumns - 6))}
+            </Text>
+            <Text>{done}/{total}</Text>
+          </Box>
+          <Text dimColor>{timing}</Text>
         </Box>
-        {isCompact ? (
-          <Text wrap="truncate">{current.steps.map(step => `${glyphOf(current, step)}${step.id}`).join(' ')}</Text>
-        ) : (
-          current.steps.map(step => {
+        <Box flexDirection="column">
+          {current.steps.map(step => {
             const readiness = readinessOf(current, step)
             const running = step.agents.filter(run => run.status === 'running').length
             const hasFailed = step.agents.some(run => run.status === 'failed')
             const took = step.startedAt === undefined ? '' : formatDuration((step.doneAt ?? at) - step.startedAt)
+            const notes = [
+              running > 0 ? `⚙ ${running > 1 ? `${running} agents` : 'agent'}` : '',
+              readiness.kind === 'waiting' ? `waits on ${readiness.on.map(id => `#${id}`).join(' ')}` : '',
+              took,
+            ].filter(note => note !== '')
 
             return (
-              <Box key={`step-${step.id}`} flexDirection="row" columnGap={1}>
-                <Text color={colorOf(readiness.kind, hasFailed)}>{glyphOf(current, step)}</Text>
-                <Text
-                  dimColor={readiness.kind === 'waiting' || step.status === 'skipped'}
-                  strikethrough={step.status === 'skipped'}
-                  wrap="truncate"
-                >
-                  #{step.id} {step.title}
-                </Text>
-                {running > 0 && <Text color="claude">⚙ {running > 1 ? `${running} agents` : 'agent'}</Text>}
-                {hasFailed && <Text color="error">agent failed</Text>}
-                {readiness.kind === 'waiting' && (
-                  <Text dimColor>waits on {readiness.on.map(id => `#${id}`).join(' ')}</Text>
+              <Box key={`step-${step.id}`} flexDirection="column">
+                <Box flexDirection="row" columnGap={1}>
+                  <Text color={colorOf(readiness.kind, hasFailed)}>{glyphOf(current, step)}</Text>
+                  <Text
+                    dimColor={readiness.kind === 'waiting' || step.status === 'skipped'}
+                    strikethrough={step.status === 'skipped'}
+                    wrap="truncate"
+                  >
+                    #{step.id} {step.title}
+                  </Text>
+                </Box>
+                {hasFailed && <Text color="error">  agent failed</Text>}
+                {notes.length > 0 && (
+                  <Text dimColor wrap="truncate">
+                    {'  '}
+                    {notes.join(' · ')}
+                  </Text>
                 )}
-                {took !== '' && <Text dimColor>{took}</Text>}
               </Box>
             )
-          })
-        )}
+          })}
+        </Box>
       </Box>
     )
   })
+}
+
+// Opened by the model rather than the person, the pane only seats on a wide
+// terminal (144 columns, 110 once /plan has opened it); below that, say how
+// to open it.
+async function openSidebar($: EngineInterface, title: string) {
+  const opened = await $.ui.open({ id: PANE, title })
+  if (!opened.isPlaced) $.ui.toast('Plan ready: /plan opens the sidebar')
 }
 
 // The background agent's id when the Agent call returned before it finished.

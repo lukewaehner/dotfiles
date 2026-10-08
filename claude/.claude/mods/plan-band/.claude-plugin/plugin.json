@@ -1,6 +1,6 @@
 {
   "name": "plan-band",
   "version": "0.1.0",
-  "description": "A band above the prompt that tracks a multi-step plan: dependencies, subagents, progress bar and ETA",
+  "description": "A sidebar that tracks a multi-step plan: dependencies, subagents, progress bar and ETA",
   "types": "./types/index.d.ts"
 }
