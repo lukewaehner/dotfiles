@@ -26,36 +26,6 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-context-monitor.js\"",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-read-injection-scanner.js\"",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-phase-boundary.sh\"",
-            "timeout": 5
-          }
-        ]
-      },
-      {
         "hooks": [
           {
             "type": "command",
@@ -64,65 +34,8 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-prompt-guard.js\"",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-read-guard.js\"",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-workflow-guard.js\"",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-validate-commit.sh\"",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
+    "PreToolUse": [],
     "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/opt/homebrew/bin/node\" \"/Users/lukewaehner/.claude/hooks/gsd-check-update.js\""
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"/Users/lukewaehner/.claude/hooks/gsd-session-state.sh\""
-          }
-        ]
-      },
       {
         "matcher": "*",
         "hooks": [
@@ -170,7 +83,7 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "statusLine": {
-    "command": "node \"/Users/lukewaehner/.claude/hooks/gsd-statusline.js\"",
+    "command": "/Users/lukewaehner/.claude/hooks/statusline-instance.sh",
     "type": "command"
   },
   "tui": "fullscreen"

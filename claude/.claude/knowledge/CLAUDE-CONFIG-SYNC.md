@@ -37,21 +37,15 @@ anything in the "never touch" list below or you will cross-wire accounts.
 
 ```
 hooks/
-agents/
 commands/
 skills/
 plugins/
 rules/
 knowledge/
-get-shit-done/
-gsd-file-manifest.json
-gsd-install-state.json
-gsd-migration-journal
-.gsd-profile
 ```
 
 Plus `~/.agents/` — a sibling of `~/.claude`, stowed from
-`dotfiles/claude/.agents/`. It holds the 27 installed agent skills that
+`dotfiles/claude/.agents/`. It holds the 31 installed agent skills that
 `~/.claude/skills/` symlinks into. It has to stay a sibling: those inner links
 are relative (`../../.agents/skills/X`), so the two directories must keep the
 same parent or every skill breaks. See Troubleshooting.
@@ -181,9 +175,7 @@ NEW=~/.claude-newinstance
 mkdir -p "$NEW"
 
 # symlink the shared surface (point at ~/.claude, which stow owns)
-for f in hooks agents commands skills plugins rules knowledge get-shit-done \
-         gsd-file-manifest.json gsd-install-state.json \
-         gsd-migration-journal .gsd-profile; do
+for f in hooks commands skills plugins rules knowledge; do
   ln -s ~/.claude/"$f" "$NEW/$f"
 done
 
