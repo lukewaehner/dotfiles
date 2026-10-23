@@ -243,6 +243,52 @@
       "skillFolderHash": "27e5995a3dc4dd91db86dec8933f476f9275ff8e",
       "installedAt": "2026-07-07T14:01:39.302Z",
       "updatedAt": "2026-07-07T14:01:39.302Z"
+    },
+    "ponytail": {
+      "source": "dietrichgebert/ponytail",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/dietrichgebert/ponytail.git",
+      "skillPath": "skills/ponytail/SKILL.md",
+      "skillFolderHash": "e8d3fa76e7ff9223a784dbd4bcfc9ff46b3fa55d",
+      "installedAt": "2026-10-23T05:20:01.893Z",
+      "updatedAt": "2026-10-23T05:20:01.893Z"
+    },
+    "i-have-adhd": {
+      "source": "ayghri/i-have-adhd",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/ayghri/i-have-adhd.git",
+      "skillPath": "skills/i-have-adhd/SKILL.md",
+      "skillFolderHash": "759f1e56d0d2fdd3819d2a53b81e72767c08d914",
+      "installedAt": "2026-10-23T05:20:03.255Z",
+      "updatedAt": "2026-10-23T05:20:03.255Z"
+    },
+    "browser-use": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/browser-use/browser-use.git",
+      "skillPath": "skills/browser-use/SKILL.md",
+      "skillFolderHash": "2b7c0ad80f2363d851372b5cfdf7d610483d5a41",
+      "installedAt": "2026-10-23T05:20:05.355Z",
+      "updatedAt": "2026-10-23T05:20:05.355Z"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "skillFolderHash": "0b6619c11598d7ce32041044cb2e6fc6adea1efc",
+      "installedAt": "2026-10-23T05:20:08.686Z",
+      "updatedAt": "2026-10-23T05:20:08.686Z"
+    },
+    "humanizer": {
+      "source": "blader/humanizer",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/blader/humanizer.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "pluginName": "humanizer",
+      "installedAt": "2026-10-23T05:20:10.051Z",
+      "updatedAt": "2026-10-23T05:20:10.051Z"
     }
   },
   "dismissed": {
