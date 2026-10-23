@@ -2,7 +2,7 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": true,
     "vercel@claude-plugins-official": true
   },
   "env": {
