@@ -19,15 +19,6 @@
       "installedAt": "2026-05-07T21:41:33.168Z",
       "updatedAt": "2026-05-07T21:41:33.168Z"
     },
-    "design-taste-frontend": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/taste-skill/SKILL.md",
-      "skillFolderHash": "826d9d12328f2d8b2c00ad5c28e02612d2484faf",
-      "installedAt": "2026-05-07T21:47:51.957Z",
-      "updatedAt": "2026-05-07T21:47:51.957Z"
-    },
     "api-and-interface-design": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
