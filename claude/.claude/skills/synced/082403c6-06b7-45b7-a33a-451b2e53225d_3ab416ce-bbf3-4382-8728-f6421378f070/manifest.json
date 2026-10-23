@@ -1,0 +1,759 @@
+{
+  "lastUpdated": 1792618512316,
+  "skills": [
+    {
+      "skillId": "skill_016hANRsKPTVcGyGZ5gvrk55",
+      "name": "s1-filing-handler",
+      "description": "Twice-daily handler for Meteora's SPACInsider \"[S-1]\" and \"[S-1/A]\" filing alerts (SPACInsider tech@spacinsider.com -> Walter -> Filings@meteoracapital.com; a copy lands in the signed-in user's own Outlook inbox). For each new IPO S-1 it downloads the filing file and runs the spac-s1-extractionv3 skill, then opens an internal thread \"Internal TICKER\" (bare ticker) to Filings@; for an S-1/A it redlines the amendment against the prior filing and replies-all on the existing internal thread. Several S-1s in one run fan out to one sub-agent per filing so the main context stays clean. Use whenever the user says \"run the S-1 handler\", \"process the S-1 filings\", \"check the S-1 inbox\", \"morning/evening S-1 run\", \"handle the SPACInsider S-1 alerts\", or when it fires on its 9:00am / 5:30pm ET schedule. Always use this skill for these SPACInsider S-1/S-1-A alerts — the routing, dedup, and test-mode rules are the point.",
+      "source": "plugin",
+      "updatedAt": "2026-07-31T18:48:53.535554Z",
+      "backingPluginId": "plugin_01TFA9ZVFZxrD7MuuFhjeiSQ"
+    },
+    {
+      "skillId": "skill_0136wV68gsnStkDTttj22MDJ",
+      "name": "arb-day-one-top-sheet",
+      "description": "One-page verbatim terms sheet for a newly announced merger — parties, consideration, premium, financing, break fees, outside date, efforts standard, approvals, vote threshold, expected closing — every line a direct quote with its source cite. Trigger on \"top sheet on [TICKER]\", \"terms sheet\", \"what are the terms\", \"run day one on [TICKER]\", or a just-announced deal. Ticker-only input; reads the 8-K, press release, and merger agreement directly. EXTRACTION ONLY — produces no view, no call, no completion probability, and never characterizes a term as favorable, tight, or unusual.",
+      "source": "plugin",
+      "updatedAt": "2026-07-29T15:45:06.217181Z",
+      "backingPluginId": "plugin_016JHGvQRVR68JQ182jcGACe"
+    },
+    {
+      "skillId": "skill_017pAtcucNxuaNJUbTRedTGC",
+      "name": "trading-note-simple",
+      "description": "Generate a formatted SPAC trading note with live-recomputed yields (Bloomberg mid + USGG3M, gross T-bill accrual, no extensions or leakage), a VWAP-centered yield matrix (±1c/±2c/±3c plus bid/ask), an EDGAR-verified S-4/F-4 count (3-pass: SPAC CIK + PubCo CIK) for in-deal names, and a `Thesis:` line pulled from the Meteora memory doc. Trigger on 'simple note', 'short note', 'trading note', 'note for [ticker]', 'snip', 'clipboard note', 'position note', 'what does [ticker] look like', or any request for a SPAC position snapshot. Unit renders inline as `U=S+W/2+R/10` or `U=S`. Always use this skill for simple trading notes — do not produce them ad hoc. For extension-deposit modeling, use `trading-note-extended`.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:20.265193Z",
+      "backingPluginId": "plugin_016YEcxMnafzxvsGTpvCa4yp"
+    },
+    {
+      "skillId": "skill_0155GQ3jjyN3dqbjp8GT1LkN",
+      "name": "proxy-analysis",
+      "description": "Meteora's \"proxy prompt\" — merger-arb analysis of SEC merger proxy filings (PREM14A, DEFM14A, SC 14D-9, S-4/F-4, schemes). Extracts deal terms verbatim and produces the house-format .docx: Deal Snapshot, Conclusions up front (Bottom-Line Arbitrage Thesis + per-section verdicts), then Background w/ bid chronology, bidder characteristics, Governance & Conflicts, Regulatory, Financing, Misc Terms w/ appraisal rights, and Critical Transaction Analysis (valuation waterfall, forecast divergence, golden parachutes, completion-risk grid) with RED FLAG / CRITICAL ANALYSIS callouts. Trigger on \"run the proxy prompt on [deal]\", \"proxy analysis\", \"analyze the proxy / DEFM14A / merger proxy\", \"appraisal case on [deal]\", \"golden parachute analysis\", \"was this a fair process\", or any uploaded merger proxy. Purely filing-based, strict verbatim-quote discipline, no live market pricing (deal-risk-assessment owns antitrust + tape checks). Always use this skill for merger proxy analysis — never ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-15T20:25:52.334723Z",
+      "backingPluginId": "plugin_01RXPwah2g151j4Tno225zYB"
+    },
+    {
+      "skillId": "skill_0151CzJUkrTkaRZiuYyYHBxe",
+      "name": "deal-risk-assessment",
+      "description": "Antitrust and deal-completion risk assessment for announced M&A transactions with any buyer type — PE sponsors, strategics, or hybrid/consortium bidders. Trigger on \"assess deal risk\", \"will the [deal] close\", \"antitrust risk on [deal]\", \"merger arb analysis on [ticker]\", \"completion probability\", any request to judge whether an announced merger or take-private will complete, or a pasted merger press release / agreement / deal 8-K with \"how risky is this\". Classifies buyer type, then produces a phased, EDGAR-cited report (deal terms, buyer footprint, overlap screen, competitive effects, financials, litigation, blind synthesis) plus a strictly separated Tape Check. Sell-side research each run: Outlook + broker notes manually uploaded to the deal folder / Claude Project (replaces AlphaSense), plus Vector Database passes (ArbJournal / Chain Bridge Research institution filters + broad), cited from hit metadata, behind the blind wall. Always use for deal-completion risk — never ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-29T12:11:41.589271Z",
+      "backingPluginId": "plugin_01WenT2pU7XixYurGKxpnrHV"
+    },
+    {
+      "skillId": "skill_0177rZYvPdkahPiheACpj1zB",
+      "name": "elements-of-style",
+      "description": "Write or edit prose in the plain, vigorous Strunk & White 'Elements of Style' voice — concise, active, concrete, no needless words. Use when drafting or revising essays, posts, emails, or any prose.",
+      "source": "plugin",
+      "updatedAt": "2026-06-16T14:16:05.191994Z",
+      "backingPluginId": "plugin_017cv4rVkSx2VWbf8ce7wNmQ"
+    },
+    {
+      "skillId": "skill_01BfAEZcD6SiWURoYr5fYQn5",
+      "name": "bamsec-filing-handler",
+      "description": "Process BAMSEC SEC filing alerts that hit filings@meteoracapital.com: parse the alert, filter to SPAC 8-Ks via EDGAR name→ticker→spac-details, pull the 8-K from EDGAR, run the Meteora 8-K analysis prompt, append a tagged entry to the ticker's memory doc, and reply from walter@meteoracapital.com back into filings@ — threaded on the original BAMSEC conversation so the investment team sees alert and analysis together in the shared inbox. Supports two input modes: manual paste of the alert (Mode A) and Microsoft 365 outlook_email_search (Mode B — reads forwarded copies from the logged-in user's inbox today, swaps to filings@ via delegated access on Walter). Trigger when the user pastes a BAMSEC alert, mentions BAMSEC or the filings@ inbox, or asks to \"process BAMSEC alerts\", \"run the filing handler\", \"analyze this 8-K\", \"check the filings inbox\", \"process the morning filings\", \"catch up on overnight filings\", or \"triage the filings inbox\". Always use this skill for BAMSEC alert handling — do not do this ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-05-21T18:45:22.141162Z",
+      "backingPluginId": "plugin_01FCpTwVZodpvT59dePhKk43"
+    },
+    {
+      "skillId": "skill_012Pp2vQCxNbwpTbSCcbo748",
+      "name": "arb-dma-extraction",
+      "description": "Day-of merger arb extraction of a definitive merger agreement (DMA) — verbatim legal text with section and page cites across 14 frameworks (structure, election mechanics, timeline, approvals, vote, termination/break fees, MAE, financing, deal protection, efforts standards, bond/debt, clean team, tax/dividends, ordinary course). Trigger on \"run the DMA extraction on [TICKER]\", \"extract the merger agreement\", \"pull the DMA terms\", \"run day one on [TICKER]\", or a pasted/announced merger agreement. Ticker-only input — retrieves the agreement from EDGAR itself. Produces one .docx. Extraction only; never characterizes a term as favorable or unusual.",
+      "source": "plugin",
+      "updatedAt": "2026-07-29T15:37:57.485723Z",
+      "backingPluginId": "plugin_01A3uBQNxrmVgxMy1THqDHPN"
+    },
+    {
+      "skillId": "skill_01459gqjyhyf8RYbRrWFnK9u",
+      "name": "email-voice",
+      "description": "Draft email replies that sound like the skill's owner — their greetings, sign-offs, sentence rhythm, hedging, reassurance tics, and length, calibrated from their own Sent box. Use this skill WHENEVER the user asks to reply to an email, draft a response, answer a thread, \"respond like me\", \"make this sound like me\", \"write it in my voice\", clean up a reply they drafted, or stage a draft reply in Outlook — even if they don't say the word \"voice\". Always reason from the INCOMING thread (what was asked, by whom, how formally) plus the owner's voice fingerprint below, not from a generic email template. Pairs with the Email Assistant (Microsoft 365) skill for reading threads and staging drafts. To retarget this skill to a different person, run references/calibrate.md once.",
+      "source": "plugin",
+      "updatedAt": "2026-07-06T20:40:29.901006Z",
+      "backingPluginId": "plugin_01TSUEJTFvse7uwCGRRR55ZR"
+    },
+    {
+      "skillId": "skill_01CkVPNHBMWNKau2RykqqR3o",
+      "name": "transcript-principles",
+      "description": "Distill Meteora's daily PM/EOD trading-desk transcript into the live SPAC-only TRANSCRIPT-PRINCIPLES memory doc, which is organised as six governing chains of reasoning rather than a list of rules. Trigger on \"run the transcript principles\", \"update the brain\", \"process today's transcript\", \"transcript principles\", or the daily 7:30pm run. Tests each observation against the existing chains and sharpens them; never adds a bullet per anecdote. Silent — writes only the memory doc.",
+      "source": "plugin",
+      "updatedAt": "2026-08-05T21:53:28.766148Z",
+      "backingPluginId": "plugin_019zJUig9RANvvbnmM1XGAsW"
+    },
+    {
+      "skillId": "skill_01BVY5eL63rUUczdXEp99RCK",
+      "name": "unit-valuation",
+      "description": "Institutional SPAC unit valuation framework. Compute fair value for pre-split and post-split SPAC units using sum-of-parts (deadline-adjusted common + rights + warrants), screen the pre-deal universe for undervalued units, evaluate broker axe lists against fair value, and flag combo-unit opportunities. Trigger when the user asks to 'value these units', 'fair value [ticker] unit', 'is [unit ticker] cheap', 'screen for undervalued units', 'evaluate this axe', 'best value units', 'units trading below fair', 'should we buy [UU ticker]', or any request to assess unit offers or rank the universe by embedded optionality. Also trigger proactively when broker axe lists or new IPO pricings arrive with unit tickers, or when the user asks about the 'BHAV-style' early-split trade. Always use this skill for unit valuation — do not produce ad-hoc fair values.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:21.667012Z",
+      "backingPluginId": "plugin_01FUKBnsstu9sNrzX3mkXRNz"
+    },
+    {
+      "skillId": "skill_01BTcFTdQBbU3J6gfusRZw7K",
+      "name": "meteora-thesis-manager",
+      "description": "Edit the news-monitor's data files by chatting — companion to meteora-thesis-monitor. The meat is a FLAT ticker list in watchlist.json (ticker maps to its internal Outlook thread subject plus a memory-doc flag — no sectors, no groups); this skill maintains it conversationally. INSTALL auto-detects the user's home and seeds the shared folder (under %USERPROFILE% Documents/Claude/Scheduled/meteora-thesis-shared) — never hardcodes a username. ADD TICKERS is interactive: asks which tickers, scans Outlook for internal threads (email-assistant), checks Meteora memory docs, shows what it found to confirm, then instantly updates watchlist.json. LIST shows the watchlist; REMOVE drops a ticker; EDIT makes any other change (fix a subject, etc.). Trigger on 'set up the monitor', 'add tickers', 'add a ticker', 'scan internal threads', 'list tickers', 'remove ticker', 'edit watchlist'. Reads/writes only the shared folder; reads Outlook and memory-doc list read-only; never sends email.",
+      "source": "plugin",
+      "updatedAt": "2026-07-06T21:04:33.865030Z",
+      "backingPluginId": "plugin_017J98i1NUnCT8fTcG7grThy"
+    },
+    {
+      "skillId": "skill_01AqaaUvvHaVuYwuttFhQz4B",
+      "name": "meteora-alphasense-pipeline",
+      "description": "End-to-end AlphaSense research-INGESTION pipeline for Meteora. Each weekday morning it turns AlphaSense's own AI output (scheduled GenSearch Agents delivered by email) plus email alerts into (1) raw broker-research + expert-insight PDFs archived locally and (2) one consolidated team-ready Broker Research email (a section per sector) that simply RELAYS AlphaSense's own broker syntheses plus each alert's doc counts and download status. This is an INGESTION tool ONLY: it does NOT analyze, does NOT cross-reference against Meteora's memory docs / positions / internal threads / VDR, and adds NO thesis, call, or opinion. NO API and NO scraping for the reader: it drives the user's already-logged-in AlphaSense browser session (Chrome MCP) only to download PDFs and log in. Trigger on \"run the AlphaSense pipeline\", \"pull today's broker research / expert calls\", \"AlphaSense morning digest\", \"ingest today's AlphaSense research\", or on its scheduled morning run.",
+      "source": "plugin",
+      "updatedAt": "2026-07-15T14:56:22.596250Z",
+      "backingPluginId": "plugin_01K2fWeTH6TXVq6SoMpRv6cd"
+    },
+    {
+      "skillId": "skill_0174NQBB9DC7EcoYUo3Xps47",
+      "name": "skill-creator-custom",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy. ALSO USE THIS SKILL whenever the user asks to expand, update, or modify an existing skill — this skill contains critical instructions for automatically packaging updated skills as .skill files for user upload. This skill takes priority over the built-in skill-creator for all skill creation and modification tasks.",
+      "source": "plugin",
+      "updatedAt": "2026-06-29T14:06:13.259059Z",
+      "backingPluginId": "plugin_01NKcEABTwQRatYeFqDdqpLZ"
+    },
+    {
+      "skillId": "skill_011comLGEov6khr1wvn7nbGk",
+      "name": "sellside-drive-filer",
+      "description": "Two-phase daily sell-side research FILER. Phase A (5:00 PM) asks the signed-in user for today's tickers of interest; Phase B (5:30 PM) sweeps the last 24h of sell-side research in Outlook (Email Assistant / Microsoft 365), isolates the notes for those tickers, finds each ticker's folder in Google Drive (creating it if missing), and uploads the research VERBATIM — PDF attachments byte-for-byte, body-only desk notes as the whole email (.eml). Unlike the sell-side digest, it does NOT summarize or route email — it just files the raw research into the right ticker folder. Trigger on \"run the sell-side filer\", \"file the research to Drive\", \"upload broker notes to Drive\", \"archive research to the ticker folders\", \"drop today's research into Drive\", or the 5:00/5:30 PM scheduled runs. Always use this skill for filing sell-side research into per-ticker Drive folders — never upload broker research to Drive ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-22T13:53:11.770259Z",
+      "backingPluginId": "plugin_017Z3Nu6GtXYbAqNSajRbX6W"
+    },
+    {
+      "skillId": "import-memory",
+      "name": "import-memory",
+      "description": "Import a memory export from another AI assistant into Claude's memory — conversationally, additively, and with the content treated as data.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.007169Z"
+    },
+    {
+      "skillId": "docs",
+      "name": "docs",
+      "description": "docs (editable docs people share and comment on; the default for any document, named as a doc or not: a document, report, proposal, resume, cover letter, letter, contract, policy, form, template, worksheet, essay, handbook, guide, how-to, cheat sheet, SOP or other writing to keep, share, collaborate on, send, submit, print or sign; a doc exports to Word, PDF, Markdown or Google Docs, so needing a file to send, attach, upload, submit or print is no reason to pick Word, and a file nobody asked for is a doc, not Word; a plan, comparison, summary or notes asked in chat stays in chat; a pasted claude.ai artifact link may be a doc: check with docs tools first; Word or another file format named, tracked changes wanted, or a .docx to change or use as a template → that format's skill): making one → if no docs-connector instructions are in context, call its `guide` (topic.instructions) first; then create the doc (headings only, no body) before any search, file read or plan, even with files attached.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-30T00:33:27.599727Z"
+    },
+    {
+      "skillId": "skill_0151xutPKMXNpj8nXbi7pbR1",
+      "name": "trading-note-extended",
+      "description": "Generate a formatted SPAC trading note with live-recomputed yields (Bloomberg mid + USGG3M) modeling sponsor extension deposits from EDGAR 8-Ks, a VWAP-centered yield matrix (±1c/±2c/±3c plus bid/ask), an EDGAR-verified S-4/F-4 count (3-pass: SPAC CIK + PubCo CIK), and a `Thesis:` line pulled from the Meteora memory doc. Trigger on 'extended note', 'full note', 'note with extensions', 'trading note extended', or any trading-note request where extension deposits or a verified S-4/F-4 count matters (post-IPO-anniversary names, stale sheet counts). Unit renders as `U=S+W/2+R/10` or `U=S`. For the lightweight version, use `trading-note-simple`.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:19.051407Z",
+      "backingPluginId": "plugin_01SuktC1MpuTzApxLRMQcUdy"
+    },
+    {
+      "skillId": "skill_017WRTgJAs1LZ6mvFGMHR9Sk",
+      "name": "term-sheet-builder",
+      "description": "Draft and generate professional term sheets (.docx) for Meteora Capital's structured equity financing transactions. Use this skill whenever the user asks to create, draft, build, or generate a term sheet for any of the following: Forward Purchase Agreements (FPAs), Standby Equity Purchase Agreements (SEPAs), Equity Lines of Credit (ELOCs), Convertible Pre-Paid Advances, convertible notes, or any combination of these structures. Also trigger when the user mentions deSPAC financing term sheets, SPAC trust recycling proposals, structured equity proposals, or asks to prepare a financing proposal for a company. Trigger on phrases like 'draft a term sheet', 'build a term sheet', 'create a SEPA term sheet', 'FPA term sheet', 'ELOC proposal', 'convertible term sheet', or any mention of generating Meteora financing documentation for a specific company or deal.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:17.934530Z",
+      "backingPluginId": "plugin_017q77i46AoAq1UGQSjcCzEc"
+    },
+    {
+      "skillId": "skill_01QxJa8dDmEHSEW6mJvahxgW",
+      "name": "spac-universe-analytics",
+      "description": "Use whenever a question spans the whole SPAC market, not one deal or Meteora's own book — counting, ranking, or averaging across all SPACs ever filed. Covers: counting SPACs by status (Completed/Withdrawn/Liquidated/Abandoned); ranking sponsors, directors, underwriters, or auditors by how many SPACs they're tied to; trending trust size, IPO proceeds, or IPO pop by exchange, industry, domicile, or year; or querying \"the SPAC universe\"/\"universe database\". Often phrased casually — \"who are the top underwriters,\" \"which auditor shows up the most,\" \"breakdown by industry for an IC memo,\" \"who's done the most deals over the years,\" \"has trust size changed over time.\" Trigger whenever answering needs many SPACs at once, not one. NOT one SPAC's own terms/merger/trading; NOT current desk positions (spac-details); NOT the local SQLite refresh (spac-db-weekly-update). If unsure, run it by name: spac-universe-analytics.",
+      "source": "custom",
+      "updatedAt": "2026-08-26T15:04:14.417999Z",
+      "backingPluginId": "plugin_018D8FkD6VQrs72jaCoufCKX"
+    },
+    {
+      "skillId": "skill_01AmW7mcoL4vE1EjJWLHV1YT",
+      "name": "dat-mnav-calculator",
+      "description": "Institutional-grade mNAV (market-value Net Asset Value) calculation for Digital Asset Treasury (DAT) companies — public equities holding cryptocurrency (BTC, ETH, SOL, BNB, or other tokens) as their primary treasury asset. Trigger this skill whenever the user asks to calculate, check, update, or analyze the mNAV, NAV discount/premium, ETH-per-share, BTC-per-share, hedge ratio, or ETHA/IBIT short ratio for any DAT company. Also trigger when the user says \"what's the discount\", \"is this trading cheap to NAV\", \"update my mNAV model\", \"compute the hedge ratio\", \"how much ETHA do I short\", or references mNAV in any context. Use this skill for MSTR, SBET, BMNR, BTBT, BTCS, DFDV, BNC, EMPD, SQNS, or any other DAT company. Do not attempt mNAV calculations ad hoc — always use this skill.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:51.924098Z",
+      "backingPluginId": "plugin_01UQ39tH4zx2UaQ8M3rM893m"
+    },
+    {
+      "skillId": "skill_01Vr6PiLZF3DVvmQQevk89Ez",
+      "name": "spac-s1-extractionv10",
+      "description": "Meteora's primary SPAC S-1 IPO extraction (v10) — a 'Read on top, lean facts below' workup. Trigger on any SPAC S-1/S-1A/F-1 or prospectus PDF, or 'extract', 'run the S-1', 'analyze this S-1', 'pull the terms', 'S-1 review', 'run the guide', 'new S-1', 'just filed', 'desk read', or a filing dropped with no instructions. Leads with a Snapshot and sponsor-first Desk Read benchmarking the team against a NAMED gold-standard Tier 1-5 ladder (dMY/Harry You, Gores, Cantor/Lutnick, Cohen-Columbus Circle, Eagle/Sagansky-Sloan, Inflection Point, Spring Valley, CC Capital/Chinh Chu; Tier 2 Yorkville, M3-Brigade) and names who the sponsor is a 'poor man's version of', then bombs, anchor/sponsor, underwriting, sector fit, then a lean figures-only extraction. Tiers and the five axes use a calibrated rule set; prior-vehicle outcomes are graded per the OUTCOMES-RUBRIC and cited from the FRANCHISE-OUTCOMES-LEDGER. Grades are one number 1-5, 1=best. The firm's standard S-1 tool.",
+      "source": "custom",
+      "updatedAt": "2026-08-21T17:00:50.755772Z",
+      "backingPluginId": "plugin_01C6ByviYAGHEA6aT6tEnTok"
+    },
+    {
+      "skillId": "skill_01Wut5itNjmGRju8YNmHmM57",
+      "name": "meteora-email-format",
+      "description": "House HTML format for internal Meteora email on SPAC names. Invoked explicitly by the user — never applied automatically, and it never overrides a format another skill already produces. DEFAULT mode renders exactly what the user asked for, in house format, at the TOP of the note. ENHANCED mode keeps that on top and adds the SPAC Snapshot table plus supporting detail BELOW it, on request: 'enhanced', 'full note', 'add the table', 'more detail'. Internal chains only — every recipient must be @meteoracapital.com. Keeps the Cowork-generated stamp when Claude wrote the bulk of the body; drops it when the user typed the body themselves. Renders content VERBATIM and in full unless asked to shorten.",
+      "source": "custom",
+      "updatedAt": "2026-08-18T21:57:20.080245Z",
+      "backingPluginId": "plugin_01Xyxc3JVoFxEzSDtgF3rKf7"
+    },
+    {
+      "skillId": "skill_011xgt4zMVJFT4YaUtAn9EVV",
+      "name": "master-sheet-notes",
+      "description": "Generate a short, copy-pasteable Notes column entry for the Meteora SPAC master tracker spreadsheet. Trigger whenever the user asks to \"update notes\", \"create a note for the sheet\", \"master sheet note\", \"notes column\", \"copy-paste note for [ticker]\", \"tracker note\", or any request to produce a concise notes string for a SPAC position. Also trigger proactively at the end of any in-depth SPAC analysis session when the user references updating the spreadsheet or master sheet. Produces a single dense text string covering unit structure, PIPE terms, S-4/F-4 status, common stock price range and MoM, plus warrant/right price range since deal/IPO with prior month close and MoM change.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:57.842781Z",
+      "backingPluginId": "plugin_01RegsuSjVn6f7BzdgJeNpDc"
+    },
+    {
+      "skillId": "skill_013i6HiariCPAq3sD1MPYip8",
+      "name": "dar-comparison",
+      "description": "Compare two Dollars at Risk (DAR) reports and produce a professional .docx analysis. Trigger when the user uploads two DAR reports, asks to compare DAR across dates, requests a DAR change analysis, or mentions 'DAR comparison', 'what changed in DAR', 'compare the DAR reports', 'DAR delta', or 'DAR period-over-period'. Also trigger when the user pastes or uploads documents containing DAR tables with security types (Common, Warrants, Rights), bucket breakdowns, avg vs trust, avg warrant cost, avg rights cost, and concentration tables. Works for any fund sub-book (MSTO, full book, etc.). Supersedes ad-hoc DAR analysis — systematic extraction, comparison, and docx report generation.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:50.333358Z",
+      "backingPluginId": "plugin_01LYfpTCzUPWLEsCQgtBpbcQ"
+    },
+    {
+      "skillId": "skill_013vejHTiqMuxzsTJhWJUtWJ",
+      "name": "loi-builder",
+      "description": "Generate Meteora's standard Letter of Intent (LOI) for SPAC business combinations using the locked-in sponsor-friendly clause selection. Use this skill whenever the user asks to draft, build, generate, create, prepare, or write an LOI, letter of intent, or non-binding term sheet for a SPAC business combination, de-SPAC transaction, or proposed merger between a SPAC and a target operating company. Also trigger on phrases like 'draft an LOI for [target]', 'put together an LOI', 'we need an LOI', 'LOI for our deal with X', 'build the LOI for [ticker]', or any reference to creating a non-binding offer letter for a SPAC business combination. Produces a .docx file using Meteora's house-standard clause selection across the project's reference LOI library (BIXI/Unchained/SALT and IVCB/American Tungsten/Trigg/Compute Labs precedents). Always use this skill for SPAC LOI drafting — do not assemble LOIs ad hoc, because consistent clause selection across deals is the entire point of having this skill.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:56.799184Z",
+      "backingPluginId": "plugin_01PddZBjkCW4nQjyjc8xv36y"
+    },
+    {
+      "skillId": "skill_018JVYsARtCxNwZFXsiGRpUo",
+      "name": "sepa-convert-term-sheet",
+      "description": "Draft and generate professional term sheets (.docx) for Meteora Capital's structured equity financing transactions. Use this skill whenever the user asks to create, draft, build, or generate a term sheet for any of the following: Forward Purchase Agreements (FPAs), Standby Equity Purchase Agreements (SEPAs), Equity Lines of Credit (ELOCs), Convertible Pre-Paid Advances, convertible notes, or any combination of these structures. Also trigger when the user mentions deSPAC financing term sheets, SPAC trust recycling proposals, structured equity proposals, or asks to prepare a financing proposal for a company. Trigger on phrases like 'draft a term sheet', 'build a term sheet', 'create a SEPA term sheet', 'FPA term sheet', 'ELOC proposal', 'convertible term sheet', or any mention of generating Meteora financing documentation for a specific company or deal.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:01.918864Z",
+      "backingPluginId": "plugin_0186YEZz4EeFpBetHgqXb72W"
+    },
+    {
+      "skillId": "skill_013zjFbyTwu6fhchLvuuooBg",
+      "name": "spac-deal-review",
+      "description": "Skeptical expert-grade review of SPAC business combination announcements (BCA / 8-K / DA / investor deck). Use this skill whenever the user asks to review, analyze, evaluate, or form a view on a newly announced SPAC deal, or pastes a BCA / 8-K / investor deck, or references a ticker in the context of a merger announcement. Also trigger on phrases like 'deep dive on [SPAC deal]', 'what do you think of the deal', 'is this a good deal', 'analyze [SPAC] / [Target]', 'SPAC merger analysis', 'review this BCA', or any version of 'should we be long / short / FPA / sell the rights / sell the warrants'. This skill enforces the Meteora skeptical framework — tape first, sponsor second, structure third, narrative last — and is the default for any SPAC-announcement question. Do NOT attempt SPAC deal analysis without this skill; ad-hoc analysis without the framework produces superficial output that misses the market's pricing signal and over-weights management narrative.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:07.149734Z",
+      "backingPluginId": "plugin_01Lp14Yxx2YZ4HZemLZjXHXM"
+    },
+    {
+      "skillId": "skill_016X1PqSC4uszHELUj8N41nv",
+      "name": "spac-s4-extraction",
+      "description": "Full S-4 extraction and analysis for SPAC business combination filings. Trigger when the user uploads an S-4 PDF (or references one in context) and asks to 'extract', 'run the S-4', 'do the extraction', 'analyze this S-4', 'pull the terms', 'run the guide on this', 'S-4 review', 'SPAC analysis', or any request to systematically extract SPAC deal terms from a registration statement. Also trigger when the user drops an S-4 PDF without further instructions — the default action is to run the full extraction. Produces a 12-section structured memo covering business fundamentals, deal terms, capitalization, financials, PIPE/financing, capital structure, warrants, risk factors, insider economics, management, audit quality, and valuation. Always use this skill for S-4 extractions — do not attempt ad hoc without it.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:14.525352Z",
+      "backingPluginId": "plugin_01Wa95TtNUScjjvzAWVcie2T"
+    },
+    {
+      "skillId": "skill_013nET22tpWEDjadUtHoZynt",
+      "name": "spac-ioi-summary",
+      "description": "Produce a tight, IOI-ready evaluation of a brand-new SPAC IPO: unit pricing matrix (offer-price, auto-extension-window first-redemption deadline, 5% ± 0.6% yield grid, overfunded CIT when applicable) + IPO Terms (5 bullets including trust overfunding and excess working capital outside trust), Key Bombs (3 bullets: WC WDLs, prior liquidations, other deviations), Management Team (3 bullets). Trust overfunding (CIT > $10.00) and excess WC outside trust are first-class signals and must be flagged prominently. Trigger on \"IOI summary\", \"run IOI\", \"IOI eval\", \"pre-IOI summary\", \"should we IOI [TICKER]\", \"IOI on [TICKER]\", \"give me the IOI\", \"IOI write-up\", or any request for a tight evaluation supporting an IOI decision on a new SPAC IPO. Also trigger proactively after spac-s1-extraction and spac-bios when the user asks for a \"summary\" or \"IOI\". Always use this skill for IOI evaluation summaries — the format is locked, reproduce exactly, produce ONLY this output (no preamble, no postamble).",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:09.499129Z",
+      "backingPluginId": "plugin_01NwEhuPxs3JjtMywnCyMJnT"
+    },
+    {
+      "skillId": "skill_01Fg55y1Lp3imzbaASyf3VYT",
+      "name": "spac-bca-guide",
+      "description": "Meteora's primary SPAC BCA extraction — a 'Read on top, lean facts below' workup. Trigger on any BCA, merger 8-K, press release, or investor deck — or 'run the BCA guide', 'extract the BCA', 'pull the BCA terms', 'BCA review', or a filing dropped with no instructions. Leads with a Snapshot + deal-quality Desk Read written as terse trading-desk bullets (not narrative prose), then a decision-useful lean extraction ordered so valuation, earnout, financing, and termination risk sit up top and governance boilerplate at the bottom. For full S-4/proxy extraction (financial statements, projections, going concern) use spac-s4-extraction instead.",
+      "source": "custom",
+      "updatedAt": "2026-07-31T21:04:46.334696Z",
+      "backingPluginId": "plugin_01Aa3Yy8W2uZoF3aQvxLqrpS"
+    },
+    {
+      "skillId": "skill_01Jc4AgEkq5Xb3rkvb219afj",
+      "name": "arb-deal-antitrust-v2",
+      "description": "Day-of merger arb antitrust and overlap screen on a newly announced deal — acquirer portfolio/overlap mapping, market definition and concentration, competitive effects, target capital structure, litigation and fraud risk, valuation and precedents, stakeholder analysis, all EDGAR-cited. Produces Meteora's full gold-standard 12-section report (front-matter Risk Matrix, closing Deal Completion Probability Decomposition with a directional HIGH/MODERATE/LOW read) in the same house format as the CBZ/Grant Thornton and ZYME/TBPH reports. Trigger on \"run the antitrust screen v2 on [TICKER]\", \"run the v2 deal screen\", \"overlap screen on [TICKER]\", \"run day one on [TICKER]\", or a newly announced merger. Ticker-only input — pulls the 8-K, press release, and EDGAR filings itself. Produces one .docx. Never estimates market shares, HHI, or probabilities without sourced data — the directional read is always qualitative and precedent-grounded, never a fabricated percentage.",
+      "source": "custom",
+      "updatedAt": "2026-07-29T19:30:05.248972Z",
+      "backingPluginId": "plugin_01EYcxrWsY9PcrBHbS7WyVjc"
+    },
+    {
+      "skillId": "skill_01Q6nfoQkBmXzBEAysHW18CV",
+      "name": "spac-s1-extraction-lean",
+      "description": "Lean, no-fluff S-1 extraction for SPAC IPO filings — reports the filing as figures and facts, no AI commentary or narrative. Leads with the Desk View (header snapshot, one-line bombs, Prior SPACs, and a Deal-Doing Capability chain connecting career seat → prior SPAC record → board reach → access to capital), then Extraction Terms (Sections 1–8). Resolves named principals' prior SPACs via EDGAR / spac-details when the filing leaves them unquantified. Trigger whenever the user uploads an S-1/S-1A/F-1 (PDF or .htm) or references one in context and asks to 'extract', 'run the S-1', 'do the extraction', 'analyze this S-1', 'pull the terms', or 'S-1 review'. Also trigger on 'new S-1', 'just filed', or an S-1 dropped without instructions. Prefer over the verbose spac-s1-extraction when the user wants terse output, says 'no fluff', 'keep it tight', 'just the figures', or 'don't editorialize'. Always use this skill for lean S-1 extractions.",
+      "source": "custom",
+      "updatedAt": "2026-07-27T23:42:39.921062Z",
+      "backingPluginId": "plugin_01E4FRYqHcY5b9Abc5TbgCrs"
+    },
+    {
+      "skillId": "skill_01DmZpjnSAVfacMU16a2A8zR",
+      "name": "ib-read",
+      "description": "End-of-day capture of Bloomberg Instant Bloomberg (IB) chat boxes into per-deal Markdown transcripts, then filed into the matching Claude Project folders. Use this skill whenever the user wants to read, archive, export, back up, or \"download the IB boxes\", capture the deal/SAFT chat rooms, run the EOD IB sweep, or turn today's IB Manager conversations into .md files for the project folders - even if they don't say the skill name. Trigger on \"run ib-read\", \"read the IB boxes\", \"export the IB chats\", \"EOD IB capture\", \"grab today's IB rooms\", \"save the Bloomberg chats to the projects\", or any request to pull Instant Bloomberg conversations out of the terminal into files. This skill assumes a Bloomberg Anywhere web session that is ALREADY logged in inside a Claude-in-Chrome-controlled browser tab, with the IB Manager open. It reads the live session visually (the terminal is a Citrix pixel-stream, not a webpage) and never sends IB messages - it is read-and-file only.",
+      "source": "custom",
+      "updatedAt": "2026-07-24T17:04:34.578848Z",
+      "backingPluginId": "plugin_01R4NGagKgCRqkpCMtG7xhB8"
+    },
+    {
+      "skillId": "skill_01GMU6JDdM5kaN2JeNQLaBTs",
+      "name": "deal-risk-core",
+      "description": "Fast, single-pass M&A deal-completion risk assessment producing a verdict-bearing report — Risk Matrix, HIGH/MODERATE/LOW ratings, buyer classification, Deal Completion Probability Decomposition — in Meteora's gold-standard 12-section format (e.g. the CBZ/Grant Thornton and ZYME/TBPH reports), targeting ~10 minutes. Trigger on \"run the core deal risk assessment on [TICKER]\", \"quick full report on [deal]\", \"give me the CBZ-format read\", or when deal-risk-assessment's Outlook/Claude-Project sweep and Tape Check would blow a tight time budget. Sourced from EDGAR plus ONE ArbJournal and ONE Chain Bridge Research vector pass — no Outlook, no Project research, no live Tape Check. Sibling to arb-deal-antitrust-initial (extraction-only, never a verdict) and deal-risk-assessment (the complete, slower version). Use this one when the ask is \"that CBZ-style report, fast.\"",
+      "source": "custom",
+      "updatedAt": "2026-07-29T18:28:33.194082Z",
+      "backingPluginId": "plugin_01Ckvkx64hfGSQcaQsztNKym"
+    },
+    {
+      "skillId": "skill_01YEaLgvh2HKbZZSWNNgBNPm",
+      "name": "sector-snapshot-live-book",
+      "description": "Refresh the \"Sector Indices\" Excel workbook's live Bloomberg values and email the Sector Heatmap, SPAC Scorecard, and Warrant Watch tables — each with a crisp, data-driven one-line read — to filings@meteoracapital.com as Walter, subject \"Overall Sector Snapshot & Live Book\". Trigger on \"run the sector snapshot\", \"send the sector heatmap / scorecard / warrant email\", \"refresh the sector indices book and email it\", \"sector snapshot email\", or on its scheduled weekday 8 PM run. The skill opens the workbook in Excel so the Bloomberg BDP formulas recalc, waits for the async pulls to settle, extracts the three tables, renders a green/red-shaded HTML email, and sends it via the Meteora send-email MCP (walter@). Always use this skill for the sector snapshot email — do not rebuild the tables or the email ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-21T21:02:26.694103Z",
+      "backingPluginId": "plugin_01H5sUcSsYnG3HEB3C83sJKB"
+    },
+    {
+      "skillId": "skill_01KoeeKzQwmtXEMZmkZ2TBDz",
+      "name": "deal-risk-flash",
+      "description": "Fast, sub-10-minute preliminary read on a just-announced M&A deal — deal terms from the 8-K/press release/deck, four anchored merger-agreement lookups (efforts covenant, outside date, marketing period, approvals), a preliminary overlap screen from the target's 10-K Competition section and revenue mix, precedents from the ArbJournal/Chain Bridge Research vector index, and a lean-in/watch/pass call — in the same section order as deal-risk-assessment, so the full run later fills in the same document. Trigger on \"flash read on [ticker/deal]\", \"quick take on this deal\", \"just announced, what's the risk\", \"give me something in five minutes\", \"preliminary read\", \"first look at this\", or any pasted 8-K/merger press release where speed matters more than completeness. Also trigger proactively the moment a merger 8-K or deal press release lands and nothing has been produced yet. This is the fast triage tier that runs FIRST on every new deal; deal-risk-assessment is the complete follow-up, run separately.",
+      "source": "custom",
+      "updatedAt": "2026-07-29T13:17:00.331436Z",
+      "backingPluginId": "plugin_01S3ddcNjfSKuGvUuVkATdRQ"
+    },
+    {
+      "skillId": "skill_01L9z4onQyj4oyBeVXYXEi7K",
+      "name": "personal-trading-compliance",
+      "description": "Quarterly personal-securities attestation check for Meteora Compliance. Cross-references each employee's pre-clearance approval emails against the broker report they submit at quarter-end, and flags any trade that is unapproved, traded while disapproved, or prohibited (SPACs and firm Restricted-List names). Records results in a per-employee Excel database plus a firm-wide master summary and, with guardrails, auto-emails employees their exceptions. Use whenever the user wants to run the personal-trading check, reconcile personal trades, process an employee's quarterly report, review pre-clearance versus a broker report, check the attestation, or find who traded without approval, or when a quarter-end attestation or brokerage statement arrives in the compliance mailbox. Also handles roster onboarding, employees' household/related accounts, and detecting people who file but are not rostered. Always use this skill for the personal-trading reconciliation rather than doing it ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-17T17:57:12.035292Z",
+      "backingPluginId": "plugin_01QZ8UGxWJLZ4NLKzioFaY9j"
+    },
+    {
+      "skillId": "skill_01Wdf4aZ91V3qPW8t6n9Y1iR",
+      "name": "spac-s1-extractionv3",
+      "description": "Meteora's primary SPAC S-1 IPO extraction (v3) — a 'Read on top, lean facts below' workup. Trigger on any SPAC S-1/S-1A/F-1 or prospectus PDF, or 'extract', 'run the S-1', 'analyze this S-1', 'pull the terms', 'S-1 review', 'run the guide', 'new S-1', 'just filed', 'what's the read on this S-1', 'desk read', or a filing dropped with no instructions. Leads with a Snapshot + sponsor-first Desk Read that benchmarks the team against a NAMED gold-standard Tier 1–5 ladder (Tier 1: dMY/Harry You, Gores, Cantor/Lutnick, Cohen–Columbus Circle, Eagle/Sagansky–Sloan, Inflection Point, Spring Valley, CC Capital/Chinh Chu; Tier 2: Yorkville, M3-Brigade; watch: Pyrophyte) and names who the sponsor is a 'poor man's version of' or equivalent to, then bombs, anchor/sponsor, underwriting, sector fit, then a lean figures-only extraction. Grades are a single number 1–5 where 1=best, matching our Tier scale. This is the firm's standard S-1 tool.",
+      "source": "custom",
+      "updatedAt": "2026-07-31T18:44:55.976684Z",
+      "backingPluginId": "plugin_01NGvSWgSHo3W3CNXAsCQUr4"
+    },
+    {
+      "skillId": "skill_01SYnyABbyfaAugPZoRkdDdD",
+      "name": "spac-db-weekly-update",
+      "description": "Refresh the local SPAC Research SQLite database — the `spacs` + `sponsors` tables that back the Sponsor Franchise Book — from spacresearch.com's own native exports. Use this whenever the user wants to update, refresh, rebuild, or re-pull the SPAC database / SPAC Research data / franchise data, says that data is stale or out of date, asks to \"run the weekly SPAC update\", \"refresh spacresearch\", \"rebuild the spac db\", \"pull the latest SPAC data\", or when a scheduled weekly refresh fires. The skill drives Claude in Chrome (a browser logged into the FULL spacresearch.com account) to download the \"All SPACs\" CSV and harvest the Sponsors grid, then rebuilds the database atomically with integrity checks and a dated backup. Prefer this over ad-hoc, tab-by-tab scraping: the native exports are cleaner and richer, and this skill guards against silently ingesting a trial/partial pull. Not for answering one-off questions against the existing database — for those, just query the database directly.",
+      "source": "plugin",
+      "updatedAt": "2026-07-15T19:28:07.138506Z",
+      "backingPluginId": "plugin_01DzmsUMWFTwnVQ1vh4hWohd"
+    },
+    {
+      "skillId": "skill_01JTAaNPSj7AQ7F8GjE9ChfZ",
+      "name": "initiation-coverage-scanner",
+      "description": "Daily scan of the connected Outlook/M365 mailbox for sell-side equity research INITIATION-OF-COVERAGE notes, then download the full note as a PDF and file it to the Initiation of Coverage Notes shared drive. Trigger on \"scan for initiation notes\", \"run the IC scan\", \"check for new initiations\", \"any coverage initiations today\", \"process the research initiations\", or a scheduled daily run. ALSO trigger when the user forwards or references a broker research email that looks like a new initiation (a NEW rating + price target on one company from a desk like JonesTrading) and wants it captured/filed. Handles notes in the email body, a PDF attachment, or behind a View-PDF/portal link (opened via Claude in Chrome). Applies a substance gate so only real long-form initiations are kept, and dedupes via a ledger so nothing is downloaded twice. Download-and-file only — it does NOT read the note in depth or send any email. Always use this skill for initiation notes; not ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-15T21:59:14.087445Z",
+      "backingPluginId": "plugin_01Vvtpr8fMXMoEZLHpqHoSey"
+    },
+    {
+      "skillId": "skill_01QhYHK4g4hr6PJefdeTWbPG",
+      "name": "spac-s1-extraction",
+      "description": "Full S-1 extraction and summary for SPAC IPO filings. Trigger whenever the user uploads an S-1 PDF (or references one already in context) and asks to 'extract', 'run the S-1', 'do the extraction', 'analyze this S-1', 'pull the terms', 'run the guide on this', 'S-1 review', or any request to systematically extract SPAC IPO terms from a registration statement. Also trigger when user says 'new S-1', 'just filed', or drops an S-1 PDF without further instructions — the default action is to run the full extraction + summary. This skill supersedes ad-hoc S-1 analysis. Always use this skill for S-1 extractions — do not attempt the extraction without it.",
+      "source": "plugin",
+      "updatedAt": "2026-07-16T21:42:34.088878Z",
+      "backingPluginId": "plugin_01JX31kNjveAVQe6NawAgbxM"
+    },
+    {
+      "skillId": "skill_01K6Avf5h2sqbdK71Mr7yruA",
+      "name": "seed-memory",
+      "description": "Orchestrator for Meteora SPAC memory docs. Seed Mode (new doc): pre-deal builds a 3-pillar doc (S-1 extraction, trading note, sponsor bios); in-deal builds a 6-pillar doc (adds S-4 extraction, deal review, and a Target Dossier — company history, funding rounds, comps, lineage, valuation) and composes a DEAL-FOCUSED summary per references/in-deal-summary.md. Update Mode (existing doc, stage unchanged): refreshes the summary to current guidance; never overwrites entries. Deal Transition Mode (pre-deal doc whose SPAC just announced a BCA): appends in-deal pillars 4-6 and REBUILDS the summary to the deal-focused template — target/deal/valuation as the lede, sponsor cut to PIPE-raising only. Trigger on seeding, updating, or transitioning a doc: 'seed/build memory for X', 'update/refresh summary on X', 'X announced a deal', 'X/[target] BCA', 'transition X to in-deal'. Also when a SPAC is referenced with no doc, an S-1/S-4/BCA is pasted, or 'deal announced'. Always use this skill; never ad hoc.",
+      "source": "custom",
+      "updatedAt": "2026-07-23T11:24:57.257740Z",
+      "backingPluginId": "plugin_01UpfVNiWGkKLwWJMhMK366N"
+    },
+    {
+      "skillId": "skill_01XpSDX6DHBvtKoEDWKNCESa",
+      "name": "arb-deal-antitrust-initial",
+      "description": "Day-of merger arb antitrust and overlap screen on a newly announced deal — acquirer portfolio/overlap mapping, market definition and concentration, competitive effects, target capital structure and leverage, litigation and fraud risk, valuation and precedents, stakeholder analysis, all EDGAR-cited. Trigger on \"run the initial deal and antitrust screen on [TICKER]\", \"run the antitrust screen\", \"overlap screen on [TICKER]\", \"run day one on [TICKER]\", or a newly announced merger. Ticker-only input — pulls the 8-K, press release, and EDGAR filings itself. Produces one .docx. Never estimates market shares, HHI, or probabilities without sourced data.",
+      "source": "custom",
+      "updatedAt": "2026-07-29T19:31:09.926311Z",
+      "backingPluginId": "plugin_01P7sRhETaUafWTYLcPE3dkx"
+    },
+    {
+      "skillId": "morning",
+      "name": "morning",
+      "description": "Render the user's morning brief as a styled HTML artifact, or set it up as a recurring weekday task. Use only when the user explicitly asks to run, see, or set up their morning brief, or if they invoke /morning by name. A question about their day, schedule, or calendar is not by itself a request for the brief; answer it directly instead.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.990356Z"
+    },
+    {
+      "skillId": "skill_01NC7f9AjrqEayMQPUnWWQXi",
+      "name": "sellside-digest",
+      "description": "Two-phase daily sell-side research router. Phase A (5:00 PM) emails the signed-in user asking for today's \"tickers of interest\"; Phase B (5:30 PM) sweeps the last 24h of sell-side research in Outlook (Email Assistant / Microsoft 365) — broker desk notes in email bodies, attached research PDFs (text-extracted every run), and research-portal links — attributes each note to its primary ticker(s), scopes the run to the replied tickers (no reply or \"ALL\" = full digest), then reply-alls a per-ticker summary onto the existing INTERNAL chain, creating a new \"INTERNAL {TICKER}\" thread to Filings@meteoracapital.com when none exists. Also renames ad-hoc chains, attaches source PDFs, flags unroutable notes, and archives digests to Google Drive. Trigger on \"run the sell-side digest\", \"sellside digest\", \"research sweep\", \"comb my email for broker notes\", \"run the ticker ask\", \"ask for tickers of interest\", or the 5:00/5:30 PM scheduled runs. Always use this skill for the daily sweep — never triage broker research ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-07-16T16:06:15.308910Z",
+      "backingPluginId": "plugin_01GZwCDXYVwStbtrMEgr55E4"
+    },
+    {
+      "skillId": "skill_01EPZUTpRaNHR1kJjKTtUrn1",
+      "name": "meteora-task-scan",
+      "description": "Weekday 9am/1pm/4pm email scan: Vik/Luke/Aidas PLUS any email mentioning Rishi/AI-interns as doing the work; surfaces NEW tasks + UPDATES and AUTO-UPDATES THE LIVE BOARD every run; reads & writes board-state.json (the live board) + regenerates tasks.json, writes scan-proposals.json + digest; reconciles the user's manual edits (manual edits win).",
+      "source": "plugin",
+      "updatedAt": "2026-06-29T14:24:49.215053Z",
+      "backingPluginId": "plugin_0123nbQMbgTiQSSykCn4pn6z"
+    },
+    {
+      "skillId": "skill_01KG8E4q8H5p8aMsXAQRy7n1",
+      "name": "meteora-nuclear-thesis-intraday",
+      "description": "Lean INTRADAY sweep for the nuclear thesis-impact architecture (pairs with the morning brief skill). Runs every ~45 min. 60-MINUTE HARD CAP on news. Scans ONLY tickers that have an internal Outlook thread (from the shared registry), and on a new, non-duplicate headline analyzes thesis impact against the memory doc (Meteora MCP, read-only) + the internal chain (email-assistant) and drafts a reply into that thread. No brief, no perf table, no AI-analysis section — deliberately tiny and fast. Shares registry + dedup state with the morning skill so no story repeats across runs. TEST MODE never sends — drafts only, every recipient forced to chauhan_intern@meteoracapital.com, [TEST] subject prefix. Live sector skills untouched. Trigger on 'run the nuclear thesis intraday', 'nuclear intraday sweep', 'intraday thesis sweep', or a 45-min scheduled run.",
+      "source": "plugin",
+      "updatedAt": "2026-06-16T15:25:57.915090Z",
+      "backingPluginId": "plugin_01Cm9mvxv6Y5hJ5fHYGSPXV6"
+    },
+    {
+      "skillId": "skill_01KsytQjPuyCr11LgDHshmi1",
+      "name": "warrant-analysis-v3",
+      "description": "SEC warrant agreement analysis, full term extraction, and a cheap/fair/rich implied-vol screen for public SPAC and deSPAC warrants. Trigger when the user asks to analyze warrants, extract warrant terms, evaluate SPAC warrant structures, screen a warrant for underpriced optionality, or asks about a ticker (e.g., KDKRW, BTWNW). Trigger phrases: analyze the warrants for [ticker], warrant terms for [ticker], pull the warrant agreement, is this warrant cheap, IV screen on [ticker], screen the warrant vs comps. Also trigger for tickers ending in W/WS/WT (confirm it is a warrant, not common stock), uploaded warrant PDFs, or SEC exhibits (EX-4.1, EX-4.4). One workflow: exercise/redemption/adjustment terms, lock-up and PIPE overhang, plus a zero-borrow Black-Scholes IV screen against historical vol, an ex-redemption comp set, and listed options. For a borrow-sensitive, knockout-aware execution price when sizing a trade, hand off to warrant-vol-arb. Pre-close names get an assumed-price IV grid, not a spot read.",
+      "source": "plugin",
+      "updatedAt": "2026-07-15T00:15:36.146807Z",
+      "backingPluginId": "plugin_017L7nfLSR5B1ai8EEaBhyXE"
+    },
+    {
+      "skillId": "skill_01NnUzUUe2T4XkdYzQhWqCmp",
+      "name": "audit-class-a",
+      "description": "Reconstruct a SPAC's true Class A ordinary shares outstanding from primary SEC filings, to verify 13G/13D ownership percentages and 5% / 9.9% / 10% threshold checks. Use whenever the user wants to audit, verify, or rebuild a SPAC's share count / shares outstanding / Class A float, questions a 13G denominator, asks whether a position crosses 5/9.9/10%, or asks why two share counts disagree (Bloomberg EQY_SH_OUT vs the master sheet vs a 13G workpaper). Also triggers on \"audit class A\", \"walk the redemptions\", \"rebuild the cap count from filings\". Walks the IPO 424B baseline through every extension redemption, founder conversion, and going-dark event; outputs a filing-linked timeline table plus a total-vs-float reconciliation and threshold flag. Always use this for SPAC share-count / threshold verification — don't eyeball it off a stale cover page or a data vendor.",
+      "source": "plugin",
+      "updatedAt": "2026-07-11T17:02:12.989898Z",
+      "backingPluginId": "plugin_016GjM25gr2S7fGK8b6pQ4bY"
+    },
+    {
+      "skillId": "skill_01Lnj9cfzJRRmc83VPfniHyY",
+      "name": "sec-filing-catchup",
+      "description": "Build and send the daily \"SEC Filing Catch Up\" digest for Meteora. Sweeps EDGAR DIRECTLY for every ticker in the Meteora SPAC universe (via the spac-details MCP + the edgar-filings MCP), pulls each filing from EDGAR, distills the single most important fact into a one-line \"what happened\" snapshot for a trader, and emails a crisp HTML table (subject \"SEC Filing Catch Up\") at end of day with a next-morning re-send. Source is EDGAR itself, NOT the BamSEC email feed — nothing is missed when a BamSEC alert fails to arrive. Trigger when the user asks to \"run the SEC filing catch up\", \"build the filing digest\", \"what filed today in our universe\", \"catch up on today's SEC filings\", \"send the filing catch up\", or when this runs as its daily scheduled task. Always use this skill for the daily catch-up digest — do not assemble it ad hoc. This is a lightweight whole-universe DIGEST; for deep per-8-K analysis with threaded replies and memory-doc updates, use bamsec-filing-handler instead.",
+      "source": "plugin",
+      "updatedAt": "2026-06-29T21:36:13.258948Z",
+      "backingPluginId": "plugin_01M61bVPJ1MJ8VyFwDkLMMoP"
+    },
+    {
+      "skillId": "skill_01XzRHEhenmyVwpzKK1S1W7p",
+      "name": "meteora-thesis-impact-test",
+      "description": "TEST skill — per-ticker thesis-impact monitor over tickers in watchlist.json, independent of the 6 production sector briefs. For each ticker it finds 24-hr pub-date-verified news, READ-ONLY checks the Meteora memory doc for a thesis (cached), READS the 'Internal {TICKER}' Outlook thread for the current thesis and discussion state (cached), and analyzes how the news affects both. ONLY when at least one verified headline exists does it DRAFT a REPLY-ALL into that thread — no news, no draft. Drafts only, reply-all only — NEVER sends, NEVER sets send_at, NEVER creates or updates memory docs. Trigger on 'run the thesis-impact test', 'draft internal updates', 'test the thesis monitor', 'internal thread test', or any variant. Always use this skill for the thesis-impact test — do not run ad hoc. Does not touch the 6 production sector briefs.",
+      "source": "plugin",
+      "updatedAt": "2026-06-29T14:06:17.679846Z",
+      "backingPluginId": "plugin_014MPZLcJt4ytWk1GKBraX8z"
+    },
+    {
+      "skillId": "skill_01NQmnSmZqKzJwxQff1MKK7E",
+      "name": "relationship-tracker",
+      "description": "Scan the signed-in user's Outlook for SPAC DEAL conversations and maintain their personal SPAC & Public-Markets relationship / outreach tracker. Use this skill whenever the user says \"refresh my tracker\", \"scan my email for deals\", \"update my outreach tracker\", \"who do I need to follow up with\", \"update the relationship tracker\", \"rebuild my deal tracker from email\", or opens/refreshes the SPAC relationship tracker artifact. ALSO trigger proactively whenever the user talks about keeping track of which sponsors/banks they've spoken to, last-contacted dates, or when it's time to reach back out on a deal. This skill reads email, decides whether each message is an actionable DEAL email (and drops generic bank IPO / market / research blasts), tags each as Bank/Broker vs Sponsor/Target, and rebuilds the tracker artifact. Always use this skill for the relationship/ outreach tracker — do not hand-classify deal emails ad hoc, because consistent keep/drop and bank-vs-sponsor rules are the entire point.",
+      "source": "plugin",
+      "updatedAt": "2026-06-29T14:06:09.079661Z",
+      "backingPluginId": "plugin_011w8piPRUp6DWy5fgt6DqMV"
+    },
+    {
+      "skillId": "skill_01Qp7HR5LMMSQhdfv8CNQVe2",
+      "name": "warrant-vol-arb",
+      "description": "Decide whether a company-issued warrant (SPAC/de-SPAC or any listed warrant, tickers usually ending W/WS/WT) is CHEAP, FAIR, or RICH as a volatility instrument, and if cheap size a delta-hedged long-warrant/short-stock trade. Use whenever the user asks to analyze, value, or screen a warrant, asks if a warrant is cheap or expensive, mentions warrant arb, wants a warrant desk brief, or pastes a warrant ticker. Pulls live tape only from the Bloomberg Terminal (DES/HVT/OMON; no market-data MCP), then verifies the strike, redemption mechanics, and true 5y-post-merger maturity from the warrant agreement on SEC EDGAR, read in the user's local Claude-in-Chrome browser (engage it first; web-fetch is a last resort). For SPAC warrants the $18 redemption is a soft-call knockout, not a hard price ceiling, so the headline is a redemption-aware Monte-Carlo, not Black-Scholes. With listed options it adds an implied-borrow term-structure panel (PCP by tenor). Always use this skill for warrant cheap/rich questions.",
+      "source": "plugin",
+      "updatedAt": "2026-06-30T22:41:25.164780Z",
+      "backingPluginId": "plugin_01295JLHF96wfEpBpwu2pkMK"
+    },
+    {
+      "skillId": "skill_01MvnCatCF9qvqvzWWwNf1pR",
+      "name": "meteora-nuclear-thesis-morning",
+      "description": "TEST copy of the Nuclear Energy MORNING brief, modified for the thesis-impact architecture. 24-hr window. Runs the normal nuclear sector brief (Bloomberg perf, sector + ticker news, AI analysis) AND adds an inline Thesis Impact section for tickers that have a thesis, then drafts a reply into each thesis ticker's internal Outlook thread. Reads internal threads via the email-assistant plugin and memory-doc theses via the Meteora MCP (read-only). Shares registry + dedup state with the intraday skill so no story repeats. Optimised for speed (parallel calls, batched Chrome, lazy gated reads) without loosening the date/freshness/pub-date accuracy gates. TEST MODE never sends — drafts only, sends only to the signed-in user (SELF), [TEST] subject prefix. Live sector skills untouched. Trigger on 'run the nuclear thesis morning', 'nuclear morning brief test', 'morning thesis brief'.",
+      "source": "plugin",
+      "updatedAt": "2026-06-16T16:26:45.443124Z",
+      "backingPluginId": "plugin_01EQemVx9dZyfi7jw9ZfNwUb"
+    },
+    {
+      "skillId": "skill_01Jf5zBoLWqEzWyDHLuV6NaH",
+      "name": "meteora-thesis-monitor",
+      "description": "General, FILE-DRIVEN intraday news monitor for internal research threads (not a daily brief, not sector-specific). Reads a FLAT ticker list from watchlist.json (ticker -> internal Outlook thread subject + memory-doc flag) and, on a fresh material headline, drafts a thesis-impact update into that ticker's internal chain. Default SCAN_SET = internal-thread tickers; toggle to all. The STEP 2 news scan FANS OUT across parallel read-only sub-agents in buckets for speed; analyzer, drafting and dedup writes stay centralized. On a material hit it reads the internal thread + Meteora memory doc (read-only) AND pulls a LIVE position snapshot from spac-details so the email shows where we stand. 60-MINUTE HARD CAP, cross-run dedup, pub-date verified. TEST MODE drafts only to the signed-in user (SELF), [TEST] prefix. Edit the list via the meteora-thesis-manager skill. Trigger on 'run the news monitor', 'thesis sweep', 'scan news', 'scan a ticker', or a scheduled run.",
+      "source": "plugin",
+      "updatedAt": "2026-07-06T21:04:28.165749Z",
+      "backingPluginId": "plugin_01Ls6uGykL4ePFgSzYZq465i"
+    },
+    {
+      "skillId": "skill_01Dt6jvdUU4vhamb2Rz4JHF2",
+      "name": "trading-note-fast",
+      "description": "Generate a SPAC trading note FAST — live Bloomberg prices, live-recomputed yields (mid + USGG3M), a VWAP-centered yield matrix (±1c/±2c/±3c plus bid/ask), live EMSX orders, a `Thesis:` line, a `Non-Managing Members:` line, and extension-adjusted yields — taking all research content (s/f-4 count, extension terms, non-managing economics, thesis) from the Meteora memory doc, not live research. A bundled script (scripts/render_note.py) does all math and formatting; the model only fetches the four Meteora MCP payloads and distills the thesis. Does NOT hit EDGAR, verify S-4/F-4 counts, or extract 8-Ks. Trigger on 'fast note', 'quick note', 'doc note', 'note from the doc', 'fast trading note', 'note for [ticker] fast', or any trading-note request where speed matters and the doc is trusted as current. Unit renders `U=S+W/2+R/10` or `U=S`. For an EDGAR-verified S-4/F-4 count use `trading-note-simple`; for 8-K-verified extension extraction use `trading-note-extended`.",
+      "source": "plugin",
+      "updatedAt": "2026-06-26T16:14:32.409978Z",
+      "backingPluginId": "plugin_01W7HPVW2ch4k5v5kvDZFhZW"
+    },
+    {
+      "skillId": "skill_01Qed9PQxxFXLJf8TAUNqyVo",
+      "name": "meteora-thesis-intraday",
+      "description": "Lean, CROSS-SECTOR INTRADAY sweep for the thesis-impact architecture (pairs with the per-sector morning briefs). Runs every ~45 min. 60-MINUTE HARD CAP on news. Scans every ticker that has an internal Outlook thread in the shared registry (all sectors, including unassigned), and on a new, non-duplicate headline analyzes thesis impact against the memory doc (Meteora MCP, read-only) + the internal chain (email-assistant) and drafts a reply into that thread. No brief, no perf table, no AI-analysis section — deliberately tiny and fast. Shares registry + dedup state with the morning skill so no story repeats across runs. TEST MODE never sends — drafts only, sends only to the signed-in user (SELF), [TEST] subject prefix. Live sector skills untouched. Trigger on 'run the thesis intraday', 'intraday thesis sweep', 'nuclear intraday sweep', or a 45-min scheduled run.",
+      "source": "plugin",
+      "updatedAt": "2026-06-16T16:14:04.572249Z",
+      "backingPluginId": "plugin_017EQTW3q2fqQAGdwRHj4PKD"
+    },
+    {
+      "skillId": "skill_01Gqb21Exbf4f4ojzkbBCsra",
+      "name": "merger-arb-radar",
+      "description": "Daily multilingual SPAC merger-arb news radar for Meteora. Reads the editable MERGERARB-WATCHLIST memory doc, and for every in-deal SPAC scans English PLUS each target's local-language press for SECOND-ORDER deal-completion and left-tail break risk. Verifies live deal status (the internal sheet lags actual close/termination by days), classifies every item by risk type / direction / severity / latency, dedupes against the prior 7 days, and produces a STRICT ranked digest and email. Trigger on \"run the merger-arb radar\", \"merger arb news\", \"scan the arb book\", \"deal-risk digest\", \"arb radar\", any reference to the MERGERARB-WATCHLIST, or a scheduled daily run. The job is information gathering, second-order analysis, and reporting - NOT spread/price modeling (price is one contextual line only). Always use this skill for the arb news radar; do not produce ad-hoc deal-news scans.",
+      "source": "plugin",
+      "updatedAt": "2026-06-15T18:40:51.043721Z",
+      "backingPluginId": "plugin_01XTKmCixbGy48SohfG211E7"
+    },
+    {
+      "skillId": "skill_01FcnNnBGrSkWb8ixcqsScWA",
+      "name": "my-writing-voice",
+      "description": "Write in the user's personal voice. Use this skill WHENEVER the user asks Claude to write, draft, rewrite, or edit anything 'like me', 'in my voice', 'in my style', or 'as if I wrote it' — and for any personal essay, reflection, opinion piece, stock pitch, investment write-up, market commentary, prediction, or application response that should read as the user's own writing.",
+      "source": "plugin",
+      "updatedAt": "2026-06-12T21:02:46.570776Z",
+      "backingPluginId": "plugin_01FmMRtuVMJEHmTFG3PZKEAi"
+    },
+    {
+      "skillId": "skill_01LvAKqKF2Vyg5MkcUdPwGQ2",
+      "name": "meteora-new-sector-brief",
+      "description": "Orchestrator for creating a new Meteora Daily Morning Brief sector. Clones the canonical template, swaps ONLY sector-specific fields (name, slug, tickers, exchange suffixes, ticker count, keywords, sector whitelist + IR pages, Step C.1 WebSearch queries, optional extra unreliable sources), writes the new SKILL.md to C:\\Users\\rishi\\Documents\\Claude\\Scheduled\\meteora-SLUG-brief\\, and registers a scheduled task on cron `15 8 * * 1-5` for 9 AM ET delivery. Trigger when the user asks to add a new sector to the morning brief family, create a new sector brief, spin up a [sector] brief, or any variant. Preserves ALL existing rules VERBATIM: Bloomberg get-price primary perf fetch with freshness gate, 24-hr cap, whitelist/paywall rules, bullet format, pub-date verification, 9 AM send_at, [TEST] subject prefix, Stage 1 to AI_Interns, Stage 2 to filings@ HELD pending confirmation. Always use this skill for new sector briefs — do not fork files by hand.",
+      "source": "plugin",
+      "updatedAt": "2026-06-05T17:09:17.447633Z",
+      "backingPluginId": "plugin_01AAAaXMozyDfJJaofKAy1uv"
+    },
+    {
+      "skillId": "learn",
+      "name": "learn",
+      "description": "Use this skill when the user wants intellectual understanding — learning how or why something works, not getting a task done or soliciting Claude's judgment.\n\nTrigger for:\n- Explicit learning requests: teach, explain, ELI5, walk me through, quiz me, flashcards, \"I'm rusty on\"; definitions (\"what is X\")\n- Terse concept names implying \"help me understand this\": \"Galois theory,\" \"transformers, from scratch\"\n- Confusion signals: \"won't stick,\" \"keep mixing these up,\" \"not getting it\"\n- Learning-path questions: prerequisites, sequencing, what to study before X\n- Conceptual questions about mechanisms, causes, or dynamics\n\nDon't trigger for:\n- Tasks: coding, writing, calculation, translation, factual lookup, news updates\n- Personal troubleshooting; resource/textbook recommendations\n- Claude's evaluative verdict: opinion prompts (\"do you think X\", \"settle this\", \"honest take\", \"is X dead / still taken seriously\") and interpretive takes (\"was X really as harsh as people say\")\n",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.663866Z"
+    },
+    {
+      "skillId": "skill_01PuyK1uec4bckwYB7mDeyGH",
+      "name": "warrant-analysis",
+      "description": "SEC warrant agreement analysis and full term extraction for public SPAC warrants. Trigger when the user asks to analyze warrants, extract warrant terms, evaluate SPAC warrant structures, or asks about a ticker (e.g., KDKRW, BTWNW). Trigger phrases: 'analyze the warrants for [ticker]', 'warrant terms for [ticker]', 'pull the warrant agreement', 'warrant structure analysis', 'what is the strike/redemption/cashless'. Also trigger for tickers ending in W/WS/WT (but confirm with user if it is a warrant ticker vs common stock — many tickers naturally end in W or V), uploaded warrant PDFs, or SEC exhibits (EX-4.1, EX-4.4). Supersedes manual SEC searches — systematic, complete extraction workflow covering exercise, redemption, adjustments, Crescent Term, make-whole, cashless, change of control for public SPAC warrants.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:22.793671Z",
+      "backingPluginId": "plugin_015hBZJzvMH9avmJL6EHPAWn"
+    },
+    {
+      "skillId": "skill_01T8Htsrn8GgiTef3aZ6jMU8",
+      "name": "spac-yield-calc",
+      "description": "Calculate annualized SPAC redemption yield (IRR) for any ticker. Trigger when the user asks to 'calculate yield', 'run yield', 'what's the yield on [ticker]', 'annualized return', 'yield to trust', 'yield to redemption', 'IRR on [ticker]', or any request to compute the return profile of a SPAC position trading below trust. Also trigger when user asks 'what's the arb on [ticker]', 'how much discount to trust', 'trust spread', 'how does [ticker] yield compare', or references buying SPACs at a discount and wanting to know the return. Produces a full yield table with multiple scenario timelines sourced from SEC filings, Bloomberg pricing, and internal SPAC data. Supersedes manual yield calculations — systematic, multi-source, skeptical-timeline approach.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:15.592802Z",
+      "backingPluginId": "plugin_01XiPRLtHdSbJ8wiWXBdrnYV"
+    },
+    {
+      "skillId": "skill_01PggfaVVYhBPq3acw1R9WqA",
+      "name": "spac-ipo-tracker-row",
+      "description": "Generate a one-click copy-paste Excel row for Meteora's internal SPAC Unit IPO Tracker. Trigger when the user asks to 'get me the row', 'copy paste for the tracker', 'tracker row', 'IPO tracker row', 'give me the Excel row', 'paste into the tracker', or any request to produce a copy-pasteable row for the internal unit IPO spreadsheet. Also trigger proactively at the END of any S-1 extraction (spac-s1-extraction skill) when the user says 'and get me the copy paste' or 'plus the tracker row'. Do NOT trigger for general Excel/spreadsheet tasks unrelated to the IPO tracker. This skill produces a React artifact with all values pre-filled by Claude — the user just clicks one button to copy and pastes into Excel.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:11.591256Z",
+      "backingPluginId": "plugin_01Upn6ek1KaYuZvSaPJhCBdL"
+    },
+    {
+      "skillId": "skill_01Q4Kst1jBkuctp5AqG2c6Pn",
+      "name": "structured-equity-diligence",
+      "description": "Full institutional due diligence on small/micro-cap public companies being evaluated as candidates for Meteora-style structured equity financings — convertible notes, SEPAs, equity units with warrants, or hybrid draw facilities. Trigger this skill whenever the user asks to \"do diligence on\", \"review\", \"analyze\", or \"evaluate\" a public company ticker for a potential structured investment, or asks whether a company is suitable for a SEPA, convertible note, equity line, or similar instrument. Also trigger when the user pastes a company name or ticker alongside phrases like \"what do you think\", \"is this a good candidate\", \"run the diligence\", or \"look into this one\". Always use this skill for structured equity investment evaluation — do not attempt this ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:16.785591Z",
+      "backingPluginId": "plugin_01QJ8DVRY5eG6r6cUuHYGSDe"
+    },
+    {
+      "skillId": "skill_01NwFRsafPmmLBzjXnrfyg26",
+      "name": "warrant-analysis-v2",
+      "description": "[v2 — structure-only, hardened] SEC warrant agreement analysis and full term extraction for public SPAC warrants. Trigger when the user asks to analyze warrants, extract warrant terms, evaluate SPAC warrant structures, or asks about a ticker (e.g., KDKRW, BTWNW). Trigger phrases: 'analyze the warrants for [ticker]', 'warrant terms for [ticker]', 'pull the warrant agreement', 'warrant structure analysis', 'what is the strike/redemption/cashless'. Also trigger for tickers ending in W/WS/WT (but confirm with user if it is a warrant ticker vs common stock — many tickers naturally end in W or V), uploaded warrant PDFs, or SEC exhibits (EX-4.1, EX-4.4). Supersedes manual SEC searches — systematic, complete extraction workflow covering exercise, redemption, adjustments, Crescent Term, make-whole, cashless, change of control for public SPAC warrants. Extracts STRUCTURE/TERMS only, not valuation; hand off to warrant-arb-analysis, price-calls, or unit-valuation for fair value, breakeven, vol, or hedge sizing.",
+      "source": "plugin",
+      "updatedAt": "2026-06-04T20:55:41.651755Z",
+      "backingPluginId": "plugin_01NL36BL4tfBoHosY5qurFXP"
+    },
+    {
+      "skillId": "skill_01Magmt3mzT37SQRetcUsKox",
+      "name": "spac-headlines",
+      "description": "Cross-reference SPAC morning headlines against Meteora's internal book using spac-details and EDGAR filings. Trigger when the user pastes chat transcripts, headline blasts, or news with multiple SPAC tickers and asks to 'compare against our book', 'check these against our positions', 'analyze the morning notes', or 'cross-reference the headlines'. Processes ALL tickers: enriches with positions, trust data, deadlines, pulls filings for in-deal names, flags upcoming votes and deadlines.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:08.534110Z",
+      "backingPluginId": "plugin_011uKufEpcAGJ5b8wwJAdhuf"
+    },
+    {
+      "skillId": "skill_01EgEzncjMEBfGW4ojsd6CuR",
+      "name": "sector-watch",
+      "description": "Meteora's daily sector watch — SPAC / event-arbitrage focused. Every weekday this skill iterates through every ACTIVE sector in keywords.md and sends ONE email per sector (N active sectors = N emails per weekday). Paused sectors (heading prefixed [PAUSED]) are skipped. For each sector: runs bdata search news for sector keywords AND for sector+deal-keyword combinations over the past 48 hours (HARD CAP, no exceptions), dedupes URLs against the past 7 days, pulls 1D/1W/1M/6M/YTD/1Y Yahoo Finance perf per ticker via Chrome, composes News headlines + perf table + AI Analysis (headline-performance synthesis) + per-ticker briefs + ticker flags + Deals (in that order — NO narrative paragraph), sends via send-as-me. Subject format: [Sector] Meteora Daily - Date (with [TEST] prefix in test_mode). Trigger on 'run the sector watch', 'send today's sector emails'. Always use this skill for the daily workflow. Dry-run preview is default; sending needs approval.",
+      "source": "plugin",
+      "updatedAt": "2026-06-05T16:56:01.615895Z",
+      "backingPluginId": "plugin_01UXHWF3YWUF1LurfRgcVV2M"
+    },
+    {
+      "skillId": "skill_01Xg7T5QCpefnSj6EXkPjyKJ",
+      "name": "warrant-arb-analysis",
+      "description": "Full fundamental pre-trade analysis for Meteora's Warrant Arbitrage strategy — long warrants vs. short calls / long puts / delta-hedged structure. Trigger when the user asks to 'run a warrant arb analysis', 'do a warrant arb write-up', 'analyze [TICKER] for a warrant arb', 'is [TICKER] a good warrant arb candidate', 'pull the arb analysis on [TICKER]', or any request to evaluate a company for a long-warrant / short-vol trade. Also trigger when the user mentions a warrant ticker (e.g. PSQHW, KDKRW) alongside options or vol and asks for background analysis. Output is a single structured email-ready memo covering company profile, financials, cap stack, warrant terms, vol profile, dilution risk, catalysts, sentiment, and trade setup summary. Always use this skill for warrant arb pre-trade diligence — do not do this analysis ad hoc.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:23.803003Z",
+      "backingPluginId": "plugin_01STZMh5cM8nmcou1wWu34aV"
+    },
+    {
+      "skillId": "skill_01J33opJmrsnTSY4dUpsxkwe",
+      "name": "spac-bios",
+      "description": "Skeptical reconstruction of every named principal on a SPAC team — CEO, CFO, IDs, co-sponsors. Trigger on \"team diligence on [TICKER]\", \"team deep dive\", \"bios on [SPAC]\", \"team quality on [SPAC]\", \"individual diligence on [SPAC] team\", \"are these guys real\", \"can they raise a PIPE\". Also trigger proactively when (a) user pastes an S-1/A and bull case rests on team quality, (b) headline credential is a single recognizable name doing heavy work, (c) structure looks banker-shopped (tier-3 UW, no anchor, no PIPE, mandate scrub), or (d) any pre-deal SPAC analysis. Produces single copy/paste chat output: long-bullet executive summary per person covering exits / fund AUM / billionaire status / PIPE-raise capability, then 9-section per-person deep dive, network map, red flag register, open questions. Always use for SPAC team diligence — ad-hoc analysis launders S-1 copy and misses loaded credentials, undisclosed network bridges, and Bloomberg-confirmed tenure value destruction.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:05.705727Z",
+      "backingPluginId": "plugin_0173zsCvosUk6ksuDP2fjwDX"
+    },
+    {
+      "skillId": "skill_01L7r6bynySZVTdXCgKE41ni",
+      "name": "price-calls",
+      "description": "Price listed equity call options at user-specified implied volatilities using a CRR binomial tree with borrow cost. Trigger when the user asks to 'price calls', 'price the calls', 'run the calls at [IV]', 'reprice the options', 'what do the calls look like at [vol]', 'model the 7.5s at 50 and 60 vol', or any request to value listed call options across multiple IVs and expiries for a single strike. Also trigger when the user asks for 'IV at bid/ask', 'back out the vol', 'what vol is the market pricing', or wants to compare model prices to market. Works for any ticker with listed options. Requires MCP tools get-price, get-option-chain, and get-option-data.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:58.788140Z",
+      "backingPluginId": "plugin_01NWmS9J2u27LW4jeUjym6En"
+    },
+    {
+      "skillId": "skill_01DSEQVSr3EG1ni9rmhBQx5W",
+      "name": "spac-ai-agent",
+      "description": "End-to-end institutional SPAC analysis on any ticker — pre-deal, in-deal, or post-close. Trigger on \"analyze [TICKER],\" \"what do we think of [TICKER],\" \"full picture on [SPAC],\" \"run the SPAC agent,\" \"our view on [SPAC],\" or whenever the user pastes a SPAC ticker without further specification. Enforces a mandatory Pillar seed (memory docs, current-themes, multi-angle vector + conversation retrieval, live tape, spac-details) before any reasoning, applies the Meteora skeptical framework (tape first, sponsor second, structure third, narrative last), and explicitly labels every retrieved analog as structural / sponsor / sector / regime / topical-discard before allowing it into the verdict block. Always use this in preference to ad-hoc SPAC analysis.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:43:04.332764Z",
+      "backingPluginId": "plugin_01QKKiA5UapzxxuUgZQwyjN9"
+    },
+    {
+      "skillId": "skill_01JUHLLXTh9SZ8DqvQvZXfff",
+      "name": "private-company-deep-dive",
+      "description": "Institutional-grade Management Deep Dive on private company executives, founders, and boards — calibrated dynamically to the company's industry vertical. Trigger when the user asks to research or evaluate a management team, requests a background check on founders or executives, says \"dig into the team,\" \"Kroll-style review,\" \"who are these people,\" or any similar phrasing. Also trigger proactively during any full private company research report, SPAC/IPO evaluation, bridge round assessment, or when executive red flags are mentioned. Applies a dynamically generated industry-expert persona, runs a mandatory MCP tool sequence (Pinecone VDR → EDGAR filings → web search last), and produces individual profiles, a Red Flag Register, and targeted management questions. Always use this skill for management due diligence.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:59.815023Z",
+      "backingPluginId": "plugin_012T39HBaThUc7Kv4nfsbzpa"
+    },
+    {
+      "skillId": "skill_01JFNnTf5mawAJBbQUrKUn5b",
+      "name": "exploding-unit-diligence",
+      "description": "Full due diligence on Maxim-style exploding unit deals (F-1, S-1, 424B4) — breakeven modeling, Nasdaq delisting risk, cap structure review, existing instrument reset analysis, and risk matrix. Trigger when the user asks to analyze or do diligence on an exploding unit deal, uploads a 424B4/F-1/S-1 for a structured warrant offering, or asks about delisting risk, reverse split traps, cap table instruments, lock-ups, or deal risks. Trigger phrases: 'do diligence on this deal', 'analyze this exploding unit', 'what are the risks', 'model the breakeven and risks', 'check for delisting risk', 'look at the cap structure', 'build me a full analysis'. Supersedes warrant-f1-analysis for comprehensive requests; use that skill only for quick breakeven-only models.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:53.366720Z",
+      "backingPluginId": "plugin_01X7T4QaLMiVp2vtCR78zeZM"
+    },
+    {
+      "skillId": "skill_01TuFsUoH4BQ5xXACLgYUEec",
+      "name": "ipo-pricing",
+      "description": "Back out the implied price of a SPAC unit's warrant or right from a target common-stock yield. Trigger when the user asks to 'price the IPO', 'price the unit', 'what's the warrant worth at X% yield', 'IPO pricing for [TICKER]', 'is the warrant reasonable at X yield', 'implied warrant cost', 'implied right cost', 'what's the unit imply', or any request to evaluate whether a SPAC unit's embedded warrant/right is fairly priced given a target yield on the common. Also trigger proactively whenever the user pastes a unit ticker alongside questions about whether the warrant or right is cheap, fair, or expensive given current trading levels. Produces a 7-row yield matrix (default 5% ± 0.6% in 0.2% steps) showing implied common bid and implied full warrant/right cost at each yield level. Always use this skill for unit-pricing questions — do not produce ad-hoc warrant/right valuations from a yield target.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:55.771251Z",
+      "backingPluginId": "plugin_01MMkwj5R4stjeFpsA48QW8u"
+    },
+    {
+      "skillId": "pdf",
+      "name": "pdf",
+      "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-07-10T19:23:15.432550Z"
+    },
+    {
+      "skillId": "skill-creator",
+      "name": "skill-creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-21T20:47:56.610025Z"
+    },
+    {
+      "skillId": "xlsx",
+      "name": "xlsx",
+      "description": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.324012Z"
+    },
+    {
+      "skillId": "docx",
+      "name": "docx",
+      "description": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx) or Word templates (.dotx). Triggers include: any mention of Microsoft Word Documents, such as 'Word doc', 'word document', '.docx', '.dotx', 'microsoft doc'. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a deliverable as a Word or .docx file (to download, email or print), use this skill. However, if they ask for a document, page, report, memo, or notes WITHOUT naming a file format and the session offers Claude's own dedicated document or page skill or connector, use that instead, even if they will email or print it. Do NOT use for PDFs, spreadsheets, Google Docs, or coding unrelated to document generation.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-30T02:00:31.677168Z"
+    },
+    {
+      "skillId": "skill_01Rn6eBtBXZca94rWdxPzLsN",
+      "name": "competitive-map",
+      "description": "Build a recursive competitive landscape map from SEC 10-K filings. Use this skill whenever the user asks to map competitors, build a competitive landscape, analyze competition sections across filings, find competitive overlap between companies, or asks \"who competes with X\" using SEC data. Also trigger when the user mentions competitive analysis from 10-Ks, competitor mapping, or recursive competitor discovery. Works for any pair or set of public companies by extracting named competitors from their 10-K Competition sections and recursively following each competitor's own 10-K disclosures to build a full network graph.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:49.267802Z",
+      "backingPluginId": "plugin_01GS5bsRuRXwcH614mSy7qPu"
+    },
+    {
+      "skillId": "pptx",
+      "name": "pptx",
+      "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-10-02T22:00:34.625666Z"
+    },
+    {
+      "skillId": "skill_01SpHQLPyRDHeiehMeGwYkkP",
+      "name": "axes-screen",
+      "description": "Cross-reference an external axe list, headline blast, or broker chat transcript against Meteora's live EMSX book and surface every price point within 5 cents of our working orders. Trigger whenever the user pastes a multi-ticker axe/headline blast (from StoneX, Brandon Brenner, Clear Street, Cantor, Jefferies, or any broker) and asks to \"compare against the blotter\", \"cross-reference our book\", \"screen the axes\", \"find alignment\", \"where are we close\", or any variant. ALSO trigger proactively whenever the user pastes a block of broker axes, morning headlines, unit bids, or sell-side axe lists — the default action is to run this screen. Produces a single Bloomberg-pasteable table showing cross-side alignment (actionable trades) and tight same-side overlap (competing with the broker). Always use this skill for axe-vs-book comparisons — do not produce ad-hoc comparisons.",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:48.292211Z",
+      "backingPluginId": "plugin_0148pPmekqHcvtM3kpu7erHW"
+    },
+    {
+      "skillId": "skill_01QBYGXJbRnjwT8tvVxaJ2HK",
+      "name": "fpa-document-editing",
+      "description": "Draft, adapt, and redline Forward Purchase Agreement / FSPA (Funded Standby Purchase Agreement) documents for Meteora Capital's SPAC transactions. Trigger when the user asks to 'draft an FPA', 'redline the FSPA', 'update the FPA for [ticker]', 'adapt [base FPA] for [new deal]', or 'create a forward purchase confirmation for [ticker]'. Also trigger when the user uploads one or two .docx files alongside a SPAC ticker and asks to compare, adapt, or update them. Produces a tracked-change .docx redline sourced from public SEC filings (IPO prospectus, 8-K/BCA, F-4/S-4, Articles of Association).",
+      "source": "plugin",
+      "updatedAt": "2026-05-14T21:42:54.574569Z",
+      "backingPluginId": "plugin_01PVtDfNsHwBtWfK61i63u4i"
+    },
+    {
+      "skillId": "google-workspace",
+      "name": "google-workspace",
+      "description": "Read this before the first Google Drive, Docs, Sheets or Slides connector call whenever the task creates or changes a Google file. Use this skill whenever the user wants to create or change a Google Doc, Sheet or Slides file in their Google Drive. Triggers include: a request that names Google Docs, Sheets, Slides or Drive and asks to make, edit, format, copy or rename a file; a docs.google.com link with a request to change that file, even a one-line fix or suggested edits; and any follow-up change to a Google file from earlier in the chat, even \"change it\" or \"add a tab\". Includes helper scripts for document positions, cell ranges and slide layout. However, if the user asks for a doc, deck or spreadsheet without naming Google, or gives a Google file only as source material for something new, use Claude's own output type instead. Do NOT use for read-only questions about a Google file, or for Word, Excel, PowerPoint or PDF files.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-14T14:41:49.960676Z"
+    },
+    {
+      "skillId": "skill_01FZJrELjMkUT2ExBegxgcsG",
+      "name": "tear-sheet-fill-v2-10032026",
+      "description": "V2 of tear-sheet-fill: fills the Deal Notes text box on a Meteora merger-arb tearsheet (PRE DMA / POST DMA / Conditions). New in V2: Closing Guidance always carries the merging parties' own guidance (with source/date), a CHANGE note if that guidance has moved, and a one-sentence summary of the DMA's closing mechanic.",
+      "source": "plugin",
+      "updatedAt": "2026-10-06T18:39:28.913278Z",
+      "backingPluginId": "plugin_01S5u9QsrLSx4GHgENEibPQ8"
+    },
+    {
+      "skillId": "chrome-browser",
+      "name": "chrome-browser",
+      "description": "Read this skill before the first step that uses Claude in Chrome, the browser extension whose tools are named mcp__claude-in-chrome__* (also called Chrome, the browser extension, or the external browser) and which acts in the person's real Chrome with their own sign-ins; before those tools are turned on there may be a single enable__mcp__claude-in-chrome tool instead. It covers loading the tools in one ToolSearch call, checking the person's open tabs and working in a new tab, site permissions, GIF recordings, console logs, dialogs to avoid, and when to stop and ask. It is not for the built-in browser (mcp__Claude_Browser__* or mcp__remote-devices__Claude_Browser__* tools), which has its own skill, and it does not decide which browser to use.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-18T21:09:50.227858Z"
+    },
+    {
+      "skillId": "computer-use",
+      "name": "computer-use",
+      "description": "Read this skill before the first step of any request to do something in an app on the person's own computer (Notes, Finder, System Settings, any desktop app), to look at their screen, or for \"computer use\". Computer use (desktop control) lets Claude take screenshots of the person's desktop and control it with clicks, typing and scrolling through the Claude desktop app; its tools are named mcp__computer-use__* when the session runs in the desktop app and mcp__remote-devices__computer_* when a cloud session is linked to the person's computer; before computer use is turned on for a conversation there may be no such tools, only an enable__mcp__remote-devices__computer tool, which turns it on. It covers turning it on, picking the right tool, the access flow, and the safety rules for tiered apps, links and financial actions. It is not for websites, which go through Claude in Chrome or the built-in browser and their own skills.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-08T17:34:24.164396Z"
+    },
+    {
+      "skillId": "built-in-browser",
+      "name": "built-in-browser",
+      "description": "Read this skill before the first step that uses the built-in browser, the browser pane inside the Claude desktop app (also called the in-app browser, the browser pane, Claude's browser, or \"your own browser\"), whose tools are named mcp__Claude_Browser__* when the session runs in the desktop app and mcp__remote-devices__Claude_Browser__* when a cloud session is linked to the person's computer; before those tools are turned on there may be a single enable__mcp__remote-devices__Claude_Browser tool instead. It covers the pane's persistent sign-ins, tabs and preview_start, reading pages as text, site approvals, what the pane cannot open, and what to do when it cannot be reached. It is not for Claude in Chrome (mcp__claude-in-chrome__* tools), which has its own skill, and it does not decide which browser to use.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-21T06:00:29.740604Z"
+    },
+    {
+      "skillId": "deep-research",
+      "name": "deep-research",
+      "description": "Use this skill when the user's prompt requires (1) researching a topic across multiple sources, comparing options or alternatives, analyzing trends or history, understanding markets or industries, or reviewing literature or studies and (2) synthesizing that research into a comprehensive, narrative report. If you're planning to search the web or internal knowledge bases, consider using this skill. This skill coordinates research subagents, so use it only when you have a tool for spawning subagents (the Agent or Task tool); otherwise, research the question directly.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.015956Z"
+    },
+    {
+      "skillId": "skill_019HzqRFSaYv718FK3bwikxk",
+      "name": "merger-arb-email-scan",
+      "description": "Scan Filings@ for forwarded broker merger-arb notes (UBS, TD, Jefferies, RJF, Oscar Gruss, Elevation, CTFN, any broker), check where we stand on each deal (EMSX blotter, deal memory doc, live spread), and post a short desk analysis of what the new note actually says and means as a reply-all on that ticker's existing Internal chain, rendered in the meteora-email-format-v2 house HTML format. Use for 'run the merger arb email scan' and its recurring runs.",
+      "source": "plugin",
+      "updatedAt": "2026-10-16T16:07:43.830837Z",
+      "backingPluginId": "plugin_01JJ3P4M2SB9eQr59qAYnBws"
+    },
+    {
+      "skillId": "skill_01HdBWXSmpwCQ1ZyoWUAnGqQ",
+      "name": "antitrust-minute-1-v13-10062026",
+      "description": "Announcement-day (T+0) antitrust and regulatory-clearance module for a new M&A deal, and the re-read when new documents land. Produces a gate-led memo (verdict, overlap, competitive effects, regulatory timeline, precedents, Entry Price to Target IRR). v13 covers state health care approvals. The 10/6 revision adds a standing-public-record agent for what was knowable before announcement (target clearances, federal contracts, rival ownership structures, the buyer's own deal track record, pending rules), a coverage ledger, a guidance-gap test and questions for counsel. Also: spread-pressure module, deal-date calculator, CFIUS/FOCI screen with mitigation-instrument sort, delta mode, desk read. Use for antitrust risk, HSR, second request, EC/CMA/SAMR review, CFIUS, FOCI, special security agreements, regulatory timing, outside dates, why a spread is wide, state approvals, or whether analysis changed after new documents. Trigger: 'antitrust-minute-1', 'antitrust risk on [ACQ]/[TGT]', 'will this clear HSR'.",
+      "source": "plugin",
+      "updatedAt": "2026-10-08T12:05:23.675607Z",
+      "backingPluginId": "plugin_01WTFeMGRqcXG2ozmth5TgwB"
+    },
+    {
+      "skillId": "skill_01KmpyXxDjyuwVeM1yec9Fb4",
+      "name": "dma-minute-1-v6",
+      "description": "T+0 DMA extraction on freshly filed M&A merger agreements: a Key Terms at a Glance table, Executive Summary, Approvals & Gates, Regulatory & Deal-Protection Architecture, a 14-section extraction, closing risk assessment, and live spread math with an Entry Price to Target IRR block. Pulls the acquirer's parallel 8-K; agreement text controls on fee conflicts; sources precedent timelines via vector-DB; sweeps the earnings call; diffs the last comparable deal; cross-checks bond pricing; Section 11 covers key-commercial-contract change-of-control exposure. Trigger: 'DMA-minute-1', 'dma-minute-1-v6', 'run the DMA', 'quick DMA', 'extract this merger agreement'. Covers cash/stock/mixed/RMT/REIT/private-target deals. Not for SPACs.",
+      "source": "plugin",
+      "updatedAt": "2026-10-08T12:59:36.466182Z",
+      "backingPluginId": "plugin_013feBMawXHXZJYqCKwTMBT6"
+    },
+    {
+      "skillId": "skill_01Bi1iY5vviVxgmhvwJLc6bx",
+      "name": "new-deal-ml",
+      "description": "Fast fact extraction for a merger-arb deal, in two modes. NEW DEAL - given an 8-K / merger-agreement link, an EDGAR accession, or a target ticker, pull the announcement-day fields the deal-close model needs, ready to paste into New Deals.xlsx. MILESTONE UPDATE - when asked for milestones / an update on a deal already in the sheet, pull the milestones that have happened since (and any extended outside date) as the text for the \"Milestones so far\" column. Extraction only - it does not run the model, write files, update dashboards or compare to brokers.",
+      "source": "plugin",
+      "updatedAt": "2026-10-15T15:07:27.848210Z",
+      "backingPluginId": "plugin_01ET5ybQxJFPKeYpSGeUHn4J"
+    },
+    {
+      "skillId": "skill_01DRHF1XCgso44cFYik7iHY7",
+      "name": "meteora-email-format-v2",
+      "description": "House HTML format for internal Meteora email on SPAC names and merger-arb (M&A) deal names. Invoked explicitly by the user — never applied automatically, and it never overrides a format another skill already produces. DEFAULT mode renders exactly what the user asked for, in house format, at the TOP of the note. ENHANCED mode keeps that on top and adds the SPAC Snapshot table plus supporting detail BELOW it, on request: 'enhanced', 'full note', 'add the table', 'more detail' (SPAC threads only — merger-arb threads have no Snapshot table, see Scope). Internal chains only — every recipient must be @meteoracapital.com. Keeps the Cowork-generated stamp when Claude wrote the bulk of the body; drops it when the user typed the body themselves. Renders content VERBATIM and in full unless asked to shorten. Merger-arb notes send immediately once built and validated — no confirm-before-send pause — unless the user's request says to draft or hold it; SPAC notes keep asking before sending as before.",
+      "source": "plugin",
+      "updatedAt": "2026-10-16T12:31:20.713774Z",
+      "backingPluginId": "plugin_01SMpR6t6FR3BSMqrgVABBJb"
+    },
+    {
+      "skillId": "skill_011fSSWgVjMJnYjbEEAQoLRk",
+      "name": "merger-arb-research",
+      "description": "Research framework for merger-arbitrage trade decisions on public-company M&A. Works out what a deal turns on, sends parallel research agents across public sources, and returns a short layered trade call (buy or not, up to what price, dated cases, ranked risks, precedents, what is unknown), kept in a per-deal living document. Modes - Rumor (pre-announcement), Minute-1 (first read), Hour-1 (deep research), Spread check (why a spread moved), Update (folds new information such as a broker note, desk discussion, filing or passed date into the living document and revises the call). Use whenever the user names an announced or pending merger and asks for minute-1, hour-1, a first read, a rumored deal, a deep dive, antitrust or other regulatory risk, merger agreement terms, closing timeline, spread, downside, or whether to participate, and whenever they pass along new information on a deal already being researched, even if they don't name the skill. Replaces antitrust-minute-1, dma-minute-1 and merger-hour-1.",
+      "source": "plugin",
+      "updatedAt": "2026-10-20T20:34:23.881638Z",
+      "backingPluginId": "plugin_017EevvEznbbz4uqJvUeDqsq"
+    }
+  ]
+}

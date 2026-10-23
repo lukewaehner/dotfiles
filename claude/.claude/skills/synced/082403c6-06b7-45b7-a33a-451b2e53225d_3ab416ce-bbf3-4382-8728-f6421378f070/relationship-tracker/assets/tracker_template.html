@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SPAC Relationship Tracker</title>
+<style>
+:root{color-scheme:light;
+ --bg:#f6f7f9;--card:#ffffff;--ink:#16202c;--muted:#6b7785;--line:#e6e9ee;
+ --blue:#1f5fae;--blue-soft:#eaf1fb;--green:#1f7a4d;--green-soft:#e7f5ee;
+ --amber:#9a6b00;--amber-soft:#fdf3d9;--amber-soft2:#fbf0d3;--red:#b42318;--red-soft:#fdeceb;
+ --slate-soft:#eef1f5;--purple:#5b3fae;--purple-soft:#efeafb;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{padding:18px 20px 60px;max-width:1480px;margin:0 auto;}
+h1{font-size:19px;margin:0;font-weight:680;letter-spacing:-.2px}
+.sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:96px}
+.stat .n{font-size:20px;font-weight:700;letter-spacing:-.5px}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.stat.due .n{color:var(--red)} .stat.indeal .n{color:var(--blue)}
+.controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:12px}
+input[type=text],select{font:13px inherit;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+input[type=text]{min-width:230px}
+.btn{font:13px inherit;font-weight:600;padding:8px 13px;border-radius:8px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer}
+.btn.sec{background:#fff;color:var(--blue)}
+.btn.ghost{background:#fff;color:var(--muted);border-color:var(--line)}
+.btn:disabled{opacity:.55;cursor:default}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer;user-select:none}
+.spacer{flex:1}
+.synced{font-size:12px;color:var(--muted)}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:1180px}
+th,td{padding:9px 11px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{position:sticky;top:0;background:#fbfcfd;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);cursor:pointer;white-space:nowrap;z-index:2}
+th.no-sort{cursor:default}
+tr:last-child td{border-bottom:none}
+tr.row:hover{background:#fafbfc}
+td.name{font-weight:650;white-space:nowrap}
+td.name .tk{color:var(--muted);font-weight:500;font-size:12px}
+.chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:650;white-space:nowrap}
+.c-spon{background:var(--blue-soft);color:var(--blue)}
+.c-bank{background:var(--green-soft);color:var(--green)}
+.c-targ{background:var(--purple-soft);color:var(--purple)}
+.s-indeal{background:var(--blue-soft);color:var(--blue)}
+.s-predeal{background:var(--slate-soft);color:#3a4757}
+.s-predeal{color:#3a4757}
+.s-liq{background:var(--red-soft);color:var(--red)}
+.s-done{background:#eef1f5;color:#8a96a3}
+.s-unk{background:#f1eee6;color:#8a7a4f}
+.deal{font-size:12.5px;max-width:230px}
+.deal .meta{color:var(--muted);font-size:11.5px;margin-top:2px}
+.pri{font-weight:700;font-size:12px;white-space:nowrap}
+.p-due{color:var(--red)} .p-stale{color:var(--amber)} .p-aging{color:#7a6a2f}
+.p-bank{color:var(--green)} .p-ok{color:var(--muted)} .p-sched{color:var(--blue)} .p-done{color:#9aa6b2}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.d-due{background:var(--red)} .d-stale{background:#d99300} .d-aging{background:#c8b15a}
+.d-bank{background:var(--green)} .d-ok{background:#c2cbd5} .d-sched{background:var(--blue)} .d-done{background:#cdd4db}
+tr.due-row{background:#fef7f6}
+tr.due-row:hover{background:#fdeeec}
+td.notes{max-width:300px;font-size:12.5px;color:#39434f}
+td.notes .hist{white-space:pre-wrap}
+.edit{width:100%;border:1px solid transparent;border-radius:6px;padding:4px 6px;font:13px inherit;background:transparent;color:var(--ink);resize:vertical}
+.edit:hover{border-color:var(--line);background:#fff}
+.edit:focus{border-color:var(--blue);background:#fff;outline:none}
+select.edit{appearance:auto}
+.last{white-space:nowrap;font-variant-numeric:tabular-nums}
+.empty{padding:34px;text-align:center;color:var(--muted)}
+.modal-bg{position:fixed;inset:0;background:rgba(20,28,38,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal{background:#fff;border-radius:14px;max-width:540px;padding:22px 24px;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.modal h2{margin:0 0 8px;font-size:16px}
+.modal p{color:#3a4757;font-size:13.5px}
+.modal code{background:#f1f4f8;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.modal .x{float:right;cursor:pointer;color:var(--muted);font-size:18px;border:none;background:none}
+.banner{background:#fff8e8;border:1px solid #f0e2bd;color:#7a611f;border-radius:9px;padding:8px 12px;font-size:12.5px;margin-bottom:12px;display:none}
+.legend{font-size:11.5px;color:var(--muted);margin-top:9px;display:flex;gap:14px;flex-wrap:wrap}
+.legend span{white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="topbar">
+  <div>
+   <h1>SPAC &amp; Public-Markets Relationship Tracker</h1>
+   <div class="sub">Outreach pipeline &middot; bank vs. sponsor &middot; deal status auto-synced from Meteora &middot; <span id="asof"></span></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <button class="btn" id="refreshBtn">&#x21bb; Refresh deal status</button>
+   <button class="btn sec" id="emailBtn">&#9993; Scan inbox</button>
+  </div>
+ </div>
+
+ <div class="banner" id="banner"></div>
+
+ <div class="stats" id="stats"></div>
+
+ <div class="controls">
+  <input type="text" id="search" placeholder="Search ticker, name, contact, target, notes&hellip;"/>
+  <select id="fType"><option value="">All types</option><option>Sponsor</option><option>Bank/Broker</option><option>Target</option></select>
+  <select id="fStatus"><option value="">All stages</option><option value="In-Deal">In-Deal</option><option value="Pre-Deal">Pre-Deal</option><option value="Other">Liquidating / Closed / Unknown</option></select>
+  <label class="toggle"><input type="checkbox" id="fFollow"/> Needs follow-up only</label>
+  <span class="spacer"></span>
+  <span class="synced" id="synced">deal status: not yet synced</span>
+ </div>
+
+ <div class="tablewrap">
+  <table id="tbl">
+   <thead><tr>
+    <th data-sort="priority">Priority</th>
+    <th data-sort="display">SPAC / Group</th>
+    <th data-sort="type">Type</th>
+    <th class="no-sort">Contact(s)</th>
+    <th data-sort="lastContacted">Last contacted</th>
+    <th data-sort="status">Deal status</th>
+    <th class="no-sort">Deal / update</th>
+    <th class="no-sort" style="min-width:200px">Next step</th>
+    <th data-sort="followUp">Follow-up</th>
+    <th class="no-sort" style="min-width:240px">Notes (history)</th>
+   </tr></thead>
+   <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="empty" style="display:none">No relationships match your filters.</div>
+ </div>
+ <div class="legend">
+  <span><span class="dot d-due"></span>Follow up now / overdue</span>
+  <span><span class="dot d-stale"></span>Stale (60d+)</span>
+  <span><span class="dot d-aging"></span>Aging (30d+)</span>
+  <span><span class="dot d-sched"></span>Scheduled</span>
+  <span><span class="dot d-bank"></span>Bank — they chase us</span>
+  <span><span class="dot d-ok"></span>Recent</span>
+ </div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+ <div class="modal">
+  <button class="x" id="modalX">&times;</button>
+  <h2 id="modalTitle"></h2>
+  <div id="modalBody"></div>
+ </div>
+</div>
+
+<script>window.__SEED__=__SEED_JSON__;</script>
+<script>
+(function(){
+ "use strict";
+ var SPAC_TOOL="mcp__37e4df80-c7f5-4e0e-b4c4-c93e0ee1e885__spac-details";
+ var LS_KEY="aidas_tracker_overrides_v1";
+ var TODAY=new Date("2026-06-23T00:00:00");
+ var seed=(window.__SEED__&&window.__SEED__.rows)?window.__SEED__.rows:[];
+ document.getElementById("asof").textContent="seeded from your tracker, "+((window.__SEED__||{}).asOf||"");
+
+ // ---- load user overrides ----
+ var ov={};
+ try{ ov=JSON.parse(localStorage.getItem(LS_KEY)||"{}"); }catch(e){ ov={}; }
+ function saveOv(){ try{ localStorage.setItem(LS_KEY,JSON.stringify(ov)); }catch(e){} }
+
+ // ---- build state rows (seed + overrides) ----
+ var rows=seed.map(function(s){
+  var o=ov[s.id]||{};
+  return {
+   id:s.id, display:s.display, ticker:s.ticker, matchKey:s.matchKey,
+   type:(o.type!=null?o.type:s.type),
+   contacts:s.contacts,
+   lastContacted:(o.lastContacted!=null?o.lastContacted:s.lastContacted),
+   statusOverride:s.statusOverride,
+   nextStep:(o.nextStep!=null?o.nextStep:s.nextStep),
+   followUp:(o.followUp!=null?o.followUp:s.followUp),
+   notes:(o.notes!=null?o.notes:s.notes),
+   live:null
+  };
+ });
+
+ var uni={}; // ticker -> live spac record
+ function daysSince(d){ if(!d) return null; var dt=new Date(d+"T00:00:00"); if(isNaN(dt)) return null; return Math.floor((TODAY-dt)/86400000); }
+
+ function matchLive(row){
+  if(!row.matchKey) return null;
+  var k=row.matchKey.toUpperCase();
+  if(uni[k]) return uni[k];
+  // startsWith both ways, len>=4
+  var keys=Object.keys(uni);
+  for(var i=0;i<keys.length;i++){
+   var u=keys[i];
+   if(u===k) return uni[u];
+   if(k.length>=4 && (u.indexOf(k)===0 || k.indexOf(u)===0)) return uni[u];
+  }
+  return null;
+ }
+
+ function effStatus(row){
+  if(row.statusOverride==="Liquidating") return {label:"Liquidating",cls:"s-liq"};
+  if(row.statusOverride==="Closed/Done") return {label:"Closed / Done",cls:"s-done"};
+  if(row.live){ return row.live.stage==="indeal"?{label:"In-Deal",cls:"s-indeal"}:{label:"Pre-Deal",cls:"s-predeal"}; }
+  return {label:"Unknown",cls:"s-unk"};
+ }
+ function statusKey(row){
+  var s=effStatus(row).label;
+  if(s==="In-Deal")return "In-Deal"; if(s==="Pre-Deal")return "Pre-Deal"; return "Other";
+ }
+
+ function priority(row){
+  if(row.statusOverride==="Closed/Done") return {rank:6,label:"Done",cls:"p-done",dot:"d-done"};
+  if(row.statusOverride==="Liquidating") return {rank:0,label:"Liquidating — decide",cls:"p-due",dot:"d-due"};
+  var fu=row.followUp;
+  if(fu){ var d=new Date(fu+"T00:00:00"); if(!isNaN(d)){ if(d<=TODAY) return {rank:0,label:"Follow up now",cls:"p-due",dot:"d-due"}; return {rank:4,label:"Scheduled "+fu,cls:"p-sched",dot:"d-sched"}; } }
+  if(row.type==="Bank/Broker") return {rank:5,label:"They follow up",cls:"p-bank",dot:"d-bank"};
+  var ds=daysSince(row.lastContacted);
+  if(ds!=null&&ds>60) return {rank:1,label:"Stale &middot; "+ds+"d",cls:"p-stale",dot:"d-stale"};
+  if(ds!=null&&ds>30) return {rank:2,label:"Aging &middot; "+ds+"d",cls:"p-aging",dot:"d-aging"};
+  return {rank:4,label:(ds!=null?ds+"d ago":"Recent"),cls:"p-ok",dot:"d-ok"};
+ }
+
+ // ---- sorting state ----
+ var sortKey="priority", sortDir=1;
+ function cmp(a,b){
+  var r;
+  if(sortKey==="priority"){ r=priority(a).rank-priority(b).rank; if(r===0){ r=(b.lastContacted||"").localeCompare(a.lastContacted||""); } }
+  else if(sortKey==="lastContacted"||sortKey==="followUp"){ r=(a[sortKey]||"").localeCompare(b[sortKey]||""); }
+  else if(sortKey==="status"){ r=statusKey(a).localeCompare(statusKey(b)); }
+  else { r=String(a[sortKey]||"").localeCompare(String(b[sortKey]||"")); }
+  return r*sortDir;
+ }
+
+ // ---- filters ----
+ function getFilters(){
+  return {
+   q:document.getElementById("search").value.trim().toLowerCase(),
+   type:document.getElementById("fType").value,
+   status:document.getElementById("fStatus").value,
+   follow:document.getElementById("fFollow").checked
+  };
+ }
+ function passes(row,f){
+  if(f.type && row.type!==f.type) return false;
+  if(f.status && statusKey(row)!==f.status) return false;
+  if(f.follow){ var rk=priority(row).rank; if(rk>2) return false; }
+  if(f.q){
+   var live=row.live||{};
+   var blob=[row.display,row.ticker,row.contacts,row.nextStep,row.notes,live.target,live.company_name].join(" ").toLowerCase();
+   if(blob.indexOf(f.q)<0) return false;
+  }
+  return true;
+ }
+
+ function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+ function chipType(t){ if(t==="Bank/Broker")return '<span class="chip c-bank">Bank/Broker</span>'; if(t==="Target")return '<span class="chip c-targ">Target</span>'; return '<span class="chip c-spon">Sponsor</span>'; }
+
+ function dealCell(row){
+  var L=row.live;
+  if(!L) return '<span class="deal" style="color:#9aa">&mdash;</span>';
+  var t=(L.target||"").replace(/^Announced:\s*/,"");
+  var meta=[]; if(L.deadline) meta.push("deadline "+L.deadline); if(L.bucket!=null&&L.bucket!=="-"&&L.bucket!=="") meta.push("bucket "+L.bucket); if(L.category) meta.push(L.category);
+  var head = L.stage==="indeal" ? (t?esc(t):"(target n/a)") : esc(L.company_name||"");
+  return '<div class="deal">'+head+'<div class="meta">'+esc(meta.join(" · "))+'</div></div>';
+ }
+
+ var tbody=document.getElementById("tbody");
+ function render(){
+  var f=getFilters();
+  var view=rows.filter(function(r){return passes(r,f);}).sort(cmp);
+  tbody.innerHTML="";
+  document.getElementById("empty").style.display=view.length?"none":"block";
+  view.forEach(function(row){
+   var p=priority(row), st=effStatus(row);
+   var tr=document.createElement("tr");
+   tr.className="row"+(p.rank===0?" due-row":"");
+   tr.innerHTML=
+    '<td class="pri '+p.cls+'"><span class="dot '+p.dot+'"></span>'+p.label+'</td>'+
+    '<td class="name">'+esc(row.display)+(row.ticker?'<div class="tk">'+esc(row.ticker)+'</div>':'')+'</td>'+
+    '<td data-k="type"></td>'+
+    '<td>'+esc(row.contacts||"—")+'</td>'+
+    '<td class="last" data-k="lastContacted"></td>'+
+    '<td><span class="chip '+st.cls+'">'+st.label+'</span></td>'+
+    '<td>'+dealCell(row)+'</td>'+
+    '<td data-k="nextStep"></td>'+
+    '<td data-k="followUp"></td>'+
+    '<td class="notes" data-k="notes"></td>';
+   // type select
+   var tdType=tr.querySelector('[data-k=type]');
+   var sel=document.createElement("select"); sel.className="edit";
+   ["Sponsor","Bank/Broker","Target"].forEach(function(o){ var op=document.createElement("option"); op.textContent=o; if(o===row.type)op.selected=true; sel.appendChild(op); });
+   sel.onchange=function(){ row.type=sel.value; setOv(row.id,"type",sel.value); render(); };
+   tdType.appendChild(sel);
+   // last contacted (date)
+   var tdLast=tr.querySelector('[data-k=lastContacted]');
+   var di=document.createElement("input"); di.type="date"; di.className="edit"; di.value=row.lastContacted||"";
+   di.onchange=function(){ row.lastContacted=di.value||null; setOv(row.id,"lastContacted",di.value||null); render(); };
+   tdLast.appendChild(di);
+   // next step
+   var tdN=tr.querySelector('[data-k=nextStep]');
+   var ni=document.createElement("textarea"); ni.className="edit"; ni.rows=2; ni.value=row.nextStep||"";
+   ni.onchange=function(){ row.nextStep=ni.value; setOv(row.id,"nextStep",ni.value); };
+   tdN.appendChild(ni);
+   // follow up
+   var tdF=tr.querySelector('[data-k=followUp]');
+   var fi=document.createElement("input"); fi.type="date"; fi.className="edit"; fi.value=row.followUp||"";
+   fi.onchange=function(){ row.followUp=fi.value||null; setOv(row.id,"followUp",fi.value||null); render(); };
+   tdF.appendChild(fi);
+   // notes
+   var tdNt=tr.querySelector('[data-k=notes]');
+   var nt=document.createElement("textarea"); nt.className="edit"; nt.rows=2; nt.value=row.notes||"";
+   nt.onchange=function(){ row.notes=nt.value; setOv(row.id,"notes",nt.value); };
+   tdNt.appendChild(nt);
+   tbody.appendChild(tr);
+  });
+  renderStats();
+ }
+
+ function setOv(id,k,v){ if(!ov[id])ov[id]={}; ov[id][k]=v; saveOv(); }
+
+ function renderStats(){
+  var total=rows.length;
+  var due=rows.filter(function(r){return priority(r).rank<=1 && r.statusOverride!=="Closed/Done";}).length;
+  var indeal=rows.filter(function(r){return statusKey(r)==="In-Deal";}).length;
+  var bank=rows.filter(function(r){return r.type==="Bank/Broker";}).length;
+  var spon=rows.filter(function(r){return r.type==="Sponsor";}).length;
+  document.getElementById("stats").innerHTML=
+   '<div class="stat"><div class="n">'+total+'</div><div class="l">Relationships</div></div>'+
+   '<div class="stat due"><div class="n">'+due+'</div><div class="l">Need outreach</div></div>'+
+   '<div class="stat indeal"><div class="n">'+indeal+'</div><div class="l">In-Deal</div></div>'+
+   '<div class="stat"><div class="n">'+spon+'</div><div class="l">Sponsors</div></div>'+
+   '<div class="stat"><div class="n">'+bank+'</div><div class="l">Banks/Brokers</div></div>';
+ }
+
+ // ---- live deal-status sync ----
+ function toolCall(name,args){
+  return Promise.resolve().then(function(){
+   if(!(window.cowork&&window.cowork.callMcpTool)) throw new Error("Not running inside Cowork — open this artifact in the Claude app to sync live deal status.");
+   return window.cowork.callMcpTool(name,args);
+  }).then(function(r){
+   if(r&&r.isError) throw new Error("Tool error from spac-details.");
+   var data=r&&r.structuredContent;
+   if(!data && r&&r.content&&r.content[0]&&r.content[0].text){ data=JSON.parse(r.content[0].text); }
+   return data;
+  });
+ }
+ function ingest(d){ if(!d||!d.results) return; d.results.forEach(function(x){ if(x.spac_ticker) uni[String(x.spac_ticker).toUpperCase()]=x; }); }
+
+ function syncStatus(){
+  var btn=document.getElementById("refreshBtn");
+  btn.disabled=true; var old=btn.innerHTML; btn.innerHTML="Syncing&hellip;";
+  document.getElementById("synced").textContent="deal status: syncing…";
+  var fields=["spac_ticker","stage","target","deadline","bucket","category","company_name","deal_announced"];
+  return Promise.all([
+    toolCall(SPAC_TOOL,{stage:"indeal",fields:fields}),
+    toolCall(SPAC_TOOL,{stage:"predeal",fields:fields})
+  ]).then(function(res){
+    ingest(res[0]); ingest(res[1]);
+    rows.forEach(function(r){ r.live=matchLive(r); });
+    var matched=rows.filter(function(r){return r.live;}).length;
+    var now=new Date();
+    document.getElementById("synced").textContent="deal status synced · "+matched+"/"+rows.length+" matched · "+now.toLocaleTimeString();
+    document.getElementById("banner").style.display="none";
+    render();
+  }).catch(function(err){
+    document.getElementById("synced").textContent="deal status: not synced";
+    var b=document.getElementById("banner"); b.style.display="block";
+    b.textContent="⚠ "+(err&&err.message?err.message:"Could not sync deal status.")+" Showing your saved tracker data.";
+  }).then(function(){ btn.disabled=false; btn.innerHTML=old; });
+ }
+
+ // ---- email modal ----
+ function showModal(title,html){ document.getElementById("modalTitle").innerHTML=title; document.getElementById("modalBody").innerHTML=html; document.getElementById("modalBg").style.display="flex"; }
+ document.getElementById("modalX").onclick=function(){ document.getElementById("modalBg").style.display="none"; };
+ document.getElementById("modalBg").onclick=function(e){ if(e.target===this) this.style.display="none"; };
+ document.getElementById("emailBtn").onclick=function(){
+  showModal("Inbox scan &mdash; one-time setup",
+   "<p>This dashboard updates <b>deal status</b> live right now (the &ldquo;Refresh deal status&rdquo; button pulls In-Deal / Pre-Deal, target, deadline and bucket straight from Meteora&rsquo;s SPAC sheet).</p>"+
+   "<p>To also have it <b>read your Outlook</b> and auto-add outreach &mdash; last-contacted dates, source, and a one-line summary per email &mdash; sign the <b>Email Assistant</b> connector in to your mailbox once.</p>"+
+   "<p><b>It keeps deal emails only.</b> Skips internal <code>@meteoracapital.com</code> mail and <code>BAMSEC</code> alerts, and drops generic bank IPO / new-issue / market / research blasts (those live in other trackers). Keeps only emails about a <i>specific actionable deal</i> &mdash; FPA, bridge, term sheet, PIPE, redemptions/trust, BCA, restructuring &mdash; from <b>either</b> a bank/broker or a sponsor/target, and tags which one sent it.</p>"+
+   "<p style='color:#6b7785'>Ask Claude in chat: <b>&ldquo;refresh my outreach tracker from the last 90 days of email.&rdquo;</b> (Install the <i>outreach-deal-tracker</i> skill so the keep/drop rules run the same way every time.)</p>");
+ };
+
+ // ---- wire controls ----
+ document.getElementById("refreshBtn").onclick=syncStatus;
+ document.getElementById("search").oninput=render;
+ document.getElementById("fType").onchange=render;
+ document.getElementById("fStatus").onchange=render;
+ document.getElementById("fFollow").onchange=render;
+ Array.prototype.forEach.call(document.querySelectorAll("th[data-sort]"),function(th){
+  th.onclick=function(){ var k=th.getAttribute("data-sort"); if(sortKey===k){sortDir=-sortDir;}else{sortKey=k;sortDir=(k==="lastContacted"?-1:1);} render(); };
+ });
+
+ render();
+ // auto-sync on open
+ syncStatus();
+})();
+</script>
+</body>
+</html>

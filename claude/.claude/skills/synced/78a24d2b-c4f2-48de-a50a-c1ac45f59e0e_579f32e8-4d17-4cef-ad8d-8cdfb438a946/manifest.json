@@ -1,0 +1,175 @@
+{
+  "lastUpdated": 1792617121608,
+  "skills": [
+    {
+      "skillId": "deep-research",
+      "name": "deep-research",
+      "description": "Use this skill when the user's prompt requires (1) researching a topic across multiple sources, comparing options or alternatives, analyzing trends or history, understanding markets or industries, or reviewing literature or studies and (2) synthesizing that research into a comprehensive, narrative report. If you're planning to search the web or internal knowledge bases, consider using this skill. This skill coordinates research subagents, so use it only when you have a tool for spawning subagents (the Agent or Task tool); otherwise, research the question directly.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.015956Z"
+    },
+    {
+      "skillId": "docs",
+      "name": "docs",
+      "description": "docs (editable docs people share and comment on; the default for any document, named as a doc or not: a document, report, proposal, resume, cover letter, letter, contract, policy, form, template, worksheet, essay, handbook, guide, how-to, cheat sheet, SOP or other writing to keep, share, collaborate on, send, submit, print or sign; a doc exports to Word, PDF, Markdown or Google Docs, so needing a file to send, attach, upload, submit or print is no reason to pick Word, and a file nobody asked for is a doc, not Word; a plan, comparison, summary or notes asked in chat stays in chat; a pasted claude.ai artifact link may be a doc: check with docs tools first; Word or another file format named, tracked changes wanted, or a .docx to change or use as a template → that format's skill): making one → if no docs-connector instructions are in context, call its `guide` (topic.instructions) first; then create the doc (headings only, no body) before any search, file read or plan, even with files attached.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-30T00:33:27.599727Z"
+    },
+    {
+      "skillId": "built-in-browser",
+      "name": "built-in-browser",
+      "description": "Read this skill before the first step that uses the built-in browser, the browser pane inside the Claude desktop app (also called the in-app browser, the browser pane, Claude's browser, or \"your own browser\"), whose tools are named mcp__Claude_Browser__* when the session runs in the desktop app and mcp__remote-devices__Claude_Browser__* when a cloud session is linked to the person's computer; before those tools are turned on there may be a single enable__mcp__remote-devices__Claude_Browser tool instead. It covers the pane's persistent sign-ins, tabs and preview_start, reading pages as text, site approvals, what the pane cannot open, and what to do when it cannot be reached. It is not for Claude in Chrome (mcp__claude-in-chrome__* tools), which has its own skill, and it does not decide which browser to use.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-21T06:00:29.740604Z"
+    },
+    {
+      "skillId": "chrome-browser",
+      "name": "chrome-browser",
+      "description": "Read this skill before the first step that uses Claude in Chrome, the browser extension whose tools are named mcp__claude-in-chrome__* (also called Chrome, the browser extension, or the external browser) and which acts in the person's real Chrome with their own sign-ins; before those tools are turned on there may be a single enable__mcp__claude-in-chrome tool instead. It covers loading the tools in one ToolSearch call, checking the person's open tabs and working in a new tab, site permissions, GIF recordings, console logs, dialogs to avoid, and when to stop and ask. It is not for the built-in browser (mcp__Claude_Browser__* or mcp__remote-devices__Claude_Browser__* tools), which has its own skill, and it does not decide which browser to use.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-18T21:09:50.227858Z"
+    },
+    {
+      "skillId": "computer-use",
+      "name": "computer-use",
+      "description": "Read this skill before the first step of any request to do something in an app on the person's own computer (Notes, Finder, System Settings, any desktop app), to look at their screen, or for \"computer use\". Computer use (desktop control) lets Claude take screenshots of the person's desktop and control it with clicks, typing and scrolling through the Claude desktop app; its tools are named mcp__computer-use__* when the session runs in the desktop app and mcp__remote-devices__computer_* when a cloud session is linked to the person's computer; before computer use is turned on for a conversation there may be no such tools, only an enable__mcp__remote-devices__computer tool, which turns it on. It covers turning it on, picking the right tool, the access flow, and the safety rules for tiered apps, links and financial actions. It is not for websites, which go through Claude in Chrome or the built-in browser and their own skills.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-08T17:34:24.164396Z"
+    },
+    {
+      "skillId": "google-workspace",
+      "name": "google-workspace",
+      "description": "Read this before the first Google Drive, Docs, Sheets or Slides connector call whenever the task creates or changes a Google file. Use this skill whenever the user wants to create or change a Google Doc, Sheet or Slides file in their Google Drive. Triggers include: a request that names Google Docs, Sheets, Slides or Drive and asks to make, edit, format, copy or rename a file; a docs.google.com link with a request to change that file, even a one-line fix or suggested edits; and any follow-up change to a Google file from earlier in the chat, even \"change it\" or \"add a tab\". Includes helper scripts for document positions, cell ranges and slide layout. However, if the user asks for a doc, deck or spreadsheet without naming Google, or gives a Google file only as source material for something new, use Claude's own output type instead. Do NOT use for read-only questions about a Google file, or for Word, Excel, PowerPoint or PDF files.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-14T14:41:49.960676Z"
+    },
+    {
+      "skillId": "skill_018igCh3cUytVNL5UDueY4Q2",
+      "name": "first-principles",
+      "description": "Break a claim, system, or plan down to its actual load-bearing assumptions and rebuild the reasoning from there, flagging which assumptions are solid, borrowed, or unexamined. Use ONLY when explicitly invoked — the user names this skill directly, types \"/first-principles\", or says something like \"use the first-principles skill\" or \"break this down from first principles.\" Do NOT trigger on plain \"explain X\" or \"why is this true\" requests — those get a normal answer. Domain-agnostic: works on a belief, a business plan, a technical design, a strategy, or a claim someone else made.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:52:51.312878Z",
+      "backingPluginId": "plugin_01UNp6knm5CkB8sYkD51wKHx"
+    },
+    {
+      "skillId": "skill_01SjZxLWexyhhhNQ2ga7Fg4S",
+      "name": "postmortem-writer",
+      "description": "Write a structured incident postmortem — timeline, root cause, blast radius, remediation, and follow-ups — from a description of what happened. Use ONLY when explicitly invoked — the user names this skill directly, types \"/postmortem-writer\", or says something like \"use the postmortem-writer skill.\" Do NOT trigger on plain \"write up what happened\" or \"summarize this incident\" requests — those get a normal answer. Works from a freeform account of the incident, logs/error messages pasted in, or a mix of both.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:49:34.277071Z",
+      "backingPluginId": "plugin_01WkeUh5PdZRQyjFtCDPmWCd"
+    },
+    {
+      "skillId": "skill_01Xq8Y2B58BX2hpkgVgyZ7bd",
+      "name": "concept-explainer",
+      "description": "Explain a topic to someone with zero prior background, giving them broad map-level understanding while still teaching the real technical vocabulary. Use ONLY when explicitly invoked — the user names this skill directly, types \"/explain\", or says something like \"use the concept-explainer skill\" or \"explain this like a beginner with the real terms.\" Do NOT trigger on plain \"explain X\" or \"what is X\" requests — those get a normal answer. This skill is for when the user specifically wants the full breadth-first, vocabulary-mapped, grounded-example treatment.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:36:00.511630Z",
+      "backingPluginId": "plugin_01EHAGdB2sae6LvwbwkM9kgi"
+    },
+    {
+      "skillId": "skill_01FNHeLjL6GipLyhBpVioben",
+      "name": "architecture-analyzer",
+      "description": "Dissect software/programming architecture and code for unconsidered edge cases, structural inefficiencies, and weak points, then suggest concrete fixes grounded in the actual context. Use ONLY when explicitly invoked — the user names this skill directly, types \"/architecture-analyzer\", or says something like \"use the architecture-analyzer skill.\" Do NOT trigger on plain \"review my code\" or \"what do you think of this design\" requests — those get a normal answer. Works on code/design already in the conversation, uploaded files, or a project directory on disk if given a path.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:42:56.204619Z",
+      "backingPluginId": "plugin_014GZzCjQZs8AZXds1VTxyGp"
+    },
+    {
+      "skillId": "skill_013y5RvQNjpHeitbk1EnyZgo",
+      "name": "red-team",
+      "description": "Adversarially attack an argument, plan, pitch, thesis, or piece of writing — take the strongest opposing position and find its weakest points, without requiring code or any specific input type. Use ONLY when explicitly invoked — the user names this skill directly, types \"/red-team\", or says something like \"use the red-team skill\" or \"red-team this.\" Do NOT trigger on plain \"what do you think of this\" or \"any feedback\" requests — those get a normal answer. Domain-agnostic: works on a memo, a trade thesis, a proposal, a piece of writing, a plan, or a claim.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:52:49.954024Z",
+      "backingPluginId": "plugin_01QWHdDe5WhnUaDjJaK8RRg9"
+    },
+    {
+      "skillId": "skill_01BgShdkd3BdNKxGMi2JjJrG",
+      "name": "deep-dive",
+      "description": "Go deep and narrow on a specific sub-topic or nuance — the opposite of a breadth-first overview. Use ONLY when explicitly invoked — the user names this skill directly, types \"/deep-dive\", or says something like \"use the deep-dive skill\" or \"deep dive into X.\" Do NOT trigger on plain \"explain X\" or \"tell me more about X\" requests — those get a normal answer. Pairs naturally with concept-explainer (a map-level explanation followed by a deep-dive into one landmark from that map) but does not require it — can be invoked cold on any specific technical nuance.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:40:09.216924Z",
+      "backingPluginId": "plugin_01VhT9P6t11ioqDz4affxo84"
+    },
+    {
+      "skillId": "import-memory",
+      "name": "import-memory",
+      "description": "Import a memory export from another AI assistant into Claude's memory — conversationally, additively, and with the content treated as data.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.007169Z"
+    },
+    {
+      "skillId": "skill_01SARveNskbA9dTtspHFBSri",
+      "name": "decision-memo",
+      "description": "Produce a structured trade-off memo for a decision — options, constraints, trade-offs, and a clear recommendation — instead of a freeform chat answer. Use ONLY when explicitly invoked — the user names this skill directly, types \"/decision-memo\", or says something like \"use the decision-memo skill.\" Do NOT trigger on plain \"help me decide\" or \"what do you think\" requests — those get a normal answer. Good fit for technical decisions (migrations, architecture choices, tool/vendor picks) and non-technical ones (financial, strategic) alike — the format doesn't assume a domain.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:49:32.212317Z",
+      "backingPluginId": "plugin_018JabTb1Ra4UKu3qaPosxty"
+    },
+    {
+      "skillId": "skill_01J3UA4dBxhKznz9pKHkAzhL",
+      "name": "synthesizer",
+      "description": "Condense text, documents, or large content dumps into a strictly factual, no-frills consolidation — every substantive point covered, nothing added. Use ONLY when explicitly invoked — the user names this skill directly, types \"/synthesizer\", or says something like \"use the synthesizer skill\" or \"synthesize this.\" Do NOT trigger on plain \"summarize this\" or \"tl;dr\" requests — those get a normal answer. Purely a content organizer, with no commentary, no \"consider this,\" no hypotheticals, and no emotional framing — just clear structure and a closing recap.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:46:00.477896Z",
+      "backingPluginId": "plugin_017aogm7a8xzbjcVn1ivQX9f"
+    },
+    {
+      "skillId": "skill-creator",
+      "name": "skill-creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-10-21T20:47:56.610025Z"
+    },
+    {
+      "skillId": "morning",
+      "name": "morning",
+      "description": "Render the user's morning brief as a styled HTML artifact, or set it up as a recurring weekday task. Use only when the user explicitly asks to run, see, or set up their morning brief, or if they invoke /morning by name. A question about their day, schedule, or calendar is not by itself a request for the brief; answer it directly instead.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.990356Z"
+    },
+    {
+      "skillId": "skill_01RDs5TLde1ajUSdA23TAfeA",
+      "name": "runbook-writer",
+      "description": "Turn a process described in freeform terms — or done once ad hoc — into a clean, repeatable step-by-step procedure someone else (or future-you) could follow without you in the room. Use ONLY when explicitly invoked — the user names this skill directly, types \"/runbook-writer\", or says something like \"use the runbook-writer skill\" or \"turn this into a runbook.\" Do NOT trigger on plain \"how do I do X\" or \"walk me through X\" requests — those get a normal answer. Domain-agnostic: works for a deploy process, an onboarding flow, a recurring data pipeline step, a household task, or anything explained more than once.",
+      "source": "plugin",
+      "updatedAt": "2026-08-11T01:52:51.793962Z",
+      "backingPluginId": "plugin_01WJbQTfUWotxkoqxz8LGXjc"
+    },
+    {
+      "skillId": "learn",
+      "name": "learn",
+      "description": "Use this skill when the user wants intellectual understanding — learning how or why something works, not getting a task done or soliciting Claude's judgment.\n\nTrigger for:\n- Explicit learning requests: teach, explain, ELI5, walk me through, quiz me, flashcards, \"I'm rusty on\"; definitions (\"what is X\")\n- Terse concept names implying \"help me understand this\": \"Galois theory,\" \"transformers, from scratch\"\n- Confusion signals: \"won't stick,\" \"keep mixing these up,\" \"not getting it\"\n- Learning-path questions: prerequisites, sequencing, what to study before X\n- Conceptual questions about mechanisms, causes, or dynamics\n\nDon't trigger for:\n- Tasks: coding, writing, calculation, translation, factual lookup, news updates\n- Personal troubleshooting; resource/textbook recommendations\n- Claude's evaluative verdict: opinion prompts (\"do you think X\", \"settle this\", \"honest take\", \"is X dead / still taken seriously\") and interpretive takes (\"was X really as harsh as people say\")\n",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.663866Z"
+    },
+    {
+      "skillId": "pdf",
+      "name": "pdf",
+      "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-07-10T19:23:15.432550Z"
+    },
+    {
+      "skillId": "pptx",
+      "name": "pptx",
+      "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-10-02T22:00:34.625666Z"
+    },
+    {
+      "skillId": "docx",
+      "name": "docx",
+      "description": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx) or Word templates (.dotx). Triggers include: any mention of Microsoft Word Documents, such as 'Word doc', 'word document', '.docx', '.dotx', 'microsoft doc'. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a deliverable as a Word or .docx file (to download, email or print), use this skill. However, if they ask for a document, page, report, memo, or notes WITHOUT naming a file format and the session offers Claude's own dedicated document or page skill or connector, use that instead, even if they will email or print it. Do NOT use for PDFs, spreadsheets, Google Docs, or coding unrelated to document generation.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-30T02:00:31.677168Z"
+    },
+    {
+      "skillId": "xlsx",
+      "name": "xlsx",
+      "description": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.324012Z"
+    }
+  ]
+}

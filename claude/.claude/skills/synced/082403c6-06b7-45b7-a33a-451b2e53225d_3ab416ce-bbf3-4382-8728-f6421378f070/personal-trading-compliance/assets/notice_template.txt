@@ -1,0 +1,35 @@
+Subject: Personal Trading — {QUARTER} pre-clearance exceptions ({EMPLOYEE})
+
+Hi {FIRST_NAME},
+
+As part of the {QUARTER} personal-trading review, we compared the transactions on your
+submitted broker report against the pre-clearance approvals on file. The items below did not
+match an approval and need your attention. This is a routine reconciliation — please review and
+reply so we can resolve each one.
+
+{EXCEPTION_LINES}
+
+Key:
+  • No approval covered this trade — no pre-clearance for this security, on this side, on the
+    trade date (pre-clearance is effective only for the day it is granted).
+  • Over approved quantity — the trade was larger than the approved amount.
+  • Traded while disapproved — a matching request was declined.
+  • Prohibited (SPAC / Restricted List) — this name is not permitted in employee accounts.
+
+For each item, please reply with either the approval we should have on file (date + who approved
+it) or an explanation. If you believe an item is an error in the report, let us know and we'll
+correct our records.
+
+As a reminder, pre-clearance is required before trading reportable securities and is effective
+only for the day it is granted (Compliance Manual, Code of Ethics — Personal Securities
+Transactions). If you have questions, just reply here.
+
+Thank you,
+Compliance
+Meteora Capital
+
+---
+Each exception line is rendered as:
+  {TRADE_DATE} — {SIDE} {QUANTITY} {TICKER} ({SECURITY_NAME}) · {REASON}
+Example:
+  2026-06-05 — SELL 100 ABC (ABC Corp) · No SELL approval covered ABC on 2026-06-05.

@@ -1,0 +1,12 @@
+{
+  "ticker": "IMSR", "warrant_ticker": "IMSRW", "company": "Terrestrial Energy Inc",
+  "asof": "2026-06-23",
+  "spot": 7.645, "warrant_price": 3.65, "strike": 11.50,
+  "expiry_years": 4.35, "expiry": "28-Oct-2030", "shares_per_warrant": 1.0,
+  "rate": 0.04, "borrow": 0.0094,
+  "listed_front_iv": 1.17,
+  "realized": {"HV10": 0.894, "HV30": 1.144, "HV50": 1.181, "HV100": 1.010},
+  "redemption_trigger": 18.0, "trigger_days": [20, 30], "notice_days": 30,
+  "make_whole_trigger": null, "delay_trigger_proxy": 22.0,
+  "size_warrants": 50000
+}

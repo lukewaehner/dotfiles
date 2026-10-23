@@ -1,0 +1,56 @@
+<!--
+  BACKGROUND RAIL — ENHANCED MODE, and only when there is genuine catch-up
+  material. Structure lifted VERBATIM from
+  spac-filing-digest/references/email_template.html (Form B, lines 265-296).
+
+  THE HIERARCHY IS VISUAL, NOT INTERACTIVE. The body above renders at full size
+  in near-black; everything in here sits below the divider inside a recessed
+  block — smaller, greyer, indented behind a left border — so the eye can skip
+  the whole thing in one movement. If the rail starts competing with the body
+  for attention, the body is too weak or the note too long.
+
+  DO NOT REINTRODUCE COLLAPSIBLE SECTIONS. <details>/<summary> renders
+  permanently OPEN in Outlook desktop (Word engine, interactive elements
+  disabled). The :checked checkbox-accordion hack fails there for the same
+  reason. The anchor-jump illusion works but costs a full copy per state
+  (~84KB before quoting). This was built, tested and removed. Stop looking.
+
+  Use only the sub-sections the material warrants — drop the rest of the div,
+  don't ship an empty heading. Sub-headings are drawn from this set; the SPAC
+  set is shown because it is the commonest use, but the rail is generic and a
+  non-SPAC thread may use its own headings at the same type spec.
+-->
+
+<div style="border-top:2px solid #e2e8f0;padding-top:10px">
+  <div style="font-size:10.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px">Background &mdash; history and reference, for anyone catching up</div>
+
+  <div style="border-left:3px solid #e2e8f0;padding-left:13px;font-size:12px;color:#475569;line-height:1.55">
+
+    <!-- ===== WHERE WE STAND ===== -->
+    <div style="font-weight:700;color:#64748b;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 3px">Where we stand</div>
+    <p style="margin:0 0 12px">{{2-4 SENTENCES FROM THE INTERNAL CHAIN: last read, working orders, open question, date of last exchange. Or "No prior internal thread; first note on this name." Trim words, not information.}}</p>
+
+    <!-- ===== KEY OPEN ITEMS ===== -->
+    <div style="font-weight:700;color:#64748b;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 3px">Key open items / questions</div>
+    <ul style="margin:0 0 12px;padding-left:18px">
+      <li style="margin:0 0 3px">{{OPEN ITEM — concrete and still-pending}}</li>
+      <li style="margin:0 0 3px">{{OPEN ITEM}}</li>
+      <!-- 2-5 bullets. Wrap anything critical in <span style="color:#c0392b;font-weight:700">…</span>.
+           Mark items this message just answered as resolved rather than deleting them silently.
+           If none: replace the list with <p style="margin:0 0 12px">None open — {{why}}.</p> -->
+    </ul>
+
+    <!-- ===== MARKET & WEB CONTEXT — drop the Sources line if the pass found nothing ===== -->
+    <div style="font-weight:700;color:#64748b;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 3px">Market &amp; web context</div>
+    <p style="margin:0 0 4px">{{2-4 SENTENCES OF EXTERNAL COLOUR. If the pass found nothing, ONE line: "No material external developments since the last note." and drop the Sources line.}}</p>
+    <p style="margin:0 0 12px;font-size:10.5px;color:#94a3b8"><b>Sources:</b> {{Title (date) &mdash; URL}} &middot; {{Title &mdash; URL}}</p>
+
+    <!-- ===== THESIS & MATERIAL UPDATE ===== -->
+    <div style="font-weight:700;color:#64748b;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 3px">Thesis &amp; material update</div>
+    <p style="margin:0 0 6px">{{STANDING VIEW + POSITION}}</p>
+    <p style="margin:0 0 12px">{{HOW THIS CHANGES / CONFIRMS / ADVANCES IT — concrete — then the desk read}}</p>
+
+    <!-- ===== SNAPSHOT TABLE GOES HERE (SPAC names): paste references/snapshot-table.html ===== -->
+
+  </div><!-- /recessed rail -->
+</div><!-- /visual break -->

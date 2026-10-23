@@ -1,0 +1,72 @@
+{
+  "_comment": "Public, committed config for sector-watch. Edit freely. Secrets (webhook URLs, tokens) live in config.local.json \u2014 gitignored, never committed.",
+  "test_mode": true,
+  "_test_mode_note": "While true: subject is prefixed with '[TEST] ', sender + recipient are both chauhan_intern@meteoracapital.com (self-send loop). Flip to false once we're ready to send to a different recipient.",
+  "sender": {
+    "expected_email": "chauhan_intern@meteoracapital.com",
+    "_note": "The email send-as-me should be configured as. The SKILL.md calls `whoami` before sending and aborts on mismatch."
+  },
+  "recipient": {
+    "to": "chauhan_intern@meteoracapital.com, lfeldman@meteoracapital.com",
+    "cc": [],
+    "bcc": [],
+    "_note": "Two recipients during test period. Comma-separated string OR list; the SKILL.md splits on ',' when calling send-as-me which expects a list."
+  },
+  "subject_template": "[{sector_name}] Meteora Daily - {date_human}",
+  "test_subject_prefix": "[TEST] ",
+  "_subject_examples": [
+    "Production: '[Autonomous Trucking] Meteora Daily - May 22, 2026'",
+    "Test mode:  '[TEST] [Autonomous Trucking] Meteora Daily - May 22, 2026'"
+  ],
+  "schedule": {
+    "mode": "all_active_sectors_per_weekday",
+    "_mode_note": "Changed from rotation to all-active. Each weekday sends one email PER active sector (one sector per email \u2014 that part is unchanged). With 5 active sectors today, that's 5 emails per weekday. Paused sectors stay skipped.",
+    "weekdays_only": true,
+    "fallback_behavior": "skip",
+    "_fallback_note": "Weekend behavior: 'skip' = no-op.",
+    "_legacy_rotation_anchor": "2026-05-18"
+  },
+  "news": {
+    "window_hours": 48,
+    "_window_note": "Pull news from the past 48 hours only. Filter results by published date; drop anything older than now - window_hours.",
+    "per_keyword": 5,
+    "country": "us",
+    "scrape_top_n_bodies": 3,
+    "deal_keywords": [
+      "business combination agreement",
+      "definitive merger agreement",
+      "to acquire",
+      "agrees to acquire",
+      "going private",
+      "PIPE financing",
+      "IPO priced",
+      "files S-4",
+      "files F-4",
+      "deSPAC closing",
+      "tender offer"
+    ],
+    "_deal_keywords_note": "Universal deal-detection keywords. The runner combines these with each sector's context (sector name + a top keyword) to do a second search pass and populate the 'Deals (past 48 hrs)' section. If the second pass returns no results, that section renders 'No deal news in past 48 hrs.'"
+  },
+  "dedupe": {
+    "state_file": "~/.sector-watch/sent-state.json",
+    "lookback_days": 7,
+    "_dedupe_note": "After each successful send, the runner appends today's URLs to the state file under {sector: {YYYY-MM-DD: [urls]}}. Before composing today's email, the runner reads state and filters out any URL emailed for this same sector in the past `lookback_days` days. Older entries are pruned automatically."
+  },
+  "performance": {
+    "timeframes": [
+      "1D",
+      "1W",
+      "1M",
+      "6M",
+      "YTD",
+      "1Y"
+    ],
+    "source": "yahoo-finance"
+  },
+  "send": {
+    "primary": "send-as-me",
+    "fallback": "power-automate-webhook",
+    "_primary_note": "Uses the send-as-me MCP plugin. Must be installed and configured(email='...') + signed in.",
+    "_fallback_note": "Used only when send-as-me is unavailable. Requires config.local.json with power_automate_webhook_url set."
+  }
+}

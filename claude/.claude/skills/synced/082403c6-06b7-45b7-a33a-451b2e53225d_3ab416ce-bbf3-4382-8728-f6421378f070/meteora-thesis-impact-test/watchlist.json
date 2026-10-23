@@ -1,0 +1,4 @@
+{
+  "tickers": ["HDRN", "KDK"],
+  "notes": "Editable list of tickers the thesis-impact monitor processes each run. Add or remove tickers here — the skill picks up this file at run time. Keep tickers uppercase. The skill will check each ticker against the memory-doc cache and the thread cache; both caches are populated lazily on first discovery."
+}

@@ -45,7 +45,7 @@ knowledge/
 ```
 
 Plus `~/.agents/` — a sibling of `~/.claude`, stowed from
-`dotfiles/claude/.agents/`. It holds the 31 installed agent skills that
+`dotfiles/claude/.agents/`. It holds the       24 installed agent skills that
 `~/.claude/skills/` symlinks into. It has to stay a sibling: those inner links
 are relative (`../../.agents/skills/X`), so the two directories must keep the
 same parent or every skill breaks. See Troubleshooting.

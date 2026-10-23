@@ -1,0 +1,8 @@
+{
+  "skill_name": "sec-filing-catchup",
+  "evals": [
+    {"id":1,"prompt":"Run the SEC filing catch up for today.","expected_output":"Reads today's [BamSEC] alerts, filters to Meteora SPAC universe via spac-details, snapshots each filing from EDGAR, renders the HTML table, and sends 'SEC Filing Catch Up' to lukas@ with [TEST] prefix plus a server-scheduled morning copy.","files":[]},
+    {"id":2,"prompt":"What SEC filings hit our SPAC universe today? Build the catch-up digest but don't send it yet.","expected_output":"Same pipeline through render; stops before send and shows the table for review.","files":[]},
+    {"id":3,"prompt":"Set up the SEC Filing Catch Up to run automatically every weekday at 6:30pm and bump the next morning at 7:30.","expected_output":"Creates a scheduled task (cron ~18:25 weekdays) with a self-contained prompt; explains the morning bump is server-side via send_at.","files":[]}
+  ]
+}

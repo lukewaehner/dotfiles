@@ -1,0 +1,11 @@
+{
+  "_comment": "Column map for a broker's CSV/XLSX export. Copy this, rename to the broker (e.g. fidelity.json), and set each canonical field to that broker's exact column header. Pass with parse_report.py --template. Keys not present in the file can be omitted.",
+  "trade_date": "Run Date",
+  "ticker": "Symbol",
+  "security_name": "Description",
+  "side": "Action",
+  "quantity": "Quantity",
+  "price": "Price",
+  "cusip": "CUSIP",
+  "account": "Account Number"
+}

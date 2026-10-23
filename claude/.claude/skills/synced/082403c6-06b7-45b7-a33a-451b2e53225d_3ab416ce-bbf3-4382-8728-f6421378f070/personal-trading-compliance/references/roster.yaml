@@ -1,0 +1,56 @@
+# Meteora Personal-Trading Compliance — Employee Roster
+# =====================================================
+# Source of truth for WHO the skill checks and WHERE their data lives. CCO-owned.
+# The skill never auto-adds anyone (see manage_roster.py / SKILL.md).
+#
+# One entry per employee. Fields:
+#   employee              Full name, as it should appear in reports/emails.
+#   status                "active" (default) or "departed" (kept for history, skipped in sweeps).
+#   emails                EVERY address the employee files pre-clearance / reports from.
+#   preclearance_threads  Thread(s) where trades are requested & approved.
+#     - subject           The thread subject line (as seen in Outlook).
+#       conversation_id   OPTIONAL; locks the exact thread so the skill never guesses.
+#   brokers               The employee's OWN accounts (for report matching / labeling).
+#     - name              Broker/custodian name (e.g. "Fidelity").
+#       account_last4     Last 4 of the account number, if known.
+#
+#   related_accounts      IN-SCOPE accounts of close relations the employee must report because
+#                         they have BENEFICIAL OWNERSHIP (immediate family sharing the household —
+#                         Compliance Manual, Personal Securities Transactions §1). Employees must
+#                         submit these statements too. Trades here are checked exactly like the
+#                         employee's own. This is DIFFERENT from exempt_accounts below.
+#     - holder            The account holder's name AS IT APPEARS ON THE STATEMENT (used to match
+#                         a report to this employee, and to catch UNDECLARED holders).
+#       relationship      e.g. "spouse", "child", "parent", "household member".
+#       broker            Broker/custodian.
+#       account_last4     Last 4, if known.
+#
+#   exempt_accounts       OUT-OF-SCOPE accounts: certified no-control / discretionary managed
+#                         accounts (Manual §4c). Trades here are skipped. Requires a signed cert.
+#     - name              Account label.
+#       certified         true only if the signed certification is on file.
+#
+#   notify                If true, the skill auto-sends the exception notice to this employee
+#                         (subject to the guardrails). If false, exceptions go to the reviewer only.
+#
+# ---------------------------------------------------------------------------
+# Replace the example below with real entries. Keep it valid YAML (2-space indent).
+
+employees:
+  - employee: "EXAMPLE — Rishi Chauhan (delete me)"
+    status: active
+    emails:
+      - chauhan_intern@meteoracapital.com
+    preclearance_threads:
+      - subject: "Rishi - Trade Approval"
+        conversation_id: ""          # optional; fill after confirming the thread once
+    brokers:
+      - name: "Fidelity"
+        account_last4: ""            # Rishi's own account(s), if any
+    related_accounts:
+      - holder: "Aashka S Sanghvi"   # name as printed on the Fidelity statement/confirmation
+        relationship: "spouse"
+        broker: "Fidelity"
+        account_last4: "2509"
+    exempt_accounts: []
+    notify: true

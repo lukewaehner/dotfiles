@@ -1,0 +1,5 @@
+{
+  "_comment": "Copy this file to config.local.json (same directory). config.local.json is gitignored and holds secrets — never commit it. If you don't set up Power Automate, leave this file absent; the skill will skip the fallback path silently.",
+
+  "power_automate_webhook_url": "https://prod-XX.westus.logic.azure.com:443/workflows/.../triggers/manual/paths/invoke?api-version=2016-06-01&sp=...&sv=...&sig=PASTE_YOUR_WEBHOOK_URL_HERE"
+}

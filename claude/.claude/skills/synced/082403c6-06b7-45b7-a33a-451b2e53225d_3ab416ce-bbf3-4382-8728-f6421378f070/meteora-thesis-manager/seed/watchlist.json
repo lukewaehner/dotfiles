@@ -1,0 +1,1493 @@
+{
+  "_note": "THE MEAT - flat list of tickers the monitor sweeps every run (no sectors/groups). ticker -> { subject, memory_doc }. subject = the internal Outlook thread subject (null = no internal thread found yet; the manager's add-ticker scan fills it). memory_doc = whether a Meteora memory doc exists (read-only thesis source). Tickers sharing one thread (e.g. HUN/OLN) point at the same subject. Unit/foreign suffixes normalized to base common (GCGRU->GCGR, QLEP/U->QLEP, ALCYF->ALCY). Expanded with full SPAC tracking universe 2026-06-23. CAES = Cantor Equity Partners VII. RACY removed as duplicate of RAC (Rithm Acquisition Corp).",
+  "tickers": {
+    "AAC": {
+      "subject": "internal AAC.U - Ares Acquisition Corporation III",
+      "memory_doc": false
+    },
+    "HDRN": {
+      "subject": "Internal HDRN Internal GIG Hadron GIG7 GIGGW",
+      "memory_doc": false
+    },
+    "KDK": {
+      "subject": "INTERNAL KDK INTERNAL KDKRW Kodiak AI (KDK) Research Email Chain",
+      "memory_doc": true
+    },
+    "EURK": {
+      "subject": "Internal EURK -- Re: EURK - Marine Thinking Inc. BCA Extraction",
+      "memory_doc": true
+    },
+    "GRAF": {
+      "subject": "Internal GRAF: Re: GRAF / GRAF/WS",
+      "memory_doc": true
+    },
+    "AFJK": {
+      "subject": "Internal AFJK",
+      "memory_doc": true
+    },
+    "IGTA": {
+      "subject": "Internal IGTA",
+      "memory_doc": true
+    },
+    "BAYA": {
+      "subject": "Internal BAYA Bayview Acquisition Corp",
+      "memory_doc": true
+    },
+    "ARTC": {
+      "subject": "Internal ARTC",
+      "memory_doc": true
+    },
+    "BMNR": {
+      "subject": "Internal BitMine Immersion Technologies (BMNR) Auto - BMNP",
+      "memory_doc": false
+    },
+    "AIRJ": {
+      "subject": "INTERNAL AIRJ INTERNAL AIRJW Warrant Arb",
+      "memory_doc": false
+    },
+    "HUN": {
+      "subject": "INTERNAL HUN INTERNAL OLN",
+      "memory_doc": false
+    },
+    "OLN": {
+      "subject": "INTERNAL HUN INTERNAL OLN",
+      "memory_doc": false
+    },
+    "IMSR": {
+      "subject": "Internal IMSR Delta Profile - warrant",
+      "memory_doc": false
+    },
+    "CAES": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "GCGR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KEYY": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SHOT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PTAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IACQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GSRV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QLEP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MTNE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OCAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "JABR": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "ISNR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KCA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IPVV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CAII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BRKH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FXAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "YICC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "LTGR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "APUR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OHAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RACC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AMAN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MCAH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DGAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PLUN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FTHA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WLCO": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "BREZ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TVIV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SAG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "VECA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FTRA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AESP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ARCL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "APMC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BIDW": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WENC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PECE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RREV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IDAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ETSS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GUAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CXII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "JATT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QRED": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NHIV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MYX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AACP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ACGC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KPET": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FMAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QADR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IPFX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BHAV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BWIV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PONO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MTAL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SUMA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GLED": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OTAI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ILL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TRAD": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TRGS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FVAV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MZYX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CTAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PALO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AACO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ACAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AACI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RFAM": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WLII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "XFLH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PAAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HACQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DBCA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IACO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TMTS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CMII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SVIV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SSAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CEPS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HCIC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CLBR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IRAB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WPAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NBRG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MUZE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MEVO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KTWO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "UAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "XSLL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KRAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SAAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MLAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GIX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PTOR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ARCI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HLXC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LEGO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ALOV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "XCBE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FGII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IEAG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OIM": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ZKP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BBCQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SORN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BIII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SCPQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SVAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BEBE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LPCV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "VHCP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ADAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CCXI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IRHO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CRAN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ITHA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TWLV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BLRK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KBON": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MESH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DSAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LFAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NWAX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AEAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GPAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SBXE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BIXI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SCII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IGAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HCAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ALUB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BPAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "EVOX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CRAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TDWD": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WSTN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CEPV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "VACI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DNMX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DYOR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "APXT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LAFA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MMTX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HAVA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ALIS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LKSP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GIW": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AIIA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RNGT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "YCY": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KRSP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "APAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BDCI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BCSS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FCRS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AEXA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "EMIS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DMII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LATA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CHEC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OTGA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BLZR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TLNC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GSRF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SVAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MBVI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KOYN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CEPF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MKLY": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HVMC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SSEA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QUMS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HCMA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BCAR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GTERA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PAII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SOCA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SPEG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ORIQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ONCH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "VNME": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "EVAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NMP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "INAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CCII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MCGA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FIGX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OBA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LWAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PACH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AXIN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BACC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BSAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BLUW": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WTG": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "JENA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KCHV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CHPG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CRAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OYSE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "XRPN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PCAP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WENN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TVAI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RTAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PMTR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "EGHA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CCAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RDAG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CEPT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CGCT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GTEN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "COPL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LCCC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "TACO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DAAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RAAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IPCX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NPAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TVA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TACH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SOUL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SZZL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SDHI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "UYSC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "GSHR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QSEA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NHIC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LOKV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FERA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IPEX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AACB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ATII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KFII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SVCC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DMAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FGMC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "COLA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HVII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RIBB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PLMK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CEPO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TDAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RANG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DRDB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "JACS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PGAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TAVI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FACT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NOEM": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DYNC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HSPT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ASPC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NTWO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CHAR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OACC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BEAG": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ALDF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RDAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LPBB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CAPN": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "YHNA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FVN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "POLE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SBXD": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MBAV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DTSQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LPAA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SIMA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FSHP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MACI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CUB": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PCSC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ALF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RFAI": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GPAT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CCIX": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IBAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BKHA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DYCQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "LEGT": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ANSC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SPKL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "QETA": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "KVAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BOWN": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ESHA": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "ALCY": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "OAK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FORL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ISRLF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ATMC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HSPO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HUDA": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "AQUC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "EMCGF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IVCAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "RENEF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ASCBF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CLRCF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AIMTF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "YOTA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AFAR": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MSSAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GDST": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "VMCAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "FTII": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BYNO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TETEF": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "PPYA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BRAC": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "GMFI": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "AOGO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SACQF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PRLH": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IVCBF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "KACLF": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "ALSAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "ATEK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "HAIAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WELNF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TGAAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "TLGYF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CMCAF": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "CNGL": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "EVCO": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MCAG": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "CBRRF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "DPCS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "INTE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CCTSF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "AEAE": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PHYTF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CDAQF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IXAQF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "WINV": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CNDA": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "SWSS": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PPHP": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "IMAQ": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PLMJF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "MAQC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "NBST": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "ROSS": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "SLAMF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "PUCK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CPTK": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "NRAC": {
+      "subject": null,
+      "memory_doc": false
+    },
+    "JWSMF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "BLUAF": {
+      "subject": null,
+      "memory_doc": true
+    },
+    "CSTAF": {
+      "subject": null,
+      "memory_doc": true
+    }
+  }
+}

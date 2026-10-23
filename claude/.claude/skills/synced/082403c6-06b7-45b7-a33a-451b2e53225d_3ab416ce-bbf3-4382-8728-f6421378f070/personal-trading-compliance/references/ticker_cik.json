@@ -1,0 +1,10 @@
+{
+  "_comment": "Ticker -> SEC CIK cache for restricted-list identity verification (verify_restricted.py). CIK is the authoritative unique issuer id; ticker substrings are not. Grow this as you resolve names: pull the full map from SEC's https://www.sec.gov/files/company_tickers.json (ticker->cik_str) or the edgar MCP (edgar-filings returns the CIK), and append. A wrong CIK defeats the check, so verify before adding. Tickers missing here fall through to 'unverified' (escalate) rather than a guess.",
+  "META": 1326801,
+  "AAPL": 320193,
+  "NVDA": 1045810,
+  "NKE": 320187,
+  "AVGO": 1730168,
+  "NU": 1691493,
+  "INUV": 829323
+}

@@ -1,0 +1,122 @@
+<!--
+  ############################################################################
+  ##  THE SHELL — every internal reply, both categories (SPAC, merger-arb),  ##
+  ##  both modes.                                                           ##
+  ############################################################################
+
+  Copy this file's HTML directly out of a FRESH read and only then fill in the
+  {{PLACEHOLDER}}s. Never build it from a structure you remember: a model's
+  memory of a pixel-precise template degrades into a plausible paraphrase long
+  before it forgets the file exists, and a paraphrase of this template is
+  exactly wrong.
+
+  STANDARD MODE = this file alone. Nothing else. No table, no rail, no
+  playbook flag.
+
+  ENHANCED MODE = this file, then references/background-rail.html (when there
+  is real catch-up material — SPAC or merger-arb, either one), then, SPAC
+  names only, references/snapshot-table.html — appended before the footer. A
+  merger-arb enhanced note stops after the rail: there is no merger-arb
+  Snapshot table, because a target/acquirer pair has no unit structure to
+  group by instrument.
+
+  WHAT THE USER ASKED FOR GOES ON TOP, IN FULL. That content is the note.
+  Anything else — rail, Snapshot, context — is support and sits BELOW it. If
+  the requested content has been pushed down the page, the note is wrong
+  however good it looks.
+
+  INTERNAL CHAINS ONLY. SPAC NAMES AND MERGER-ARB (M&A) DEAL NAMES ONLY —
+  nothing else. This shell's footer says "for internal discussion only", so
+  the format is a claim about who the note is for. Every recipient must be
+  @meteoracapital.com. Never render an outbound note in this format; write
+  those in plain prose.
+
+  SENDING: for a merger-arb note, send it once it validates clean — don't
+  pause for a confirm-before-send reply. For a SPAC note, keep asking before
+  you send. Either can be overridden by what the user says for that note.
+
+  THE PROVENANCE STAMP IS CONDITIONAL. It is the one part of this shell that
+  varies, and it varies on WHO WROTE THE BODY — not who clicks send, and not
+  whose mailbox it leaves from:
+    - Claude composed the bulk of the text -> KEEP the stamp.
+    - The user typed the body in chat and
+      Claude only rendered it             -> DELETE the stamp div entirely.
+  Sending from the user's account, at the user's instruction, does NOT make a
+  note human-written — that describes nearly every note this skill renders. A
+  human's own message must not claim to be machine-generated, and a note the
+  desk reads as human-written must not hide that a machine wrote it. Mixed
+  notes go by bulk; a true 50/50 gets the stamp. Everything else in this shell
+  is identical either way. Never reword the stamp — a stamp that varies stops
+  reading as a stamp.
+
+  EMIT THE NEW BLOCK ONLY. Never touch the quoted chain below it: the <hr> and
+  the divRplyFwdMsg history are Outlook's, not yours.
+-->
+
+<div style="font-family:Helvetica,Arial,sans-serif;color:#1a1a1a;max-width:640px;line-height:1.5;font-size:13px">
+
+  <!-- ===== PROVENANCE STAMP — KEEP whenever Claude wrote the bulk of the body,
+       including when the note is sent from the user's own mailbox. DELETE THIS
+       ENTIRE DIV only when the user typed the body text themselves. ===== -->
+  <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.09em;margin:0 0 7px">Cowork generated</div>
+
+  <!-- ===== HEADER — title, then a subline of context. On a SPAC filing note the
+       title is "{{TICKER}} — {{COMPANY}}" and the subline is
+       "{{FORM TYPE}} · filed {{DATE}} · {{Target: NAME | Pre-deal}}". On a
+       merger-arb note the title is "{{TARGET}} / {{ACQUIRER}}" (or just
+       "{{TARGET}}" if the acquirer is private/undisclosed) and the subline is
+       "{{NOTE TYPE — e.g. DMA minute-1, antitrust read, hour-1}} · {{DATE}}".
+       On any other internal thread, title the subject and subline the context
+       (who/what/when). Drop the subline if there is nothing to put in it —
+       don't pad it. ===== -->
+  <div style="font-size:16px;font-weight:700;color:#0f2942">{{TITLE}}</div>
+  <div style="color:#475569;margin:2px 0 12px">{{SUBLINE — context · date · counterparty}}</div>
+
+  <!-- ===== BODY — a heading, then the message.
+
+       RENDER THE SOURCE TEXT IN FULL. Do not summarise, tighten, or trim it to
+       the interesting parts unless you were explicitly asked to ("keep it
+       short", "summarise", "just the highlights"). Length is not a reason to
+       cut. Add as many heading+paragraph pairs, lists or sections as the source
+       needs — this template stretches, and a long note that renders correctly
+       beats a short one that dropped half the source.
+
+       Where the source has its OWN structure — sections, numbered questions,
+       sub-headings — mirror it rather than flattening it into prose. A heading
+       per section, a <ol>/<ul> for an enumerated list.
+
+       Order it so the reader learns what happened and whether it matters
+       before the detail, but ORDERING IS NOT CUTTING: everything in the source
+       still ships.
+
+       Wrap anything needing attention in
+       <span style="color:#c0392b;font-weight:700">…</span> — red is for facts
+       that need attention, never for emphasis or decoration. Keep it rare;
+       more than two per note means the ration has slipped. ===== -->
+  <div style="font-weight:700;color:#0f2942;margin:0 0 3px">{{SECTION HEADING}}</div>
+  <p style="margin:0 0 8px">{{SENTENCE 1 — what happened, with the one or two dates/prices/figures that define it.}} {{SENTENCE 2 — the so-what, in one line.}}</p>
+
+  <!-- ===== SOURCE LINK — omit the whole <p> when there is nothing to link. ===== -->
+  <p style="margin:0 0 12px"><a href="{{URL}}" style="color:#0f2942;font-weight:700">&#128196; {{LINK TEXT}} &rarr;</a></p>
+
+  <!-- ===== ACTION — what we are DOING about it. A decision, not a summary.
+       Name a dated event or a specific unknown as the trigger; never "monitor" or
+       "watch closely". "No change" is a real answer. Omit the line entirely when
+       there is nothing to act on. ===== -->
+  <p style="margin:0 0 6px"><b style="color:#0f2942">Action</b> &mdash; {{POSITION}} &middot; {{WHAT WE'RE DOING}} &middot; {{THE ONE THING THAT WOULD CHANGE IT}}</p>
+
+  <!-- ===== CALENDAR — one short sentence per relevant item, past and future alike.
+       OMIT THE WHOLE LINE when there is nothing; never write "nothing scheduled",
+       which spends a line to say nothing. ===== -->
+  <p style="margin:0 0 14px"><b style="color:#0f2942">Calendar</b> &mdash; {{ONE SHORT SENTENCE PER ITEM}}</p>
+
+  <!-- ===== ENHANCED MODE INSERTS HERE, in this order:
+       1. references/background-rail.html   (when there is catch-up material)
+       2. references/snapshot-table.html    (SPAC names only)
+       STANDARD MODE INSERTS NOTHING. ===== -->
+
+  <!-- ===== FOOTER — mandatory, both modes. Adjust the middle clause to the
+       subject; keep the type spec and the divider exactly. ===== -->
+  <p style="margin:12px 0 0;padding-top:10px;border-top:1px solid #e2e8f0;font-size:11px;color:#94a3b8">Internal Meteora note &mdash; for internal discussion only; not investment advice.{{ Sourced from SEC EDGAR. Filing accession {{ACCESSION}} &middot; {{TICKER}}}}</p>
+
+</div>
