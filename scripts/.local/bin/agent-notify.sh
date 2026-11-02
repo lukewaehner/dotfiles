@@ -11,6 +11,12 @@ set -uo pipefail
 
 payload=$(cat)
 event=$(jq -r '.hook_event_name // empty' <<< "$payload")
+# Unattended sessions (batch jobs that shell out to `claude -p`, one per item)
+# inherit ATTENDED=0 and would otherwise ping once per spawned session.
+if [[ "${CLAUDE_CODE_SESSION_ATTENDED:-1}" == "0" ]]; then
+  exit 0
+fi
+
 project=$(basename "$(jq -r '.cwd // empty' <<< "$payload")")
 
 case "$event" in
