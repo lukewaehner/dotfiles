@@ -25,7 +25,7 @@ brew bundle --file=brew/Brewfile
 #  aren't stow packages)
 stow --restow zsh bash git nvim vim zed ghostty wezterm tmux herdr \
   starship atuin bat eza lazygit mactop aerospace scripts ptpython \
-  claude antigravity raycast
+  sqlite claude antigravity raycast
 
 # Install npm globals
 npm i -g $(cat npmglobal.txt | tr '\n' ' ')
@@ -120,6 +120,8 @@ dotfiles/
 │   └── .mactop/          # mactop system monitor config
 ├── ptpython/
 │   └── .config/ptpython/ # ptpython REPL config (vi mode)
+├── sqlite/
+│   └── .sqliterc         # sqlite3 shell defaults (headers, table mode)
 │
 │   # macOS desktop
 ├── aerospace/
