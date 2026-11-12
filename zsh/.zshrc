@@ -402,6 +402,26 @@ open() {
   command open "${args[@]}"
 }
 
+#   prm <pr-number> [owner/repo]   (repo defaults to the one in cwd)
+# Merge a PR once its checks pass, then remove its workmux worktree
+prm() {
+  local pr=$1 repo=$2 branch
+  if [[ -z $pr ]]; then
+    echo "usage: prm <pr-number> [owner/repo]" >&2
+    return 2
+  fi
+  local -a gh_repo=()
+  [[ -n $repo ]] && gh_repo=(-R "$repo")
+
+  branch=$(gh pr view "$pr" "${gh_repo[@]}" --json headRefName -q .headRefName) || return
+
+  # --fail-fast stops the watch on the first red check; a non-zero exit here
+  # (failed, pending-timeout, or no checks reported) means no merge happens.
+  gh pr checks "$pr" "${gh_repo[@]}" --watch --fail-fast &&
+    gh pr merge "$pr" "${gh_repo[@]}" --rebase &&
+    workmux rm "$branch"
+}
+
 # List every alias / function in this file with its description
 tools() {
   printf "\n\033[1;35mCustom Zsh Tools & Aliases\033[0m\n\n"
