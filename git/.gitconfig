@@ -11,3 +11,6 @@
 	excludesfile = /Users/lukewaehner/.gitignore_global
 [push]
 	autoSetupRemote = true
+[delta]
+	navigate = true
+	line-numbers = true

@@ -25,3 +25,7 @@ gui:
       - "#c64343"
     defaultFgColor:
       - "#3760bf"
+git:
+  diffRenderers:
+    - colorArg: always
+      command: delta --light --paging=never
