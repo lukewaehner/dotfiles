@@ -2,6 +2,10 @@
 # config-file = themes/rosepine 
 # background = #000000
 
+# Ultra transparent
+# background-opacity = 0.20
+# background-blur-radius = 18
+
 # More transparent
 background-opacity = 0.45
 background-blur-radius = 50

@@ -1,5 +1,6 @@
 {
-  "default_layout": "alternative",
+  "default_layout": "nano",
   "theme": "blue",
-  "sort_reverse": true
+  "sort_column": 4,
+  "sort_reverse": false
 }
