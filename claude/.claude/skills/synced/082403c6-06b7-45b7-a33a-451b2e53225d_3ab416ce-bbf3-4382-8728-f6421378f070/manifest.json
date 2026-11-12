@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1792618512316,
+  "lastUpdated": 1794346849735,
   "skills": [
     {
       "skillId": "skill_016hANRsKPTVcGyGZ5gvrk55",
@@ -610,28 +610,28 @@
       "name": "pdf",
       "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
       "source": "anthropic",
-      "updatedAt": "2026-07-10T19:23:15.432550Z"
+      "updatedAt": "2026-11-06T23:00:36.135606Z"
     },
     {
       "skillId": "skill-creator",
       "name": "skill-creator",
       "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
       "source": "anthropic-example",
-      "updatedAt": "2026-10-21T20:47:56.610025Z"
+      "updatedAt": "2026-10-28T17:00:24.127636Z"
     },
     {
       "skillId": "xlsx",
       "name": "xlsx",
       "description": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
       "source": "anthropic",
-      "updatedAt": "2026-09-14T21:00:33.324012Z"
+      "updatedAt": "2026-11-06T23:00:36.135606Z"
     },
     {
       "skillId": "docx",
       "name": "docx",
       "description": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx) or Word templates (.dotx). Triggers include: any mention of Microsoft Word Documents, such as 'Word doc', 'word document', '.docx', '.dotx', 'microsoft doc'. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a deliverable as a Word or .docx file (to download, email or print), use this skill. However, if they ask for a document, page, report, memo, or notes WITHOUT naming a file format and the session offers Claude's own dedicated document or page skill or connector, use that instead, even if they will email or print it. Do NOT use for PDFs, spreadsheets, Google Docs, or coding unrelated to document generation.",
       "source": "anthropic",
-      "updatedAt": "2026-09-30T02:00:31.677168Z"
+      "updatedAt": "2026-11-06T23:00:36.135606Z"
     },
     {
       "skillId": "skill_01Rn6eBtBXZca94rWdxPzLsN",
@@ -646,7 +646,7 @@
       "name": "pptx",
       "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
       "source": "anthropic",
-      "updatedAt": "2026-10-02T22:00:34.625666Z"
+      "updatedAt": "2026-11-06T23:00:36.135606Z"
     },
     {
       "skillId": "skill_01SpHQLPyRDHeiehMeGwYkkP",
@@ -691,14 +691,14 @@
       "name": "computer-use",
       "description": "Read this skill before the first step of any request to do something in an app on the person's own computer (Notes, Finder, System Settings, any desktop app), to look at their screen, or for \"computer use\". Computer use (desktop control) lets Claude take screenshots of the person's desktop and control it with clicks, typing and scrolling through the Claude desktop app; its tools are named mcp__computer-use__* when the session runs in the desktop app and mcp__remote-devices__computer_* when a cloud session is linked to the person's computer; before computer use is turned on for a conversation there may be no such tools, only an enable__mcp__remote-devices__computer tool, which turns it on. It covers turning it on, picking the right tool, the access flow, and the safety rules for tiered apps, links and financial actions. It is not for websites, which go through Claude in Chrome or the built-in browser and their own skills.",
       "source": "anthropic-example",
-      "updatedAt": "2026-10-08T17:34:24.164396Z"
+      "updatedAt": "2026-10-28T18:00:31.869646Z"
     },
     {
       "skillId": "built-in-browser",
       "name": "built-in-browser",
       "description": "Read this skill before the first step that uses the built-in browser, the browser pane inside the Claude desktop app (also called the in-app browser, the browser pane, Claude's browser, or \"your own browser\"), whose tools are named mcp__Claude_Browser__* when the session runs in the desktop app and mcp__remote-devices__Claude_Browser__* when a cloud session is linked to the person's computer; before those tools are turned on there may be a single enable__mcp__remote-devices__Claude_Browser tool instead. It covers the pane's persistent sign-ins, tabs and preview_start, reading pages as text, site approvals, what the pane cannot open, and what to do when it cannot be reached. It is not for Claude in Chrome (mcp__claude-in-chrome__* tools), which has its own skill, and it does not decide which browser to use.",
       "source": "anthropic-example",
-      "updatedAt": "2026-09-21T06:00:29.740604Z"
+      "updatedAt": "2026-11-09T20:00:27.310096Z"
     },
     {
       "skillId": "deep-research",
@@ -710,9 +710,9 @@
     {
       "skillId": "skill_019HzqRFSaYv718FK3bwikxk",
       "name": "merger-arb-email-scan",
-      "description": "Scan Filings@ for forwarded broker merger-arb notes (UBS, TD, Jefferies, RJF, Oscar Gruss, Elevation, CTFN, any broker), check where we stand on each deal (EMSX blotter, deal memory doc, live spread), and post a short desk analysis of what the new note actually says and means as a reply-all on that ticker's existing Internal chain, rendered in the meteora-email-format-v2 house HTML format. Use for 'run the merger arb email scan' and its recurring runs.",
+      "description": "Scan Filings@ for forwarded broker merger-arb notes (UBS, TD, Jefferies, RJF, Oscar Gruss, Elevation, CTFN, any broker), check them against the deal memory doc so only material news gets posted, check where we stand (EMSX blotter, memory doc, live spread), and post a short desk analysis as a reply-all on that ticker's existing Internal chain in meteora-email-format-v2 HTML. Keeps each deal's memory doc current (seed with merger-arb-memory-doc-v1 if missing, else update-merger-arb-memory-doc-v3-10202026). Every run also checks for Daily Blotter Notes (several a day, including Midday) and the Internal Transcript; each note is handled on its own the first time it is seen, and posts a per-deal recap (what we traded, or what the desk call said, and what changed since the last post) on each merger-arb Internal chain. Nothing is posted for a note until that note has been sent to Filings@. Runs 6:30 AM-7:30 PM ET on weekdays. Use for 'run the merger arb email scan' and its recurring runs.",
       "source": "plugin",
-      "updatedAt": "2026-10-16T16:07:43.830837Z",
+      "updatedAt": "2026-11-10T21:39:16.670909Z",
       "backingPluginId": "plugin_01JJ3P4M2SB9eQr59qAYnBws"
     },
     {
@@ -754,6 +754,22 @@
       "source": "plugin",
       "updatedAt": "2026-10-20T20:34:23.881638Z",
       "backingPluginId": "plugin_017EevvEznbbz4uqJvUeDqsq"
+    },
+    {
+      "skillId": "skill_01KiPSnh1UyMstDWALoJZwSB",
+      "name": "update-merger-arb-memory-doc-v3-10202026",
+      "description": "Standing day-2+ updater for a merger-arb deal's memory doc. v3 (10/20/2026) researches every open question on every run (not only when no analyst input exists), gives each a second pass, and leaves open only questions waiting on a dated event or not public; rebuilds the register as two tables (waiting on a dated event / answered); and fills Position from the tear sheet, the desk-call transcript and the EMSX blotter, with return on cost and buy-write returns. Also handles ad hoc new info (filing, broker note, IB chat, price move, email), runs a per-ticker email sweep, verifies claims against primary sources, shows a digest and Change Note before writing, then supersedes entries and rebuilds the top layer. Trigger: update-merger-arb-memory-doc-v3-10202026, update the memory doc, what changed since last update, change note, resolve the open questions, log this to the deal doc. Requires an existing doc; not for seeding.",
+      "source": "plugin",
+      "updatedAt": "2026-11-10T21:16:57.435075Z",
+      "backingPluginId": "plugin_015Lnxe6FKZBG5FwNCX2hsWy"
+    },
+    {
+      "skillId": "skill_01T8mobhja2qW3vwvRPc5mzN",
+      "name": "merger-arb-memory-doc-v1",
+      "description": "Living merger/risk-arbitrage memory docs for M&A deals — risk-arb counterpart of seed-memory (SPACs stay there). Doc per deal: '[Target] - [Acquirer]' if consideration includes public acquirer stock, else '[Target]'. End-of-day capture for the T+0 pipeline (antitrust minute-1, DMA minute-1, hour-1 consolidation) and for a later-stage S-4/Proxy Review module run (merger-arb-s4-proxy[-vN]) whenever one exists in chat. Never hardcodes a version: resolves and cites whichever ran. Requires a current hour-1 consolidation as reconciliation source, re-triggering if stale. Fixed shape: Open Questions (top), hour-1-format Executive Summary, Street map, Position, On the Horizon — no Body; word-for-word section text lives only in entries (headed CURRENT, superseded on update). Seed Mode (no doc) builds from chat; Update Mode supersedes affected entries. Trigger: seed the arb memory, start/update a deal doc, log this to the deal doc, run merger-arb-memory-doc-v1. Always use for arb memory writes.",
+      "source": "plugin",
+      "updatedAt": "2026-11-10T21:16:52.742088Z",
+      "backingPluginId": "plugin_01U3TJEoozpapMbmWHNJF9Ce"
     }
   ]
 }
