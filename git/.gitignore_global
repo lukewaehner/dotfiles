@@ -3,3 +3,5 @@
 
 # claude-auto account marker (see scripts/.local/bin/claude-auto)
 .claude-instance
+
+**/.claude/settings.local.json
